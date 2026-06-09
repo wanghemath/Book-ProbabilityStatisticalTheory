@@ -6,10 +6,10 @@ project:
     - labs/
 
 book:
-  title: "MATH 5010: Foundations of Statistical Theory & Probability"
-  subtitle: "Lecture Notes, Interactive Modules, and Computer Labs"
+  title: "Foundations of Probability and Statistical Theory"
+  subtitle: "A Modern Introduction with Computation, Simulation, and Inference"
   author: "He Wang"
-  date: "Spring 2026"
+  date: "June, 2026"
   site-url: "https://wanghemath.github.io/Book-ProbabilityStatisticalTheory/"
   repo-url: "https://github.com/wanghemath/Book-ProbabilityStatisticalTheory"
   repo-actions: [edit, issue]
@@ -42,7 +42,7 @@ book:
     style: docked
     background: light
   page-footer:
-    left: "MATH 5010 — Foundations of Statistical Theory & Probability"
+    left: "Foundations of Probability and Statistical Theory"
     right: "Built with Quarto"
 
 format:

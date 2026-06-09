@@ -11,9 +11,7 @@ format:
 execute:
   warning: false
   message: false
----
-
-# Monte Carlo Sampling
+--- 
 
 This chapter introduces Monte Carlo methods as a practical bridge between probability theory, statistical inference, numerical integration, simulation, Bayesian computation, and optimization. The main principle is to rewrite a difficult quantity as a probability or expectation, simulate random samples, and approximate the target with a sample average.
 

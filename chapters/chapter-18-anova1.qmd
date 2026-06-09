@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Analysis of Variance I: One-Way ANOVA
+ 
 
 This chapter introduces **one-way analysis of variance (ANOVA)**. The goal is to compare more than two normal population means while controlling the overall Type I error rate. We start from the pooled two-sample $t$-test, introduce the cell-means ANOVA model, study contrasts, and derive the classical ANOVA $F$-test and ANOVA table.
 

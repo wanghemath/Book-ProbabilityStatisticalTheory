@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Transformations
+ 
 
 This chapter explains how probability distributions change when random variables are transformed by functions, sums, products, quotients, maxima, minima, and coordinate changes.
  

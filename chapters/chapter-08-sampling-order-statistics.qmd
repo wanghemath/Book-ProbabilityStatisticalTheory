@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Sampling and Order Statistics
+ 
 
 This chapter moves from individual random variables to random samples. The central idea is that statistics such as the sample mean, sample variance, minimum, maximum, median, and range are themselves random variables before the data are observed. Their distributions are called **sampling distributions**.
 

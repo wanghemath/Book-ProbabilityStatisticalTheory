@@ -9,8 +9,7 @@ format:
     toc: true
     number-sections: true
 ---
-
-# Joint and Conditional Probability
+ 
 
 This chapter moves from one random variable to several random variables studied together. The main objects are joint distributions, marginal distributions, conditional distributions, independence, covariance, total probability, Bayes theorem, and conditional independence.
  

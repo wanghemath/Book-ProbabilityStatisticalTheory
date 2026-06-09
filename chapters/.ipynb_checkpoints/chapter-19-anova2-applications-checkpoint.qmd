@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Analysis of Variance II: Applications and Randomized Block Designs
+ 
 
 This chapter continues ANOVA by emphasizing **applications, interpretation, experimental design, and randomized block designs**. We review the one-way ANOVA table, work through complete numerical examples, discuss why multiple pairwise tests can inflate Type I error, and introduce blocking as a way to remove nuisance variation from the error term.
 

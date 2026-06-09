@@ -9,8 +9,7 @@ format:
     toc: true
     number-sections: true
 ---
-
-# Expectations, Moments, and Moment Generating Functions
+ 
 
 This chapter develops numerical summaries of random variables and introduces moment generating functions as a compact way to encode moments and distributions.
  

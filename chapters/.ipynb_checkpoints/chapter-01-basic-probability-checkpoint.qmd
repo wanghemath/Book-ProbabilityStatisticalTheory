@@ -9,8 +9,7 @@ format:
     toc: true
     number-sections: true
 ---
-
-# Basic Probability
+ 
 
 This chapter introduces the language of probability used throughout MATH 5010. Events are sets, probability is a function on events, and conditional probability is the basic operation for updating uncertainty after new information is observed.
 

@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Point Estimation II: Evaluating Estimators
+ 
 
 This chapter continues point estimation. Chapter 12 focused on how to construct estimators. This chapter focuses on how to evaluate and compare estimators using mean squared error, bias, variance, Fisher information, Cramér--Rao lower bounds, Rao--Blackwellization, UMVUEs, loss functions, risk functions, and Bayes risk.
 

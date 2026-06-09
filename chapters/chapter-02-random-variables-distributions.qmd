@@ -9,8 +9,7 @@ format:
     toc: true
     number-sections: true
 ---
-
-# Random Variables and Distributions
+ 
 
 This chapter turns probability spaces into numerical models. A random variable is a function from outcomes to numbers, and its distribution describes how probability is assigned to those numbers.
 

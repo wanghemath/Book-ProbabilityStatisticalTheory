@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Sufficient Statistics and the Likelihood Principle
+ 
 
 This chapter introduces sufficient statistics as a formal data-reduction principle for statistical inference. The main goal is to identify when a statistic keeps all information in the sample about an unknown parameter. The chapter also introduces the likelihood function and the likelihood principle.
  

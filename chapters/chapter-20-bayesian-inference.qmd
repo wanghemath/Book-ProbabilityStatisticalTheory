@@ -11,9 +11,7 @@ format:
 execute:
   warning: false
   message: false
----
-
-# Bayesian Inference: A Unified View of Estimation, Testing, and Intervals
+--- 
 
 This chapter collects and organizes the Bayesian ideas used throughout point estimation, hypothesis testing, interval estimation, and decision theory. The main message is that once we know the posterior distribution, we can derive point estimates, tests, credible intervals, and optimal decisions from one common framework.
  

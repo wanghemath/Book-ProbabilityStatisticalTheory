@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Point Estimation I: Finding Estimators
+ 
 
 This chapter begins the statistical inference part of the course. The main goal is to construct point estimators for unknown parameters using three major principles: method of moments, maximum likelihood estimation, and Bayesian estimation.
 

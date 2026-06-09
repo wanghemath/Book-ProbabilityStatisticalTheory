@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Hypothesis Tests II: Evaluating Tests
+ 
 
 This chapter explains how to evaluate and compare hypothesis tests after constructing them. The main ideas are Type I and Type II errors, power functions, test size and level, unbiased tests, uniformly most powerful tests, $p$-values, and risk functions.
 

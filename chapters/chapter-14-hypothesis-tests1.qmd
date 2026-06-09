@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Hypothesis Tests I: Methods of Finding Tests
+ 
 
 This chapter introduces the foundations of hypothesis testing and several general methods for constructing tests. The central ideas are null and alternative hypotheses, test statistics, rejection regions, Type I and Type II errors, significance level, power, $p$-values, likelihood ratio tests, Bayesian tests, union-intersection tests, intersection-union tests, and the Neyman--Pearson lemma.
 

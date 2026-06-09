@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Interval Estimation II: Evaluating Interval Estimators
+ 
 
 This chapter continues interval estimation. After constructing confidence intervals and credible intervals, we now ask how to compare them. The main theme is the tradeoff between **reliability** and **precision**: a good interval should cover the true parameter with high probability, but it should not be unnecessarily wide.
 

@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Inequalities and Identities
+ 
 
 This chapter introduces the main probability inequalities used to control tail probabilities, prove convergence results, and analyze estimators. The focus is not only on remembering formulas, but also on learning when each inequality is the right tool.
 

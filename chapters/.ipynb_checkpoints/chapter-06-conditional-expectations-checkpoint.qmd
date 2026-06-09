@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Conditional Expectations
+ 
 
 This chapter explains how conditional distributions and conditional expectations turn difficult probability, expectation, and variance calculations into easier two-step calculations: condition first, then average.
 

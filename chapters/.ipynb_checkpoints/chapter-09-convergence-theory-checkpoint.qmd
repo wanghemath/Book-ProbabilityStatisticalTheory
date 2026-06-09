@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Convergence Theory and Limit Theorems
+ 
 
 This chapter develops the mathematical language for describing the limiting behavior of random variables, sample averages, and estimators. It connects convergence modes with the weak law of large numbers, the strong law of large numbers, the central limit theorem, continuous mapping, Slutsky's theorem, and concentration inequalities.
 

@@ -12,8 +12,7 @@ execute:
   warning: false
   message: false
 ---
-
-# Interval Estimation I: Finding Interval Estimators
+ 
 
 This chapter begins interval estimation. The main goal is to move from a single point estimate to a random interval procedure with a controlled coverage probability. We study confidence intervals built from acceptance regions, pivotal quantities, CDF pivoting, and Bayesian posterior distributions.
 
