@@ -1,0 +1,523 @@
+---
+title: "Chapter 16: Interval Estimation I — Finding Interval Estimators"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Interval Estimation I: Finding Interval Estimators
+
+This chapter begins interval estimation. The main goal is to move from a single point estimate to a random interval procedure with a controlled coverage probability. We study confidence intervals built from acceptance regions, pivotal quantities, CDF pivoting, and Bayesian posterior distributions.
+
+ 
+
+::: {.callout-note title="Topics"}
+Interval estimators; coverage probability; confidence coefficient; confidence intervals from test inversion; pivotal quantities; pivoting the CDF; normal mean and variance intervals; proportion intervals; uniform and exponential examples; Bayesian credible intervals; beta-binomial, normal-normal, and gamma-Poisson examples.
+:::
+
+# From Point Estimation to Interval Estimation
+
+This section begins the study of interval estimators, which quantify uncertainty by producing a range of plausible parameter values instead of a single number.
+
+In point estimation, a statistic $W(X_1,\ldots,X_n)$ estimates an unknown fixed parameter $\theta$ by a single number. For example, $\bar X$ estimates a population mean $\mu$, $S^2$ estimates a population variance $\sigma^2$, and $\hat p=X/n$ estimates a binomial proportion $p$.
+
+However, a single estimate does not show how much uncertainty remains. An interval estimator gives lower and upper random bounds. The goal is not only to estimate the parameter, but also to describe how reliable the estimate is.
+
+::: {.callout-note title="Definition"}
+**Definition 1** (Interval estimator). Let $X=(X_1,\ldots,X_n)$ be a random sample from a population distribution with pdf or pmf $f(x\mid \theta)$. An **interval estimator** of a real parameter $\theta$ is a pair of statistics $L(X)$ and $U(X)$, with $L(X)\le U(X)$, such that after observing $X=x$ we report $$L(x)\le \theta \le U(x).$$ The random interval $[L(X),U(X)]$ is the interval estimator, and the observed interval $[L(x),U(x)]$ is the interval estimate.
+:::
+
+::: {.callout-tip title="Key idea"}
+Random interval, fixed parameter In frequentist interval estimation, the parameter $\theta$ is treated as fixed but unknown. The interval $[L(X),U(X)]$ is random because it depends on the random sample $X$.
+:::
+
+## A first normal example
+
+This subsection introduces confidence intervals through the simplest normal model.
+
+::: {.callout-tip title="Example"}
+**Example 2** (Normal mean with known variance). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ independently, where $\sigma^2$ is known and $\mu$ is unknown. An interval estimator for $\mu$ is $$\left[\bar X-k\frac{\sigma}{\sqrt n},\; \bar X+k\frac{\sigma}{\sqrt n}\right]$$ for a chosen constant $k>0$.
+:::
+
+::: {.callout-note title="Solution"}
+Since $$Z=\frac{\bar X-\mu}{\sigma/\sqrt n}\sim \operatorname{Normal}(0,1),$$ we have $$\begin{aligned}
+\mathbb{P}_\mu\left(\mu\in \left[\bar X-k\frac{\sigma}{\sqrt n},\bar X+k\frac{\sigma}{\sqrt n}\right]\right)
+&=\mathbb{P}_\mu\left(-k\le \frac{\bar X-\mu}{\sigma/\sqrt n}\le k\right)\\
+&=\mathbb{P}(-k\le Z\le k)\\
+&=2\Phi(k)-1.
+\end{aligned}$$ Thus the constant $k$ controls the probability that the random interval covers the fixed parameter $\mu$. For example, choosing $k=z_{1-\alpha/2}$ gives coverage $1-\alpha$.
+:::
+
+::: {.callout-note title="Remark"}
+*Remark 3*. In the normal interval above, $\bar X$ is random and $\mu$ is an unknown constant. After observing the data, the interval becomes a fixed numerical interval.
+:::
+
+# Coverage Probability and Confidence Coefficient
+
+This section defines the main frequentist criterion for interval estimators: how often the random interval covers the true parameter value.
+
+::: {.callout-note title="Definition"}
+**Definition 4** (Coverage probability). For an interval estimator $[L(X),U(X)]$ of a parameter $\theta$, the **coverage probability** at $\theta$ is $$\mathbb{P}_\theta\bigl(\theta\in [L(X),U(X)]\bigr)
+    =\mathbb{P}_\theta\bigl(L(X)\le \theta\le U(X)\bigr).$$
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 5** (Confidence coefficient). The **confidence coefficient** or guaranteed coverage of an interval estimator is the worst-case coverage over all possible parameter values: $$\inf_{\theta}\mathbb{P}_\theta\bigl(\theta\in [L(X),U(X)]\bigr).$$ If this quantity is at least $1-\alpha$, we call the interval a $100(1-\alpha)\%$ confidence interval.
+:::
+
+::: {.callout-tip title="Key idea"}
+Interpretation A $95\%$ confidence interval procedure is a random procedure that covers the true fixed parameter in at least $95\%$ of repeated samples. It does not mean that, after observing one fixed interval, there is a $95\%$ frequentist probability that the fixed parameter lies inside that fixed interval.
+:::
+
+## Location-equivariant intervals
+
+This subsection explains why the usual normal confidence intervals have coverage that does not depend on the unknown mean.
+
+::: {.callout-tip title="Example"}
+**Example 6** (A family of normal intervals). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ independently with known $\sigma^2$. Let $c<d$ be fixed constants. Consider $$I_1(X)=\left[\bar X+c\frac{\sigma}{\sqrt n},\; \bar X+d\frac{\sigma}{\sqrt n}\right].$$ Find its coverage probability.
+:::
+
+::: {.callout-note title="Solution"}
+The event $\mu\in I_1(X)$ is equivalent to $$\bar X+c\frac{\sigma}{\sqrt n}\le \mu \le \bar X+d\frac{\sigma}{\sqrt n}.$$ Subtracting $\bar X$ and multiplying by $\sqrt n/\sigma$ gives $$c\le \frac{\mu-\bar X}{\sigma/\sqrt n}\le d.$$ Equivalently, $$-d\le \frac{\bar X-\mu}{\sigma/\sqrt n}\le -c.$$ Therefore $$\mathbb{P}_\mu(\mu\in I_1(X))
+=\mathbb{P}(-d\le Z\le -c)
+=\Phi(-c)-\Phi(-d).$$ Using symmetry of the standard normal distribution, this can also be written as $$\Phi(d)-\Phi(c)$$ if the constants are defined through the equivalent form $c\le Z\le d$. The key point is that the coverage does not depend on $\mu$.
+:::
+
+::: {.callout-important title="Corollary"}
+**Corollary 7** (Two-sided normal confidence interval). *Choosing $c=-z_{1-\alpha/2}$ and $d=z_{1-\alpha/2}$ yields the usual two-sided $100(1-\alpha)\%$ confidence interval $$\left[\bar X-z_{1-\alpha/2}\frac{\sigma}{\sqrt n},\; \bar X+z_{1-\alpha/2}\frac{\sigma}{\sqrt n}\right].$$*
+:::
+
+## A bad interval for a location parameter
+
+This subsection shows that not every random interval is a good interval estimator.
+
+::: {.callout-tip title="Example"}
+**Example 8** (Multiplicative interval for a normal mean). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ with known $\sigma^2$. Let $0<a<1<b$ and consider $$I_2(X)=[a\bar X,b\bar X].$$ Show that this interval has bad coverage at $\mu=0$.
+:::
+
+::: {.callout-note title="Solution"}
+At $\mu=0$, the interval covers $\mu$ if $$a\bar X\le 0\le b\bar X.$$ Since $a>0$ and $b>0$, the first inequality implies $\bar X\le 0$, and the second inequality implies $\bar X\ge 0$. Hence coverage occurs only when $\bar X=0$. Since $\bar X$ is a continuous normal random variable, $$\mathbb{P}_0(\bar X=0)=0.$$ Thus the coverage probability at $\mu=0$ is $0$. This interval is inappropriate for a location family.
+:::
+
+::: {.callout-warning title="Warning"}
+Important lesson A confidence interval should be designed to have good coverage uniformly over the parameter space. A formula that looks like an interval may still have very poor coverage.
+:::
+
+# Methods for Building Interval Estimators
+
+This section summarizes the main methods for constructing confidence intervals and credible intervals.
+
+There are several standard methods:
+
+1.  inverting a test statistic;
+
+2.  using pivotal quantities;
+
+3.  pivoting the CDF;
+
+4.  Bayesian credible intervals.
+
+Each method starts from a probability statement involving the data and parameter, then solves the statement for the parameter.
+
+# Method 1: Inverting a Test Statistic
+
+This section explains the deep connection between hypothesis tests and confidence intervals.
+
+The basic idea is simple: a confidence interval consists of all parameter values that would not be rejected by a corresponding hypothesis test.
+
+::: {.callout-tip title="Example"}
+**Example 9** (Inverting the two-sided normal $z$-test). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ independently with known $\sigma^2$. For each fixed value $\mu_0$, test $$H_0:\mu=\mu_0
+    \qquad \text{versus}\qquad
+    H_1:\mu\ne \mu_0.$$ At level $\alpha$, the usual two-sided test rejects $H_0$ when $$\left|\frac{\bar X-\mu_0}{\sigma/\sqrt n}\right|>z_{1-\alpha/2}.$$ Find the confidence interval obtained by inverting this test.
+:::
+
+::: {.callout-note title="Solution"}
+The test accepts, or fails to reject, $H_0:\mu=\mu_0$ when $$\left|\frac{\bar X-\mu_0}{\sigma/\sqrt n}\right|\le z_{1-\alpha/2}.$$ This is equivalent to $$-z_{1-\alpha/2}\le \frac{\bar X-\mu_0}{\sigma/\sqrt n}\le z_{1-\alpha/2}.$$ Solving for $\mu_0$ gives $$\bar X-z_{1-\alpha/2}\frac{\sigma}{\sqrt n}
+    \le \mu_0 \le
+    \bar X+z_{1-\alpha/2}\frac{\sigma}{\sqrt n}.$$ Therefore the set of all values $\mu_0$ not rejected by the test is $$C(X)=\left[\bar X-z_{1-\alpha/2}\frac{\sigma}{\sqrt n},\;
+    \bar X+z_{1-\alpha/2}\frac{\sigma}{\sqrt n}\right].$$ Because the test has level $\alpha$, the confidence set has coverage $1-\alpha$.
+:::
+
+## Acceptance regions and confidence sets
+
+This subsection states the formal test-confidence interval duality.
+
+For a test of $H_0:\theta=\theta_0$, let $A(\theta_0)$ be the acceptance region. That is, $x\in A(\theta_0)$ means the data $x$ do not lead us to reject the hypothesis $\theta=\theta_0$.
+
+The corresponding confidence set is $$C(x)=\{\theta_0: x\in A(\theta_0)\}.$$ So the confidence set is the set of parameter values that are compatible with the observed data under the testing rule.
+
+::: {.callout-important title="Theorem"}
+**Theorem 10** (Tests and confidence sets). *For each $\theta_0$, let $A(\theta_0)$ be the acceptance region of a level-$\alpha$ test of $$H_0:\theta=\theta_0.$$ Define $$C(x)=\{\theta_0:x\in A(\theta_0)\}.$$ Then $C(X)$ is a $100(1-\alpha)\%$ confidence set: $$\mathbb{P}_\theta(\theta\in C(X))\ge 1-\alpha.$$ Conversely, given any $100(1-\alpha)\%$ confidence set $C(X)$, define $$A(\theta_0)=\{x:\theta_0\in C(x)\}.$$ Then $A(\theta_0)$ is the acceptance region of a level-$\alpha$ test of $H_0:\theta=\theta_0$.*
+:::
+
+::: {.callout-note title="Proof"}
+*Proof.* For the first direction, $$\{\theta\in C(X)\}=\{X\in A(\theta)\}.$$ Since $A(\theta)$ is the acceptance region of a level-$\alpha$ test, $$\mathbb{P}_\theta(X\notin A(\theta))\le \alpha,$$ so $$\mathbb{P}_\theta(\theta\in C(X))=\mathbb{P}_\theta(X\in A(\theta))\ge 1-\alpha.$$ For the converse, if $C(X)$ has coverage at least $1-\alpha$, then $$\mathbb{P}_{\theta_0}(\theta_0\notin C(X))\le \alpha.$$ But $\theta_0\notin C(X)$ is exactly the rejection event for the test with acceptance region $A(\theta_0)=\{x:\theta_0\in C(x)\}$. Therefore the test has level $\alpha$. ◻
+:::
+
+# Method 2: Pivotal Quantities
+
+This section introduces pivotal quantities, one of the most useful tools for deriving confidence intervals.
+
+::: {.callout-note title="Definition"}
+**Definition 11** (Pivotal quantity). A **pivot** or **pivotal quantity** is a function $Q(X,\theta)$ of the data $X$ and the parameter $\theta$ whose distribution does not depend on any unknown parameter. That is, when $X\sim f(x\mid\theta)$, the distribution of $Q(X,\theta)$ is the same for every $\theta$.
+:::
+
+::: {.callout-tip title="Key idea"}
+Pivot method If $Q(X,\theta)$ is a pivot and $\mathcal A$ is a set such that $$\mathbb{P}_\theta(Q(X,\theta)\in \mathcal A)=1-\alpha,$$ then $$C(x)=\{\theta: Q(x,\theta)\in \mathcal A\}$$ forms a $100(1-\alpha)\%$ confidence set.
+:::
+
+## Normal mean with known variance
+
+This subsection derives the usual normal interval using a pivot.
+
+::: {.callout-tip title="Example"}
+**Example 12** (Normal mean, known variance). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ independently with known $\sigma^2$. Find a $100(1-\alpha)\%$ confidence interval for $\mu$.
+:::
+
+::: {.callout-note title="Solution"}
+The pivot is $$Z=\frac{\bar X-\mu}{\sigma/\sqrt n}\sim \operatorname{Normal}(0,1).$$ Choose standard normal quantiles so that $$\mathbb{P}\left(-z_{1-\alpha/2}\le Z\le z_{1-\alpha/2}\right)=1-\alpha.$$ Substitute the pivot: $$\mathbb{P}\left(-z_{1-\alpha/2}\le \frac{\bar X-\mu}{\sigma/\sqrt n}\le z_{1-\alpha/2}\right)=1-\alpha.$$ Solving for $\mu$ gives $$\mu\in \left[\bar X-z_{1-\alpha/2}\frac{\sigma}{\sqrt n},\;
+    \bar X+z_{1-\alpha/2}\frac{\sigma}{\sqrt n}\right].$$
+:::
+
+## Normal mean with unknown variance
+
+This subsection adds the classical Student $t$ interval, which is a central example of the pivot method.
+
+::: {.callout-tip title="Example"}
+**Example 13** (Normal mean, unknown variance). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ independently, where both $\mu$ and $\sigma^2$ are unknown. Find a $100(1-\alpha)\%$ confidence interval for $\mu$.
+:::
+
+::: {.callout-note title="Solution"}
+The sample standard deviation is $$S=\sqrt{\frac{1}{n-1}\sum_{i=1}^n (X_i-\bar X)^2}.$$ For a normal sample, $$T=\frac{\bar X-\mu}{S/\sqrt n}\sim t_{n-1},$$ which does not depend on $\mu$ or $\sigma^2$. Thus $T$ is a pivot. Choose $t_{n-1,1-\alpha/2}$ such that $$\mathbb{P}(-t_{n-1,1-\alpha/2}\le T\le t_{n-1,1-\alpha/2})=1-\alpha.$$ Solving for $\mu$ gives $$\mu\in \left[\bar X-t_{n-1,1-\alpha/2}\frac{S}{\sqrt n},\;
+    \bar X+t_{n-1,1-\alpha/2}\frac{S}{\sqrt n}\right].$$ This is the classical Student $t$ confidence interval.
+:::
+
+## Variance of a normal distribution
+
+This subsection constructs an exact chi-square confidence interval for a normal variance.
+
+::: {.callout-tip title="Example"}
+**Example 14** (Variance of a normal distribution). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ independently. Find a $100(1-\alpha)\%$ confidence interval for $\sigma^2$.
+:::
+
+::: {.callout-note title="Solution"}
+For a normal sample, $$Q=\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1}.$$ This is a pivot. Let $\chi^2_{\nu,\gamma}$ denote the $\gamma$ quantile of the chi-square distribution with $\nu$ degrees of freedom. Then $$\mathbb{P}\left(\chi^2_{n-1,\alpha/2}\le \frac{(n-1)S^2}{\sigma^2}
+    \le \chi^2_{n-1,1-\alpha/2}\right)=1-\alpha.$$ Now solve the inequalities for $\sigma^2$. Because $\sigma^2$ appears in the denominator, the endpoints reverse when solving: $$\sigma^2\in \left[
+    \frac{(n-1)S^2}{\chi^2_{n-1,1-\alpha/2}},\;
+    \frac{(n-1)S^2}{\chi^2_{n-1,\alpha/2}}
+    \right].$$
+:::
+
+## Proportion using an approximate pivot
+
+This subsection derives the common Wald interval for a binomial proportion.
+
+::: {.callout-tip title="Example"}
+**Example 15** (Proportion: approximate pivot). Let $X\sim \operatorname{Binomial}(n,p)$ and let $\hat p=X/n$. Use the central limit theorem to derive an approximate confidence interval for $p$.
+:::
+
+::: {.callout-note title="Solution"}
+By the central limit theorem, $$\frac{\hat p-p}{\sqrt{p(1-p)/n}}\approx \operatorname{Normal}(0,1).$$ Since the unknown $p$ appears in the standard error, the Wald interval replaces $p$ by $\hat p$: $$\frac{\hat p-p}{\sqrt{\hat p(1-\hat p)/n}}\approx \operatorname{Normal}(0,1).$$ Thus an approximate $100(1-\alpha)\%$ confidence interval is $$p\in \left[
+    \hat p-z_{1-\alpha/2}\sqrt{\frac{\hat p(1-\hat p)}{n}},\;
+    \hat p+z_{1-\alpha/2}\sqrt{\frac{\hat p(1-\hat p)}{n}}
+    \right].$$ This interval is called the Wald confidence interval.
+:::
+
+::: {.callout-warning title="Warning"}
+Approximate intervals The Wald interval is easy to remember, but it can perform poorly when $n$ is small or when $p$ is close to $0$ or $1$. Its coverage is approximate, not exact.
+:::
+
+# Method 3: Pivoting the CDF
+
+This section studies interval construction using the CDF of a statistic whose distribution depends on the parameter.
+
+Sometimes a simple pivot is not obvious, but we know the distribution of a statistic $T(X)$. Suppose $$F_T(t;\theta)=\mathbb{P}_\theta(T(X)\le t).$$ If we can find inequalities involving $T$ and $\theta$ with probability $1-\alpha$, then we can solve those inequalities for $\theta$.
+
+::: {.callout-tip title="Key idea"}
+CDF pivoting strategy Find functions $a(\theta)$ and $b(\theta)$ such that $$\mathbb{P}_\theta(a(\theta)\le T(X)\le b(\theta))=1-\alpha.$$ After observing $T=t_0$, solve $$a(\theta)\le t_0\le b(\theta)$$ for $\theta$. The solution is a confidence set.
+:::
+
+## Uniform distribution
+
+This subsection uses an order statistic to build a confidence interval for the endpoint of a uniform distribution.
+
+::: {.callout-tip title="Example"}
+**Example 16** (Uniform endpoint). Suppose $X_1,\ldots,X_n\sim \operatorname{Uniform}(0,\theta)$ independently. Let $$M=\max_{1\le i\le n}X_i.$$ Find a one-sided $100(1-\alpha)\%$ confidence interval for $\theta$.
+:::
+
+::: {.callout-note title="Solution"}
+The CDF of $M$ is $$F_M(m;\theta)=\mathbb{P}_\theta(M\le m)=\left(\frac{m}{\theta}\right)^n,
+    \qquad 0<m<\theta.$$ Since $M\le \theta$ always, the lower endpoint must be at least $M$. Choose $c$ so that $$\mathbb{P}_\theta(M\ge c\theta)=1-\alpha.$$ Now $$\mathbb{P}_\theta(M<c\theta)=c^n.$$ Thus choose $c=\alpha^{1/n}$ if we want lower-tail probability $\alpha$, or choose $c=(1-\alpha)^{1/n}$ depending on the convention for the one-sided interval.
+
+Using the construction in which $$\mathbb{P}_\theta\left(M\ge \theta(1-\alpha)^{1/n}\right)=\alpha,$$ we obtain, after observing $M=m$, $$m\le \theta\le \frac{m}{(1-\alpha)^{1/n}}.$$ Thus an interval of the form $$\left[m,\frac{m}{(1-\alpha)^{1/n}}\right]$$ comes from solving the CDF inequality.
+
+A more common $100(1-\alpha)\%$ one-sided upper confidence interval is $$\left[M,\frac{M}{\alpha^{1/n}}\right],$$ because $$\mathbb{P}_\theta\left(\theta\le \frac{M}{\alpha^{1/n}}\right)=\mathbb{P}_\theta(M\ge \alpha^{1/n}\theta)=1-\alpha.$$ The exact endpoint depends on how the tail probability is allocated.
+:::
+
+::: {.callout-note title="Remark"}
+*Remark 17*. The statistic $M=\max_i X_i$ is natural here because all observations must be less than or equal to $\theta$. This is also the sufficient statistic for $\theta$ in the uniform endpoint model.
+:::
+
+## Exponential distribution
+
+This subsection derives an exact confidence interval for the exponential rate and for the mean lifetime.
+
+::: {.callout-tip title="Example"}
+**Example 18** (Exponential rate and mean lifetime). Suppose $X_1,\ldots,X_n\sim \operatorname{Exp}(\lambda)$ independently, where the density is $$f(x\mid \lambda)=\lambda e^{-\lambda x},\qquad x>0.$$ Let $$Y=\sum_{i=1}^n X_i.$$ Find a confidence interval for $\lambda$, and then for the mean lifetime $\theta=1/\lambda$.
+:::
+
+::: {.callout-note title="Solution"}
+The sum satisfies $$Y\sim \operatorname{Gamma}(n,\lambda),$$ where $\lambda$ is the rate parameter. Equivalently, $$2\lambda Y\sim \chi^2_{2n}.$$ Thus $$\mathbb{P}\left(\chi^2_{2n,\alpha/2}\le 2\lambda Y\le \chi^2_{2n,1-\alpha/2}\right)=1-\alpha.$$ Solving for $\lambda$ gives $$\lambda\in \left[
+    \frac{\chi^2_{2n,\alpha/2}}{2Y},\;
+    \frac{\chi^2_{2n,1-\alpha/2}}{2Y}
+    \right].$$ If $\theta=1/\lambda$ is the mean lifetime, then taking reciprocals reverses the endpoints: $$\theta\in \left[
+    \frac{2Y}{\chi^2_{2n,1-\alpha/2}},\;
+    \frac{2Y}{\chi^2_{2n,\alpha/2}}
+    \right].$$
+:::
+
+# Method 4: Bayesian Credible Intervals
+
+This section presents the Bayesian counterpart of confidence intervals.
+
+In classical frequentist statistics, the parameter $\theta$ is fixed and the interval is random. Therefore, after observing a fixed interval such as $[3,10]$, it is not correct in the frequentist sense to say “there is a $90\%$ probability that $\theta$ lies in $[3,10]$.” The frequentist statement is about long-run coverage of the procedure.
+
+In Bayesian statistics, parameters are treated as random variables. We place a prior distribution on $\theta$ and update it to a posterior distribution after observing data. Then it is meaningful to say that there is a posterior probability that $\theta$ lies in an interval.
+
+::: {.callout-note title="Definition"}
+**Definition 19** (Credible interval). Let $\pi(\theta\mid x)$ be the posterior density of $\theta$ given data $x$. A set $A\subseteq \Theta$ is a $100(1-\alpha)\%$ **credible set** if $$\mathbb{P}(\theta\in A\mid x)=\int_A \pi(\theta\mid x)\,d\theta=1-\alpha.$$ If $A=[a,b]$, then $[a,b]$ is a credible interval.
+:::
+
+## General Bayesian procedure
+
+This subsection summarizes how to build Bayesian intervals from a posterior distribution.
+
+Choose a prior distribution $\pi(\theta)$ and combine it with the likelihood $f(x\mid \theta)$. The posterior distribution is $$\pi(\theta\mid x)=\frac{f(x\mid \theta)\pi(\theta)}{\int f(x\mid \theta')\pi(\theta')\,d\theta'}.$$ Then choose $a$ and $b$ so that $$\int_a^b \pi(\theta\mid x)\,d\theta=1-\alpha.$$ A common choice is the equal-tail credible interval, where $$\mathbb{P}(\theta<a\mid x)=\frac{\alpha}{2},
+    \qquad
+    \mathbb{P}(\theta>b\mid x)=\frac{\alpha}{2}.$$
+
+::: {.callout-note title="Remark"}
+*Remark 20*. Another common Bayesian interval is the highest posterior density interval, which contains points with the largest posterior density. Equal-tail and highest posterior density intervals may differ for skewed posterior distributions.
+:::
+
+## Binomial data with beta prior
+
+This subsection presents the beta-binomial credible interval.
+
+::: {.callout-tip title="Example"}
+**Example 21** (Binomial data with beta prior). Suppose $$X\sim \operatorname{Binomial}(n,p),$$ and use the prior $$p\sim \operatorname{Beta}(\alpha,\beta).$$ Find the posterior distribution and describe a credible interval for $p$.
+:::
+
+::: {.callout-note title="Solution"}
+The likelihood is proportional to $$p^x(1-p)^{n-x}.$$ The beta prior density is proportional to $$p^{\alpha-1}(1-p)^{\beta-1}.$$ Therefore the posterior density is proportional to $$p^{\alpha+x-1}(1-p)^{\beta+n-x-1}.$$ Hence $$p\mid X=x\sim \operatorname{Beta}(\alpha+x,\beta+n-x).$$ A $100(1-\alpha_0)\%$ equal-tail credible interval is $$\left[q_{\alpha_0/2},q_{1-\alpha_0/2}\right],$$ where $q_\gamma$ is the $\gamma$ quantile of the $\operatorname{Beta}(\alpha+x,\beta+n-x)$ distribution.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 22** (Numerical beta-binomial credible interval). Suppose $n=20$, $x=12$, and the prior is $p\sim \operatorname{Beta}(2,2)$. Find the posterior distribution and state the approximate $95\%$ credible interval given in the lecture notes.
+:::
+
+::: {.callout-note title="Solution"}
+The posterior is $$p\mid X=12\sim \operatorname{Beta}(2+12,2+20-12)=\operatorname{Beta}(14,10).$$ The equal-tail $95\%$ credible interval is given by the $0.025$ and $0.975$ posterior quantiles. The lecture-note computation gives approximately $$p\in [0.385,0.768].$$ This means that, under the beta prior and the observed data, the posterior probability that $p$ lies in this interval is $0.95$.
+:::
+
+## Normal mean with known variance and normal prior
+
+This subsection studies a conjugate Bayesian interval for a normal mean.
+
+::: {.callout-tip title="Example"}
+**Example 23** (Normal-normal model). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ independently, where $\sigma^2$ is known. Put a normal prior on $\mu$: $$\mu\sim \operatorname{Normal}(\theta,\tau^2).$$ Find the posterior mean and variance, and describe a credible interval.
+:::
+
+::: {.callout-note title="Solution"}
+The likelihood is normal in $\mu$, and the normal prior is conjugate. The posterior is also normal: $$\mu\mid x\sim \operatorname{Normal}(m_n,v_n),$$ where $$m_n=\frac{\tau^2\sum_{i=1}^n x_i+\sigma^2\theta}{n\tau^2+\sigma^2}$$ and $$v_n=\frac{\sigma^2\tau^2}{\sigma^2+n\tau^2}.$$ Therefore a $100(1-\alpha)\%$ equal-tail credible interval is $$\left[m_n-z_{1-\alpha/2}\sqrt{v_n},\;
+    m_n+z_{1-\alpha/2}\sqrt{v_n}\right].$$
+:::
+
+::: {.callout-tip title="Key idea"}
+Weighted average interpretation The posterior mean is a weighted average of the prior mean $\theta$ and the sample mean $\bar x$: $$m_n=\frac{n\tau^2}{n\tau^2+\sigma^2}\bar x+
+    \frac{\sigma^2}{n\tau^2+\sigma^2}\theta.$$ As $n$ grows, the sample mean receives more weight.
+:::
+
+## Poisson data with gamma prior
+
+This subsection presents the gamma-Poisson credible interval.
+
+::: {.callout-tip title="Example"}
+**Example 24** (Poisson data). Suppose $X_1,\ldots,X_n\sim \operatorname{Poisson}(\lambda)$ independently. Use the prior $$\lambda\sim \operatorname{Gamma}(\alpha,\beta),$$ where $\beta$ is the rate parameter. Find the posterior distribution.
+:::
+
+::: {.callout-note title="Solution"}
+The likelihood is proportional to $$e^{-n\lambda}\lambda^{\sum_i x_i}.$$ The gamma prior density is proportional to $$\lambda^{\alpha-1}e^{-\beta\lambda}.$$ Thus the posterior density is proportional to $$\lambda^{\alpha+\\sum_i x_i-1}e^{-(\beta+n)\lambda}.$$ Therefore $$\lambda\mid X\sim \operatorname{Gamma}\left(\alpha+\sum_{i=1}^n x_i,\; \beta+n\right).$$ A credible interval for $\lambda$ is obtained from the corresponding gamma posterior quantiles.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 25** (Numerical gamma-Poisson posterior). Suppose $n=10$, the observed counts sum to $\sum_i x_i=26$, and the prior is $$\lambda\sim \operatorname{Gamma}(2,1).$$ Find the posterior distribution.
+:::
+
+::: {.callout-note title="Solution"}
+Using the gamma-Poisson update, $$\lambda\mid X\sim \operatorname{Gamma}(2+26,1+10)=\operatorname{Gamma}(28,11).$$ A $95\%$ credible interval is given by the $0.025$ and $0.975$ quantiles of this gamma distribution.
+:::
+
+# Comparing Confidence Intervals and Credible Intervals
+
+This section clarifies the difference between frequentist and Bayesian interval statements.
+
+::: {.callout-note}
+                          Frequentist confidence interval        Bayesian credible interval
+  ----------------------- -------------------------------------- --------------------------------------------------------
+  Parameter               Fixed unknown constant                 Random variable with prior/posterior distribution
+  Interval                Random before data; fixed after data   Fixed after data, with posterior probability statement
+  Probability statement   Long-run coverage of the procedure     Posterior probability of parameter lying in interval
+  Inputs                  Sampling distribution                  Likelihood plus prior
+  Dependence on prior     No prior needed                        Depends on chosen prior
+:::
+
+::: {.callout-warning title="Warning"}
+Common interpretation mistake For a frequentist $90\%$ confidence interval $[3,10]$, it is not correct to say that $\mathbb{P}(\theta\in[3,10])=0.90$ after observing the data. In the Bayesian setting, a $90\%$ credible interval does allow that posterior probability statement, but it depends on the prior model.
+:::
+
+# Practice Problems
+
+This section gives practice problems that reinforce interval construction by test inversion, pivots, CDF pivoting, and Bayesian posterior intervals.
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 26** (Normal mean, known variance). Suppose $X_1,\ldots,X_{25}\sim \operatorname{Normal}(\mu,9)$ independently and $\bar x=10.4$. Find a $95\%$ confidence interval for $\mu$.
+:::
+
+::: {.callout-note title="Solution"}
+Here $n=25$, $\sigma=3$, and $z_{0.975}=1.96$. The interval is $$\bar x\pm z_{0.975}\frac{\sigma}{\sqrt n}
+    =10.4\pm 1.96\frac{3}{5}
+    =10.4\pm 1.176.$$ Thus $$\mu\in [9.224,11.576].$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 27** (Normal mean, unknown variance). Suppose $X_1,\ldots,X_{16}\sim \operatorname{Normal}(\mu,\sigma^2)$, $\bar x=5.2$, and $s=1.6$. Write the $95\%$ confidence interval for $\mu$ in terms of the appropriate $t$ quantile.
+:::
+
+::: {.callout-note title="Solution"}
+The pivot is $$T=\frac{\bar X-\mu}{S/\sqrt n}\sim t_{15}.$$ Therefore the $95\%$ confidence interval is $$5.2\pm t_{15,0.975}\frac{1.6}{4}.$$ That is, $$\mu\in \left[5.2-0.4t_{15,0.975},\;5.2+0.4t_{15,0.975}\right].$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 28** (Normal variance). Suppose $X_1,\ldots,X_{10}\sim \operatorname{Normal}(\mu,\sigma^2)$ and the observed sample variance is $s^2=4$. Write a $95\%$ confidence interval for $\sigma^2$.
+:::
+
+::: {.callout-note title="Solution"}
+Here $n=10$, so $n-1=9$. The chi-square pivot is $$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_9.$$ The $95\%$ interval is $$\left[
+    \frac{9\cdot 4}{\chi^2_{9,0.975}},\;
+    \frac{9\cdot 4}{\chi^2_{9,0.025}}
+    \right]
+    =\left[
+    \frac{36}{\chi^2_{9,0.975}},\;
+    \frac{36}{\chi^2_{9,0.025}}
+    \right].$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 29** (Approximate binomial proportion interval). Suppose $X\sim \operatorname{Binomial}(200,p)$ and $x=126$. Use the Wald method to construct an approximate $95\%$ confidence interval for $p$.
+:::
+
+::: {.callout-note title="Solution"}
+The sample proportion is $$\hat p=\frac{126}{200}=0.63.$$ The estimated standard error is $$\sqrt{\frac{\hat p(1-\hat p)}{n}}
+    =\sqrt{\frac{0.63(0.37)}{200}}
+    \approx 0.0341.$$ Using $z_{0.975}=1.96$, the margin of error is $$1.96(0.0341)\approx 0.0668.$$ Thus the approximate interval is $$p\in [0.5632,0.6968].$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 30** (Uniform endpoint). Suppose $X_1,\ldots,X_8\sim \operatorname{Uniform}(0,\theta)$ and the observed maximum is $m=12$. Give a $95\%$ one-sided upper confidence interval of the form $[m,m/\alpha^{1/n}]$.
+:::
+
+::: {.callout-note title="Solution"}
+Here $n=8$ and $\alpha=0.05$. The interval is $$\left[12,\frac{12}{0.05^{1/8}}\right].$$ This interval has coverage $0.95$ because $$\mathbb{P}_\theta\left(\theta\le \frac{M}{0.05^{1/8}}\right)
+    =\mathbb{P}_\theta(M\ge 0.05^{1/8}\theta)
+    =1-0.05.$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 31** (Exponential mean lifetime). Suppose $X_1,\ldots,X_6\sim \operatorname{Exp}(\lambda)$ and the observed sum is $Y=18$. Write a $90\%$ confidence interval for the mean lifetime $\theta=1/\lambda$.
+:::
+
+::: {.callout-note title="Solution"}
+Here $2n=12$ and $\alpha=0.10$. From $$2\lambda Y\sim \chi^2_{12},$$ we obtain $$\theta=\frac{1}{\lambda}\in
+    \left[
+    \frac{2Y}{\chi^2_{12,1-\alpha/2}},\;
+    \frac{2Y}{\chi^2_{12,\alpha/2}}
+    \right].$$ Thus $$\theta\in
+    \left[
+    \frac{36}{\chi^2_{12,0.95}},\;
+    \frac{36}{\chi^2_{12,0.05}}
+    \right].$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 32** (Beta-binomial credible interval). Suppose $X\sim \operatorname{Binomial}(30,p)$, $x=18$, and $p\sim \operatorname{Beta}(3,3)$. Find the posterior distribution and describe a $95\%$ equal-tail credible interval.
+:::
+
+::: {.callout-note title="Solution"}
+The posterior is $$p\mid X=18\sim \operatorname{Beta}(3+18,3+30-18)=\operatorname{Beta}(21,15).$$ A $95\%$ equal-tail credible interval is $$\left[q_{0.025},q_{0.975}\right],$$ where $q_\gamma$ is the $\gamma$ quantile of the $\operatorname{Beta}(21,15)$ distribution.
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 33** (Normal-normal credible interval). Suppose $X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2)$ with known $\sigma^2$, and the prior is $\mu\sim \operatorname{Normal}(\theta,\tau^2)$. Show that the posterior variance is smaller than both $\tau^2$ and $\sigma^2/n$.
+:::
+
+::: {.callout-note title="Solution"}
+The posterior variance is $$v_n=\frac{\sigma^2\tau^2}{\sigma^2+n\tau^2}.$$ Since $\sigma^2+n\tau^2>\sigma^2$, $$v_n<\tau^2.$$ Also, since $\sigma^2+n\tau^2>n\tau^2$, $$v_n<\frac{\sigma^2\tau^2}{n\tau^2}=\frac{\sigma^2}{n}.$$ Thus the posterior variance is smaller than both the prior variance and the sampling variance of $\bar X$.
+:::
+
+# Summary
+
+This section summarizes the main ideas of interval estimation.
+
+::: {.callout-tip title="Key idea"}
+Key takeaways
+
+-   A point estimator gives one number; an interval estimator gives a random range of plausible parameter values.
+
+-   The coverage probability is $\mathbb{P}_\theta(L(X)\le \theta\le U(X))$.
+
+-   A confidence coefficient is the worst-case coverage over the parameter space.
+
+-   Confidence intervals can be obtained by inverting hypothesis tests.
+
+-   Pivotal quantities are functions of data and parameters with parameter-free distributions.
+
+-   CDF pivoting is useful when the distribution of an order statistic or sufficient statistic is known.
+
+-   Bayesian credible intervals are posterior probability statements and depend on the prior.
+:::
+
+::: {.callout-note}
+  Model                             Key pivot/statistic               Interval idea
+  --------------------------------- --------------------------------- ---------------------------
+  Normal mean, known $\sigma^2$     $(\bar X-\mu)/(\sigma/\sqrt n)$   Normal $z$ interval
+  Normal mean, unknown $\sigma^2$   $(\bar X-\mu)/(S/\sqrt n)$        Student $t$ interval
+  Normal variance                   $(n-1)S^2/\sigma^2$               Chi-square interval
+  Binomial proportion               $(\hat p-p)/\sqrt{p(1-p)/n}$      Approximate Wald interval
+  Uniform endpoint                  $M=\max X_i$                      CDF pivoting
+  Exponential rate                  $2\lambda\sum X_i$                Chi-square interval
+  Beta-binomial Bayes               Beta posterior                    Posterior quantiles
+  Gamma-Poisson Bayes               Gamma posterior                   Posterior quantiles
+:::
+
+# References  
+
+-   Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition.
+
+-   Wasserman, L. *All of Statistics*.
+
+-   ProbabilityCourse.com.
+
+-   Penn State STAT 415 Online Notes.
+
+-   Harvard Stat 110 resources.
+
+-   García-Portugués, E. *Notes for Statistical Inference*.

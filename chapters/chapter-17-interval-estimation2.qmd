@@ -1,0 +1,419 @@
+---
+title: "Chapter 17: Interval Estimation II — Evaluating Interval Estimators"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Interval Estimation II: Evaluating Interval Estimators
+
+This chapter continues interval estimation. After constructing confidence intervals and credible intervals, we now ask how to compare them. The main theme is the tradeoff between **reliability** and **precision**: a good interval should cover the true parameter with high probability, but it should not be unnecessarily wide.
+
+ 
+
+::: {.callout-note title="Topics"}
+Coverage probability; interval length; expected length; shortest intervals for unimodal densities; test-related optimality; false coverage probability; uniformly most accurate confidence sets; unbiased confidence sets; Bayesian HPD credible intervals; loss-function optimality; risk of confidence sets.
+:::
+
+# Overview
+
+This section moves from constructing confidence and credible intervals to comparing them and deciding which interval is preferable.
+
+In Section 16, we learned several ways to build interval estimators: test inversion, pivotal quantities, pivoting the CDF, and Bayesian credible intervals. In this section, we evaluate interval estimators using four main ideas:
+
+1.  size and coverage probability;
+
+2.  test-related optimality;
+
+3.  Bayesian optimality;
+
+4.  loss-function optimality.
+
+::: {.callout-tip title="Key idea"}
+**Main idea.** A useful interval estimator should have high probability of covering the true parameter, but it should not be unnecessarily wide. Evaluation of interval estimators is therefore a balance between *reliability* and *precision*.
+:::
+
+# Size and Coverage Probability
+
+This section introduces the two most basic numerical criteria for evaluating an interval estimator: its coverage probability and its length.
+
+## Coverage probability
+
+Coverage probability measures how often a confidence interval procedure contains the true parameter value in repeated sampling.
+
+::: {.callout-note title="Definition"}
+**Definition 1** (Coverage probability). Let $C(X)$ be a confidence set for a real parameter $\theta$. The **coverage probability** at $\theta$ is $$\mathbb{P}_\theta\{\theta \in C(X)\}.$$ A confidence interval is designed so that $$\mathbb{P}_\theta\{\theta \in C(X)\} \approx 1-\alpha.$$ If the lower endpoint is $L(X)$ and the upper endpoint is $U(X)$, then $$C(X)=[L(X),U(X)],
+    \qquad
+    \mathbb{P}_\theta\{L(X)\leq \theta \leq U(X)\}\approx 1-\alpha.$$
+:::
+
+::: {.callout-note title="Remark"}
+*Remark 2*. In frequentist interval estimation, $\theta$ is fixed but unknown, and the interval $C(X)$ is random because it depends on the sample. Coverage probability is a long-run property of the procedure, not a posterior probability statement about $\theta$.
+:::
+
+## Size and expected length
+
+The size of an interval measures how much uncertainty remains after the data have been observed.
+
+::: {.callout-note title="Definition"}
+**Definition 3** (Length and expected length). For an interval estimator $C(X)=[L(X),U(X)]$, the **length** is $$\operatorname{Length}(C(X))=U(X)-L(X).$$ The **expected length** is $$\mathbb{E}_\theta[\operatorname{Length}(C(X))]
+    =\mathbb{E}_\theta[U(X)-L(X)].$$
+:::
+
+::: {.callout-tip title="Key idea"}
+**Precision principle.** Among confidence intervals with the same coverage probability, the shorter interval is usually preferred because it gives a more precise estimate of the parameter.
+:::
+
+## Normal mean example: length and coverage
+
+The normal mean example shows explicitly how coverage and length are calculated.
+
+::: {.callout-tip title="Example"}
+**Example 4** (Normal confidence interval with known variance). Suppose $$X_1,\ldots,X_n \sim \operatorname{Normal}(\mu,\sigma^2),$$ where $\sigma^2$ is known. From the pivot construction, $$Z=\frac{\bar X-\mu}{\sigma/\sqrt n}\sim \operatorname{Normal}(0,1).$$ For constants $a<b$ satisfying $$\mathbb{P}(a\leq Z\leq b)=1-\alpha,$$ we obtain $$a \leq \frac{\bar X-\mu}{\sigma/\sqrt n}\leq b.$$ Solving for $\mu$ gives $$\bar X-b\frac{\sigma}{\sqrt n}\leq \mu\leq \bar X-a\frac{\sigma}{\sqrt n}.$$ Thus a $(1-\alpha)$ confidence interval is $$C(X)=\left[\bar X-b\frac{\sigma}{\sqrt n},\; \bar X-a\frac{\sigma}{\sqrt n}\right].$$ Its length is $$\operatorname{Length}(C(X))=(b-a)\frac{\sigma}{\sqrt n}.$$
+:::
+
+::: {.callout-note title="Solution"}
+The coverage is $$\begin{aligned}
+\mathbb{P}_\mu\{\mu\in C(X)\}
+&=\mathbb{P}_\mu\left\{\bar X-b\frac{\sigma}{\sqrt n}\leq \mu\leq \bar X-a\frac{\sigma}{\sqrt n}\right\}\\
+&=\mathbb{P}_\mu\left\{a\leq \frac{\bar X-\mu}{\sigma/\sqrt n}\leq b\right\}\\
+&=\mathbb{P}(a\leq Z\leq b)=1-\alpha.
+\end{aligned}$$ Since $a$ and $b$ are constants, the length is nonrandom: $$\operatorname{Length}(C(X))=(b-a)\frac{\sigma}{\sqrt n}.$$ Thus, for fixed $\alpha$, $\sigma$, and $n$, minimizing the interval length is equivalent to minimizing $b-a$ subject to $\mathbb{P}(a\leq Z\leq b)=1-\alpha$.
+:::
+
+## Shortest interval for a normal pivot
+
+For a symmetric unimodal distribution such as the standard normal distribution, the shortest interval with fixed probability is the equal-tail central interval.
+
+::: {.callout-tip title="Example"}
+**Example 5** (Shortest normal interval). Suppose $$X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2),$$ where $\sigma^2$ is known. The usual $95\%$ confidence interval for $\mu$ is $$\bar X \pm z_{0.975}\frac{\sigma}{\sqrt n}.$$ That is, $$C(X)=\left[\bar X-z_{0.975}\frac{\sigma}{\sqrt n},\;\bar X+z_{0.975}\frac{\sigma}{\sqrt n}\right].$$ The coverage probability is exactly $0.95$ for every $\mu$, and the length is $$2z_{0.975}\frac{\sigma}{\sqrt n}.$$
+:::
+
+::: {.callout-note title="Solution"}
+Because $$\frac{\bar X-\mu}{\sigma/\sqrt n}\sim \operatorname{Normal}(0,1),$$ we have $$\mathbb{P}\left(-z_{0.975}\leq \frac{\bar X-\mu}{\sigma/\sqrt n}\leq z_{0.975}\right)=0.95.$$ Solving the inequalities for $\mu$ gives the stated interval. Its length is $$\left(\bar X+z_{0.975}\frac{\sigma}{\sqrt n}\right)
+    -\left(\bar X-z_{0.975}\frac{\sigma}{\sqrt n}\right)
+    =2z_{0.975}\frac{\sigma}{\sqrt n}.$$ As $n$ increases, this length decreases like $1/\sqrt n$, so larger samples give more precise intervals.
+:::
+
+# Shortest Intervals for a Unimodal PDF
+
+This section gives a general rule for finding the shortest interval with a prescribed probability when the density is unimodal.
+
+## Equal boundary density principle
+
+For a unimodal density, the shortest interval containing a fixed probability mass should cut the density at equal heights on the left and right boundaries.
+
+::: {.callout-important title="Theorem"}
+**Theorem 6** (Shortest interval with a unimodal density). *Let $f(x)$ be a unimodal probability density function. Suppose the mode is $x^*$, and $f$ is nondecreasing for $x\leq x^*$ and nonincreasing for $x\geq x^*$.*
+
+*If an interval $[a,b]$ satisfies*
+
+1.  *$\displaystyle \int_a^b f(x)\,dx=1-\alpha$;*
+
+2.  *$f(a)=f(b)>0$;*
+
+3.  *$a\leq x^*\leq b$;*
+
+*then $[a,b]$ is the shortest interval among intervals having probability $1-\alpha$.*
+:::
+
+::: {.callout-note title="Proof"}
+*Idea of proof.* If the two boundary densities are not equal, suppose for example that $f(a)<f(b)$. Then we can move the left endpoint slightly inward and move the right endpoint slightly outward to preserve the same probability. Since probability is removed from a lower-density region and added in a higher-density region, the right endpoint needs to move less than the left endpoint moves. The total length decreases. Therefore, at the shortest interval, the boundary densities must be equal. The interval must also contain the mode; otherwise shifting it toward the mode would increase included probability without increasing length. ◻
+:::
+
+::: {.callout-note title="Remark"}
+*Remark 7*. For a symmetric unimodal density such as $\operatorname{Normal}(0,1)$, the equal boundary density condition gives a symmetric interval $[-z,z]$. This recovers the usual equal-tail normal interval.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 8** (Shortest interval for a symmetric unimodal density). Let $Z\sim\operatorname{Normal}(0,1)$. Among all intervals $[a,b]$ satisfying $\mathbb{P}(a\leq Z\leq b)=0.95$, show that the shortest interval is $[-z_{0.975},z_{0.975}]$.
+:::
+
+::: {.callout-note title="Solution"}
+The standard normal density is symmetric about $0$ and unimodal with mode $0$. By the shortest interval theorem, the shortest interval must satisfy $$\phi(a)=\phi(b),$$ and it must contain the mode $0$. Since $$\phi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2},$$ $\phi(a)=\phi(b)$ implies $a^2=b^2$. Because the interval contains $0$ and $a<b$, we must have $a=-b$. The coverage condition becomes $$\mathbb{P}(-b\leq Z\leq b)=0.95,$$ so $b=z_{0.975}$ and $a=-z_{0.975}$.
+:::
+
+# Test-Related Optimality
+
+This section connects optimal confidence intervals with optimal hypothesis tests.
+
+## Confidence sets by inverting tests
+
+A confidence interval can be obtained by collecting all parameter values that would not be rejected by a hypothesis test.
+
+Suppose that for each $\theta_0$, $A(\theta_0)$ is the acceptance region of a level-$\alpha$ test of $$H_0:\theta=\theta_0.$$ Then the inverted confidence set is $$C(x)=\{\theta_0:x\in A(\theta_0)\}.$$ This set has coverage at least $1-\alpha$ because $$\mathbb{P}_\theta\{\theta\in C(X)\}
+    =\mathbb{P}_\theta\{X\in A(\theta)\}\geq 1-\alpha.$$
+
+## False coverage probability
+
+While ordinary coverage asks whether the confidence set contains the true parameter, false coverage asks whether the confidence set contains a wrong parameter value.
+
+::: {.callout-note title="Definition"}
+**Definition 9** (False coverage probability). Let $C(X)$ be a confidence set. For $\theta'\neq \theta$, the **false coverage probability** is $$\mathbb{P}_\theta\{\theta'\in C(X)\}.$$ This is the probability that the confidence set includes a false parameter value $\theta'$ when the true value is $\theta$.
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 10** (Uniformly most accurate confidence set). A $(1-\alpha)$ confidence set is called **uniformly most accurate** (UMA) if it minimizes the probability of false coverage among all confidence sets with the same coverage probability.
+:::
+
+## UMA intervals from UMP tests
+
+Optimal tests lead to optimal confidence sets after inversion.
+
+::: {.callout-important title="Theorem"}
+**Theorem 11** (UMP tests give UMA confidence sets). *Let $X\sim f(x\mid \theta)$, where $\theta\in\mathbb{R}$. Let $A^*(\theta_0)$ be the acceptance region of a UMP level-$\alpha$ test of $$H_0:\theta=\theta_0
+    \qquad \text{versus}\qquad
+    H_1:\theta>\theta_0.$$ Let $$C^*(X)=\{\theta_0:X\in A^*(\theta_0)\}$$ be the confidence set obtained by inverting these acceptance regions. Then for any other $(1-\alpha)$ confidence set $C$, $$\mathbb{P}_\theta\{\theta'\in C^*(X)\}
+    \leq
+    \mathbb{P}_\theta\{\theta'\in C(X)\},
+    \qquad \theta'<\theta.$$ Thus $C^*$ is uniformly most accurate against false values below the true parameter.*
+:::
+
+::: {.callout-note title="Proof"}
+*Idea of proof.* For a fixed false value $\theta'$, the event $\{\theta'\in C(X)\}$ is the same as accepting the test of $H_0:\theta=\theta'$ when the true parameter is $\theta$. Minimizing false coverage is therefore equivalent to maximizing the probability of rejecting $H_0:\theta=\theta'$ when the truth is $\theta>\theta'$. A UMP test maximizes this rejection probability, so its inverted confidence set minimizes false coverage. ◻
+:::
+
+## Example: normal lower confidence bound
+
+One-sided normal tests have UMP properties, so their inverted confidence bounds have UMA properties.
+
+::: {.callout-tip title="Example"}
+**Example 12** (UMA lower confidence bound for a normal mean). Suppose $$X_1,\ldots,X_n\sim \operatorname{Normal}(\mu,\sigma^2),$$ where $\sigma$ is known. To build a lower confidence bound for $\mu$, invert the UMP level-$\alpha$ test of $$H_0:\mu=\mu_0
+    \qquad\text{versus}\qquad
+    H_1:\mu>\mu_0.$$ The UMP rejection rule is $$\frac{\bar X-\mu_0}{\sigma/\sqrt n}>z_\alpha.$$ Thus the acceptance region is $$\frac{\bar X-\mu_0}{\sigma/\sqrt n}\leq z_\alpha.$$ Solving for $\mu_0$ gives $$\mu_0\geq \bar X-z_\alpha\frac{\sigma}{\sqrt n}.$$ Therefore the inverted confidence set is $$C(X)=\left[\bar X-z_\alpha\frac{\sigma}{\sqrt n},\infty\right).$$
+:::
+
+::: {.callout-note title="Solution"}
+The coverage is $$\begin{aligned}
+\mathbb{P}_\mu\left\{\mu\geq \bar X-z_\alpha\frac{\sigma}{\sqrt n}\right\}
+&=\mathbb{P}_\mu\left\{\frac{\bar X-\mu}{\sigma/\sqrt n}\leq z_\alpha\right\}\\
+&=\Phi(z_\alpha)=1-\alpha.
+\end{aligned}$$ Because it comes from inverting a UMP one-sided test, it is UMA for excluding false parameter values below the true value.
+:::
+
+::: {.callout-note title="Remark"}
+*Remark 13* (Two-sided intervals). The usual two-sided interval $$\left[\bar X-z_{\alpha/2}\frac{\sigma}{\sqrt n},\;
+    \bar X+z_{\alpha/2}\frac{\sigma}{\sqrt n}\right]$$ is not UMA in the same one-sided sense, because for two-sided alternatives there is generally no UMP test. This is why alternative optimality concepts, such as unbiasedness, are useful.
+:::
+
+## Unbiased confidence sets
+
+When UMA confidence sets do not exist, unbiasedness is often used as a weaker but useful optimality condition.
+
+::: {.callout-note title="Definition"}
+**Definition 14** (Unbiased confidence set). A $(1-\alpha)$ confidence set $C(X)$ is called **unbiased** if $$\mathbb{P}_\theta\{\theta'\in C(X)\}\leq 1-\alpha
+    \qquad\text{for all }\theta\neq \theta'.$$ Equivalently, the interval should not cover a false parameter value more often than it covers the true parameter value.
+:::
+
+::: {.callout-tip title="Key idea"}
+Parallel with tests An unbiased test has power under the alternative at least as large as its rejection probability under the null. An unbiased confidence set has false coverage probability no larger than its true coverage probability.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 15** (Unbiasedness intuition). Explain why a confidence set that frequently includes false parameter values more often than the true value is undesirable.
+:::
+
+::: {.callout-note title="Solution"}
+A confidence set is intended to localize the true parameter. If for some false value $\theta'\neq\theta$ we had $$\mathbb{P}_\theta\{\theta'\in C(X)\}>\mathbb{P}_\theta\{\theta\in C(X)\},$$ then the procedure would include that wrong value more often than the correct value. This means the procedure is biased toward false parameter values. The unbiasedness condition prevents this behavior by requiring $$\mathbb{P}_\theta\{\theta'\in C(X)\}\leq 1-\alpha.$$
+:::
+
+# Bayesian Optimality
+
+This section evaluates Bayesian credible intervals by posterior probability and posterior length.
+
+## Shortest credible sets
+
+In Bayesian inference, after observing the data, the posterior distribution describes uncertainty about the parameter.
+
+Let $\pi(\theta\mid x)$ be the posterior density. A credible set $C(x)$ with credibility $1-\alpha$ satisfies $$\int_{C(x)} \pi(\theta\mid x)\,d\theta=1-\alpha.$$ Among all credible sets with posterior probability $1-\alpha$, we often prefer the one with the smallest length.
+
+::: {.callout-note title="Definition"}
+**Definition 16** (Highest posterior density region). A **highest posterior density** (HPD) region has the form $$C(x)=\{\theta:\pi(\theta\mid x)\geq k\},$$ where $k$ is chosen so that $$\int_{C(x)}\pi(\theta\mid x)\,d\theta=1-\alpha.$$
+:::
+
+::: {.callout-important title="Corollary"}
+**Corollary 17** (HPD is shortest for unimodal posterior). *If $\pi(\theta\mid x)$ is unimodal, then the shortest credible interval with posterior probability $1-\alpha$ is the HPD interval $$C(x)=\{\theta:\pi(\theta\mid x)\geq k\}.$$*
+:::
+
+::: {.callout-note title="Remark"}
+*Remark 18*. For symmetric unimodal posteriors, the HPD interval and the equal-tail credible interval are the same. For skewed posteriors, such as many Gamma posteriors, the HPD interval is typically shorter than the equal-tail interval.
+:::
+
+## Poisson HPD region
+
+The Poisson-Gamma example illustrates the difference between an equal-tail credible interval and an HPD credible interval.
+
+::: {.callout-tip title="Example"}
+**Example 19** (Poisson HPD region). Suppose $$X_1,\ldots,X_n\sim \operatorname{Poisson}(\lambda).$$ Use a conjugate Gamma prior for $\lambda$. With the Gamma prior parameterized by shape $a$ and scale $b$, $$\lambda\sim \operatorname{Gamma}(a,b),$$ the posterior is $$\lambda\mid \sum_i x_i
+    \sim
+    \operatorname{Gamma}\left(a+\sum_i x_i,\frac{1}{n+1/b}\right).$$ The HPD credible region is $$\left\{\lambda:\pi\left(\lambda\mid \sum_i x_i\right)\geq k\right\},$$ where $k$ is chosen to satisfy $$\int_{\{\lambda:\pi(\lambda\mid \sum_i x_i)\geq k\}}
+    \pi\left(\lambda\mid \sum_i x_i\right)\,d\lambda
+    =1-\alpha.$$ For the specific case $$a=b=1,
+    \qquad n=10,
+    \qquad \sum_i x_i=6,$$ the posterior is $$\lambda\mid x\sim \operatorname{Gamma}\left(7,\frac{1}{11}\right).$$ A $90\%$ HPD credible set is approximately $$[0.253,1.005].$$
+:::
+
+::: {.callout-note title="Solution"}
+The likelihood from $n$ independent Poisson observations is $$L(\lambda\mid x)
+    \propto
+    \lambda^{\sum_i x_i}e^{-n\lambda}.$$ The Gamma prior with shape $a$ and scale $b$ has density proportional to $$\lambda^{a-1}e^{-\lambda/b}.$$ Multiplying prior and likelihood gives $$\pi(\lambda\mid x)
+    \propto
+    \lambda^{a+
+\sum_i x_i-1}e^{-(n+1/b)\lambda}.$$ Therefore, $$\lambda\mid x\sim \operatorname{Gamma}\left(a+\sum_i x_i,\frac{1}{n+1/b}\right).$$ For $a=b=1$, $n=10$, and $\sum_i x_i=6$, this becomes $$\operatorname{Gamma}\left(7,\frac{1}{11}\right).$$ The HPD interval is found by choosing a density threshold $k$ so that the set where the posterior density exceeds $k$ contains $90\%$ posterior probability. Numerically, this gives approximately $[0.253,1.005]$.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 20** (Equal-tail versus HPD for the Poisson example). For the posterior $$\lambda\mid x\sim \operatorname{Gamma}\left(7,\frac{1}{11}\right),$$ an equal-tail $90\%$ credible interval is approximately $$[0.299,1.077],$$ with length $$1.077-0.299=0.778.$$ The HPD $90\%$ credible interval is approximately $$[0.247,1.000],$$ with length $$1.000-0.247=0.753.$$
+:::
+
+::: {.callout-note title="Solution"}
+Both intervals contain $90\%$ posterior probability. The equal-tail interval puts $5\%$ posterior probability in each tail. The HPD interval instead includes the points with highest posterior density until $90\%$ probability is accumulated. Because the Gamma posterior is skewed, the HPD interval is shorter: $$0.753<0.778.$$ Thus the HPD interval is preferable under the criterion of shortest posterior credible set.
+:::
+
+Interval                  Lower     Upper    Length
+  ----------------------- --------- --------- ---------
+  Equal-tail $90\%$        $0.299$   $1.077$   $0.778$
+  HPD (shortest) $90\%$    $0.247$   $1.000$   $0.753$
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 21** (Posterior for a Poisson mean). Suppose $X_1,\ldots,X_n\sim\operatorname{Poisson}(\lambda)$ and the prior is $\lambda\sim\operatorname{Gamma}(a,b)$ with shape $a$ and scale $b$. Derive the posterior distribution of $\lambda$.
+:::
+
+::: {.callout-note title="Solution"}
+The likelihood is $$L(\lambda\mid x)
+    =\prod_{i=1}^n e^{-\lambda}\frac{\lambda^{x_i}}{x_i!}
+    \propto
+    e^{-n\lambda}\lambda^{\sum_i x_i}.$$ The prior density is $$\pi(\lambda)\propto \lambda^{a-1}e^{-\lambda/b}.$$ Thus $$\begin{aligned}
+    \pi(\lambda\mid x)
+    &\propto L(\lambda\mid x)\pi(\lambda)\\
+    &\propto \lambda^{\sum_i x_i}e^{-n\lambda}\lambda^{a-1}e^{-\lambda/b}\\
+    &=\lambda^{a+
+\sum_i x_i-1}e^{-(n+1/b)\lambda}.
+\end{aligned}$$ Therefore $$\lambda\mid x\sim\operatorname{Gamma}\left(a+\sum_i x_i,\frac{1}{n+1/b}\right).$$
+:::
+
+# Loss-Function Optimality
+
+This section evaluates intervals using a decision-theoretic risk that combines interval length and coverage.
+
+## A loss function for confidence sets
+
+Loss-function optimality turns interval estimation into a decision problem.
+
+The action is to choose a confidence set $C$. A simple loss function is $$L(\theta,C)=b\cdot \operatorname{Length}(C)-\mathbbm{1}\{\theta\in C\},$$ where $b>0$ is a tuning constant.
+
+-   The term $b\cdot \operatorname{Length}(C)$ penalizes long intervals.
+
+-   The term $-\mathbbm{1}\{\theta\in C\}$ rewards intervals that cover the true parameter.
+
+-   Large $b$ prioritizes shorter intervals.
+
+-   Small $b$ prioritizes coverage.
+
+::: {.callout-note title="Definition"}
+**Definition 22** (Risk of a confidence set). The risk of an interval procedure $C(X)$ is $$R(\theta,C)
+    =\mathbb{E}_\theta[L(\theta,C(X))]
+    =b\mathbb{E}_\theta[\operatorname{Length}(C(X))]-\mathbb{P}_\theta\{\theta\in C(X)\}.$$
+:::
+
+::: {.callout-tip title="Key idea"}
+Interpretation The risk combines two competing goals: $$\text{short expected length}
+    \qquad\text{and}\qquad
+    \text{large coverage probability}.$$ A low-risk interval is short but still covers the true parameter with high probability.
+:::
+
+## Normal example: optimizing interval half-width
+
+The normal example shows how a loss function can determine an optimal confidence level.
+
+::: {.callout-tip title="Example"}
+**Example 23** (Risk for symmetric normal intervals). Suppose $$X\sim \operatorname{Normal}(\mu,\sigma^2),$$ where $\sigma^2$ is known. Consider the class of symmetric intervals $$C(X)=[X-c\sigma,X+c\sigma],\qquad c\geq 0.$$ The length is $$\operatorname{Length}(C)=2c\sigma.$$ The coverage probability is $$\begin{aligned}
+    \mathbb{P}_\mu\{\mu\in C(X)\}
+    &=\mathbb{P}_\mu\{X-c\sigma\leq \mu\leq X+c\sigma\}\\
+    &=\mathbb{P}\left(-c\leq \frac{X-\mu}{\sigma}\leq c\right)\\
+    &=2\Phi(c)-1.
+\end{aligned}$$ Therefore the risk is $$R(\mu,C)=b(2c\sigma)-\{2\Phi(c)-1\}.$$ This risk does not depend on $\mu$.
+:::
+
+::: {.callout-note title="Solution"}
+Since $Z=(X-\mu)/\sigma\sim\operatorname{Normal}(0,1)$, $$\mathbb{P}_\mu\{\mu\in C(X)\}=\mathbb{P}(-c\leq Z\leq c)=2\Phi(c)-1.$$ The expected length is simply $2c\sigma$ because the interval length is nonrandom. Substituting into $$R(\mu,C)=b\mathbb{E}_\mu[\operatorname{Length}(C)]-\mathbb{P}_\mu\{\mu\in C(X)\}$$ gives $$R(c)=2b\sigma c-2\Phi(c)+1.$$
+:::
+
+::: {.callout-important title="Proposition"}
+**Proposition 24** (Optimal half-width). *For the normal interval risk $$R(c)=2b\sigma c-2\Phi(c)+1,
+    \qquad c\geq 0,$$ we have:*
+
+1.  *If $b\sigma>1/\sqrt{2\pi}$, the minimizing value is $c^*=0$.*
+
+2.  *If $b\sigma\leq 1/\sqrt{2\pi}$, the interior minimizing value satisfies $$\phi(c^*)=b\sigma,$$ so $$c^*=\sqrt{-2\log(b\sigma\sqrt{2\pi})}.$$*
+:::
+
+::: {.callout-note title="Proof"}
+*Proof.* Differentiate $R(c)$: $$R'(c)=2b\sigma-2\phi(c).$$ At $c=0$, $\phi(0)=1/\sqrt{2\pi}$. If $$b\sigma>\frac{1}{\sqrt{2\pi}},$$ then $R'(0)>0$ and $R'(c)>0$ for all $c\geq 0$, so the minimum occurs at $c=0$.
+
+If $$b\sigma\leq \frac{1}{\sqrt{2\pi}},$$ then an interior solution satisfies $$\phi(c)=b\sigma.$$ Because $$\phi(c)=\frac{1}{\sqrt{2\pi}}e^{-c^2/2},$$ we solve $$\frac{1}{\sqrt{2\pi}}e^{-c^2/2}=b\sigma.$$ Thus $$e^{-c^2/2}=b\sigma\sqrt{2\pi},$$ and hence $$c^*=\sqrt{-2\log(b\sigma\sqrt{2\pi})}.$$ ◻
+:::
+
+::: {.callout-note title="Remark"}
+*Remark 25*. If we write $c=z_{\alpha/2}$, then the optimal risk corresponds to a standard two-sided confidence interval with confidence level $$1-\alpha=2\Phi(c)-1.$$ Thus the loss-function approach can be interpreted as choosing the confidence level by balancing coverage against length.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 26** (Optimal half-width). Let $X\sim\operatorname{Normal}(\mu,1)$ and consider intervals $C(X)=[X-c,X+c]$. With loss $$L(\mu,C)=b\operatorname{Length}(C)-\mathbbm{1}\{\mu\in C\},$$ find the optimal $c$ when $b=0.2$.
+:::
+
+::: {.callout-note title="Solution"}
+Here $\sigma=1$, so the interior solution satisfies $$\phi(c)=b=0.2.$$ Since $$\phi(c)=\frac{1}{\sqrt{2\pi}}e^{-c^2/2},$$ we solve $$c=\sqrt{-2\log(0.2\sqrt{2\pi})}.$$ Numerically, $$0.2\sqrt{2\pi}\approx 0.5013,$$ so $$c\approx \sqrt{-2\log(0.5013)}\approx 1.18.$$ The optimal interval is therefore approximately $$[X-1.18,X+1.18].$$ The corresponding coverage is $$2\Phi(1.18)-1\approx 0.762.$$
+:::
+
+# Summary and Comparison of Criteria
+
+This final section summarizes the main ways to evaluate interval estimators.
+
+**Criterion**                **Main idea**                                          **Typical goal**
+  ---------------------------- ------------------------------------------------------ ---------------------------------------------------------
+  Coverage probability         Probability the interval contains the true parameter   Achieve at least $1-\alpha$ coverage
+  Length / expected length     Width of the interval                                  Prefer shorter intervals among those with same coverage
+  Shortest unimodal interval   Choose interval with equal boundary density            Minimize length for fixed probability
+  Test-related optimality      Invert optimal hypothesis tests                        Obtain UMA confidence sets when UMP tests exist
+  Unbiased confidence sets     Avoid covering false values too often                  Ensure false coverage is not larger than true coverage
+  Bayesian HPD                 Use highest posterior density region                   Shortest credible set for fixed posterior probability
+  Loss-function optimality     Combine length and coverage in one risk                Choose interval minimizing expected loss
+
+::: {.callout-tip title="Key idea"}
+**Key takeaways.**
+
+1.  A confidence interval should have high coverage probability and small length.
+
+2.  For unimodal densities, the shortest probability interval has equal density at its endpoints.
+
+3.  Inverting UMP tests can produce uniformly most accurate confidence sets.
+
+4.  For Bayesian inference, HPD intervals are shortest credible sets for unimodal posterior distributions.
+
+5.  Loss functions provide a decision-theoretic way to balance coverage and interval length.
+:::
+
+# References  
+
+These notes are based on the course lecture material for MATH 5010 and standard references in statistical inference.
+
+-   Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition, Chapter 9.3.
+
+-   Wasserman, L. *All of Statistics*.
+
+-   ProbabilityCourse.com.
+
+-   Penn State STAT 415 online notes.
+
+-   Harvard Stat 110 materials.
+
+-   García-Portugués, E. *Notes for Statistical Inference*.

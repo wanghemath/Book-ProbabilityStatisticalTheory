@@ -1,0 +1,149 @@
+---
+title: "Introduction"
+---
+
+# Introduction
+
+This book supports **MATH 5010: Foundations of Statistical Theory & Probability**. It is written as a complete course companion: lecture notes, worked examples, practice problems, interactive visualizations, and Python labs are organized around the same sequence of topics.
+
+The course has two connected parts. The first part develops probability theory: probability spaces, random variables, distributions, expectation, transformations, conditional expectation, inequalities, random samples, order statistics, convergence, and simulation. The second part develops statistical inference: sufficient statistics, point estimation, estimator evaluation, hypothesis testing, confidence intervals, ANOVA, and Bayesian inference.
+
+The chapter source files are stored in the `chapters/` folder. This keeps the root directory clean while allowing the Quarto book navigation to list the chapters in their teaching order.
+
+The guiding idea is that statistical theory should be learned in three languages at once:
+
+- the **mathematical language** of probability models, theorems, and derivations;
+- the **computational language** of simulation, numerical approximation, and Python implementation;
+- the **statistical language** of estimation, uncertainty, testing, modeling, and interpretation.
+
+## Course philosophy
+
+Probability and statistics are not only collections of formulas. They are ways of thinking about uncertainty.
+
+A probability model starts with a sample space, events, random variables, and distributions. From these objects we define expectations, variances, conditional probabilities, and limiting behavior. Statistical inference then reverses the direction: we observe data and try to learn about the unknown model that may have generated it.
+
+This book repeatedly moves through the same cycle:
+
+1. **Start with a model.** Specify random variables, parameters, assumptions, and the data-generating process.
+2. **Derive the theory.** Compute distributions, expectations, likelihoods, test statistics, intervals, or posterior distributions.
+3. **Simulate the model.** Use Python to check whether the theory matches repeated random experiments.
+4. **Interpret the result.** Explain what the formula, estimate, test, or interval means in plain language.
+
+## Learning outcomes
+
+After working through this book, students should be able to:
+
+- define probability spaces, events, random variables, distributions, and conditional distributions;
+- compute probabilities using complements, partitions, total probability, Bayes theorem, and independence;
+- work with PMFs, PDFs, CDFs, joint distributions, marginal distributions, and conditional distributions;
+- compute expectations, variances, moments, covariance, correlation, and moment-generating functions;
+- transform random variables using CDF methods, Jacobians, convolution, and multivariate changes of variables;
+- use conditional expectation, conditional variance, and first-step analysis;
+- apply probability inequalities and convergence theorems, including LLN and CLT;
+- derive sampling distributions and order statistic distributions;
+- use Monte Carlo methods for integration, simulation, and approximation;
+- identify sufficient statistics and apply the Neyman-Fisher factorization theorem;
+- derive estimators using method of moments, maximum likelihood, MAP, and posterior means;
+- evaluate estimators using bias, variance, MSE, efficiency, Fisher information, and Cramér-Rao bounds;
+- construct and interpret hypothesis tests, power functions, $p$-values, and likelihood ratio tests;
+- construct and interpret confidence intervals and Bayesian credible intervals;
+- use ANOVA models, contrasts, sums of squares, and $F$-tests;
+- explain Bayesian inference through priors, likelihoods, posteriors, Bayes estimators, Bayesian tests, and credible sets;
+- use Python notebooks to simulate, visualize, and communicate statistical results.
+
+## Organization of the book
+
+The chapters are arranged to follow the logical development of statistical theory.
+
+### Probability theory
+
+Chapters 1--10 build the probability foundation. These chapters begin with basic probability and move through random variables, multivariate distributions, moments, transformations, conditioning, inequalities, sampling theory, convergence, and Monte Carlo methods.
+
+The main transition is from finite probability calculations to random variables and then to limiting approximations. By the end of Chapter 10, students should be comfortable moving between exact probability formulas, asymptotic approximations, and simulation-based approximations.
+
+### Statistical inference
+
+Chapters 11--20 build inference from the probability foundation. The sequence begins with sufficient statistics and likelihood, then develops point estimation, estimator evaluation, hypothesis testing, interval estimation, ANOVA, and Bayesian inference.
+
+The main transition is from knowing a probability model to learning unknown quantities from data. Students learn classical and Bayesian methods side by side so that they can compare estimators, tests, confidence intervals, credible intervals, and decision rules.
+
+## Source organization
+
+The book source is organized around four teaching asset folders:
+
+```text
+chapters/   lecture-note chapter pages
+htmls/      interactive standalone HTML modules
+labs/       Jupyter notebook labs for Python and simulation
+assets/     CSS and other supporting files
+```
+
+Because chapter files are inside `chapters/`, links from chapters to labs and HTML modules use relative paths such as `../labs/...` and `../htmls/...`. The top-level pages, including this introduction and the labs summary page, use `labs/...` and `htmls/...`.
+
+## How each chapter is structured
+
+Most chapters follow a common structure:
+
+1. **Motivation and learning objectives** introduce the central question of the chapter.
+2. **Definitions and theorems** give the mathematical foundation.
+3. **Worked examples** show the reasoning step by step.
+4. **Practice problems** give students a chance to test their understanding.
+5. **Solutions** provide detailed derivations for review.
+6. **Interactive and lab links** connect theory with visualization and computation.
+
+This structure is intended to support both classroom teaching and self-study.
+
+## Computational labs
+
+The labs are Jupyter notebooks in the `labs/` folder. They use Python to simulate probability models, estimate parameters, visualize sampling distributions, check asymptotic approximations, and implement inference procedures.
+
+Students may download the notebooks or open them in Google Colab from the GitHub repository. The Colab workflow is useful because students can run the notebooks without installing Python locally.
+
+See the full list here:
+
+[Open the labs and interactive modules summary](labs-summary.qmd)
+
+## Interactive HTML modules
+
+The interactive modules are standalone HTML files in the `htmls/` folder. They are designed for visual and conceptual learning. Examples include exploring probability rules, changing parameters of distributions, visualizing transformations, simulating convergence, and comparing classical and Bayesian procedures.
+
+These pages can be used in lecture, recitation, homework review, or independent study.
+
+## Mathematical notation
+
+This book uses standard notation from probability and mathematical statistics. For example:
+
+- $X, Y, Z$ denote random variables;
+- $F_X(x)$ denotes the CDF of $X$;
+- $f_X(x)$ denotes a PDF or PMF, depending on context;
+- $E[X]$ denotes expectation;
+- $\operatorname{Var}(X)$ denotes variance;
+- $X_1, \ldots, X_n$ denotes a random sample;
+- $ar X$ denotes the sample mean;
+- $L(	heta)$ and $\ell(	heta)$ denote likelihood and log-likelihood;
+- $\hat	heta$ denotes an estimator;
+- $H_0$ and $H_1$ denote null and alternative hypotheses.
+
+## Suggested study strategy
+
+For each chapter, students should first identify the main statistical question. For example: Are we computing a probability? Finding a distribution? Estimating a parameter? Testing a hypothesis? Building an interval? Comparing groups?
+
+Then follow this pattern:
+
+1. Write down the model assumptions.
+2. Identify the relevant random variable or statistic.
+3. Derive the formula carefully.
+4. Check the result using simulation when possible.
+5. Interpret the result in words.
+
+This process is more important than memorizing individual formulas. The goal is to become fluent in the logic of probability and statistical inference.
+
+## Repository and book site
+
+The GitHub repository for this book is:
+
+<https://github.com/wanghemath/Book-ProbabilityStatisticalTheory>
+
+The published Quarto book site is:
+
+<https://wanghemath.github.io/Book-ProbabilityStatisticalTheory/>

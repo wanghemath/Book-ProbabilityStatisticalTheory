@@ -1,0 +1,126 @@
+---
+title: "MATH 5010"
+subtitle: "Foundations of Statistical Theory & Probability"
+---
+
+# MATH 5010: Foundations of Statistical Theory & Probability
+
+Welcome to the online book for **MATH 5010: Foundations of Statistical Theory & Probability**.
+
+This book is designed for graduate students who want a rigorous but usable foundation in probability, mathematical statistics, and statistical inference. The central goal is to connect three ways of learning statistics:
+
+1. **Theory**: definitions, theorems, derivations, and proofs.
+2. **Computation**: Python labs, simulation, Monte Carlo methods, and numerical verification.
+3. **Interactive learning**: visual HTML modules that let students explore concepts dynamically.
+
+The book begins with probability theory and random variables, then builds toward convergence theory, sampling distributions, sufficient statistics, point estimation, hypothesis testing, interval estimation, ANOVA, and Bayesian inference.
+
+## Quick links
+
+- [Introduction](introduction.qmd)
+- [Labs and interactive modules](labs-summary.qmd)
+- [GitHub repository](https://github.com/wanghemath/Book-ProbabilityStatisticalTheory)
+- [Published book site](https://wanghemath.github.io/Book-ProbabilityStatisticalTheory/)
+
+## Folder structure
+
+The source files are organized as follows:
+
+```text
+Book-ProbabilityStatisticalTheory/
+├── _quarto.yml
+├── index.qmd
+├── introduction.qmd
+├── labs-summary.qmd
+├── chapters/
+│   ├── chapter-01-basic-probability.qmd
+│   ├── chapter-02-random-variables-distributions.qmd
+│   └── ...
+├── htmls/
+│   └── interactive HTML modules
+├── labs/
+│   └── Jupyter notebook labs
+├── assets/
+│   └── styles.css
+└── docs/
+    └── rendered GitHub Pages site
+```
+
+All main chapter pages are stored in the `chapters/` folder. The book navigation in `_quarto.yml` points to these chapter files using paths such as `chapters/chapter-01-basic-probability.qmd`.
+
+## How to use this book
+
+Each main chapter is written as a lecture-ready Quarto page. Most chapters are paired with an interactive HTML activity and a Python notebook lab.
+
+A good workflow for students is:
+
+1. read the chapter notes before class;
+2. work through the examples during class;
+3. use the interactive HTML page to visualize the main ideas;
+4. open the notebook in Google Colab and run the simulations;
+5. return to the practice problems and solutions for review.
+
+A good workflow for instructors is:
+
+1. use the chapter page as lecture notes;
+2. use the examples as board work or in-class activities;
+3. assign selected practice problems as homework or discussion problems;
+4. use the notebook labs for computational reinforcement;
+5. use the HTML modules for visual explanation and student exploration.
+
+## Book map
+
+### Part I: Probability foundations
+
+| Chapter | Topic | Main purpose |
+|---:|---|---|
+| 1 | [Basic Probability](chapters/chapter-01-basic-probability.qmd) | Build the language of probability: sample spaces, events, probability rules, conditioning, independence, Bayes theorem, and paradoxes. |
+| 2 | [Random Variables and Distributions](chapters/chapter-02-random-variables-distributions.qmd) | Introduce random variables, CDFs, PMFs, PDFs, mixed distributions, and common distribution families. |
+| 3 | [Joint and Conditional Probability](chapters/chapter-03-joint-conditional-probability.qmd) | Study joint, marginal, and conditional distributions; independence; covariance; correlation; and Bayes rules in multivariate settings. |
+| 4 | [Expectations, Moments, and MGFs](chapters/chapter-04-expectations-moments-mgf.qmd) | Develop expected value, variance, moments, moment-generating functions, and multivariate moment tools. |
+| 5 | [Transformations](chapters/chapter-05-transformations.qmd) | Learn CDF methods, change of variables, Jacobians, convolution, products, quotients, extrema, and polar transformations. |
+| 6 | [Conditional Expectations](chapters/chapter-06-conditional-expectations.qmd) | Use conditional distributions and conditional expectation to compute means, variances, Bayesian updates, and first-step decompositions. |
+| 6 Extra | [Multinomial and Multinormal Models](chapters/chapter-06-extra-multinomial-multinormal.qmd) | Extend probability tools to multinomial, Dirichlet, multivariate normal, conditional Gaussian, and linear Gaussian models. |
+| 7 | [Inequalities and Identities](chapters/chapter-07-inequalities-identities.qmd) | Study Markov, Chebyshev, Chernoff, Hoeffding, Jensen, Cauchy-Schwarz, and other core probability inequalities. |
+| 8 | [Sampling and Order Statistics](chapters/chapter-08-sampling-order-statistics.qmd) | Introduce random samples, sample mean and variance, normal sampling theory, chi-square, $t$, $F$, and order statistics. |
+| 9 | [Convergence Theory](chapters/chapter-09-convergence-theory.qmd) | Study convergence in distribution, probability, mean, almost surely, LLN, CLT, continuous mapping, and Slutsky theorem. |
+| 10 | [Monte Carlo Sampling](chapters/chapter-10-monte-carlo-sampling.qmd) | Use simulation, Monte Carlo integration, inverse transform sampling, rejection sampling, importance sampling, and SIR. |
+
+### Part II: Statistical inference
+
+| Chapter | Topic | Main purpose |
+|---:|---|---|
+| 11 | [Sufficient Statistics](chapters/chapter-11-sufficient-statistics.qmd) | Understand statistics, estimators, sufficiency, factorization, minimal sufficiency, complete sufficiency, and the likelihood principle. |
+| 12 | [Point Estimation I](chapters/chapter-12-point-estimation1.qmd) | Derive estimators using method of moments, maximum likelihood, Bayesian estimation, conjugacy, and MAP estimation. |
+| 13 | [Point Estimation II](chapters/chapter-13-point-estimation2.qmd) | Evaluate estimators using bias, variance, MSE, Fisher information, Cramér-Rao bounds, Rao-Blackwell, and UMVUE theory. |
+| 14 | [Hypothesis Tests I](chapters/chapter-14-hypothesis-tests1.qmd) | Introduce null and alternative hypotheses, Type I/II errors, $p$-values, likelihood ratio tests, Bayesian tests, and Neyman-Pearson ideas. |
+| 15 | [Hypothesis Tests II](chapters/chapter-15-hypothesis-tests2.qmd) | Study power functions, size, unbiased tests, UMP tests, binomial and normal examples, and risk-based testing. |
+| 16 | [Interval Estimation I](chapters/chapter-16-interval-estimation1.qmd) | Construct confidence intervals using pivots, test inversion, normal theory, binomial, uniform, exponential, and Bayesian credible intervals. |
+| 17 | [Interval Estimation II](chapters/chapter-17-interval-estimation2.qmd) | Study interval optimality, coverage, shortest intervals, UMA confidence sets, HPD intervals, and risk of confidence sets. |
+| 18 | [ANOVA I](chapters/chapter-18-anova1.qmd) | Develop one-way ANOVA, treatment effects, contrasts, sums of squares, ANOVA tables, and the $F$-test. |
+| 19 | [ANOVA II and Applications](chapters/chapter-19-anova2-applications.qmd) | Apply ANOVA to real examples, multiple testing, experimental design, randomized block designs, and Python workflows. |
+| 20 | [Bayesian Inference](chapters/chapter-20-bayesian-inference.qmd) | Unify Bayesian estimation, testing, credible intervals, HPD intervals, conjugate models, Bayes risk, and Bayesian workflow. |
+
+## Labs and interactive pages
+
+The computational and interactive materials are summarized on a separate page:
+
+[Open the labs and interactive modules summary](labs-summary.qmd)
+
+The labs are stored in the `labs/` folder and can be opened directly in Google Colab from the GitHub repository. The interactive pages are stored in the `htmls/` folder and are intended for visual exploration before, during, or after lecture.
+
+## Local preview and rendering
+
+From the book folder, run:
+
+```bash
+quarto preview
+```
+
+To render the complete website into the `docs/` folder for GitHub Pages, run:
+
+```bash
+quarto render
+```
+
+Then commit both the source files and rendered `docs/` folder to the GitHub repository.

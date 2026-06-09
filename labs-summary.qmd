@@ -1,0 +1,109 @@
+---
+title: "Computer Labs and Interactive Pages"
+subtitle: "MATH 5010 resource index"
+---
+
+# Computer Labs and Interactive Pages
+
+This page collects all interactive HTML pages and Jupyter notebook labs for **MATH 5010: Foundations of Statistical Theory and Probability**.
+
+The GitHub repository for this book is:
+
+<https://github.com/wanghemath/Book-ProbabilityStatisticalTheory>
+
+For notebooks, use the **Open in Google Colab** links. The Colab links follow this pattern:
+
+```{.text}
+https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/NOTEBOOK_NAME.ipynb
+```
+
+## Quick Start for Students
+
+1. Use the **Interactive HTML** pages for visual exploration before or after lecture.
+2. Use the **Open in Google Colab** links to run the Python labs in the browser.
+3. Use the **Local notebook** links if you want to download the `.ipynb` file and run it in JupyterLab, VS Code, or another local Python environment.
+
+## Interactive HTML Pages
+
+| Section | Topic | Interactive HTML | File name |
+|---|---|---|---|
+| Section 1 | Basic Probability | [Open interactive page](htmls/section1_probability_interactive.html) | `section1_probability_interactive.html` |
+| Section 2 | Random Variables and Distributions | [Open interactive page](htmls/section2_random_variables_interactive.html) | `section2_random_variables_interactive.html` |
+| Section 3 | Joint and Conditional Distributions | [Open interactive page](htmls/section3_joint_conditional_interactive.html) | `section3_joint_conditional_interactive.html` |
+| Section 4 | Expectation, Moments, and MGF | [Open interactive page](htmls/section4_expectation_mgf_interactive.html) | `section4_expectation_mgf_interactive.html` |
+| Section 5 | Transformations | [Open interactive page](htmls/section5_transformations_interactive.html) | `section5_transformations_interactive.html` |
+| Section 6 | Conditional Distribution and Expectation | [Open interactive page](htmls/section6_conditional_distribution_interactive.html) | `section6_conditional_distribution_interactive.html` |
+| Section 7 | Inequalities and Identities | [Open interactive page](htmls/section7_inequalities_interactive.html) | `section7_inequalities_interactive.html` |
+| Section 8 | Random Samples and Order Statistics | [Open interactive page](htmls/section8_random_samples_interactive.html) | `section8_random_samples_interactive.html` |
+| Section 9 | Convergence Theory | [Open interactive page](htmls/section9_convergence_interactive.html) | `section9_convergence_interactive.html` |
+| Section 10 | Monte Carlo Sampling | [Open interactive page](htmls/section10_monte_carlo_interactive.html) | `section10_monte_carlo_interactive.html` |
+| Section 11 | Sufficient Statistics | [Open interactive page](htmls/section11_sufficient_statistics_interactive.html) | `section11_sufficient_statistics_interactive.html` |
+| Sections 12--13 | Point Estimation | [Open interactive page](htmls/sections12_13_point_estimation_interactive.html) | `sections12_13_point_estimation_interactive.html` |
+| Sections 14--15 | Hypothesis Tests | [Open interactive page](htmls/sections14_15_hypothesis_tests_interactive.html) | `sections14_15_hypothesis_tests_interactive.html` |
+| Sections 16--17 | Interval Estimation | [Open interactive page](htmls/sections16_17_interval_estimations_interactive.html) | `sections16_17_interval_estimations_interactive.html` |
+| Sections 18--19 | ANOVA | [Open interactive page](htmls/sections18_19_anova_interactive.html) | `sections18_19_anova_interactive.html` |
+| Section 20 | Bayesian Inference | [Open interactive page](htmls/section20_bayesian_inference_interactive.html) | `section20_bayesian_inference_interactive.html` |
+
+## Computer Labs in Google Colab
+
+| Section | Topic | Open in Colab | Local notebook | File name |
+|---|---|---|---|---|
+| Section 1 | Basic Probability | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section1_basic_probability_full_solutions.ipynb) | [Download notebook](labs/lab_section1_basic_probability_full_solutions.ipynb) | `lab_section1_basic_probability_full_solutions.ipynb` |
+| Section 2 | Random Variables and Distributions | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section2_random_variables_distributions_full_solutions.ipynb) | [Download notebook](labs/lab_section2_random_variables_distributions_full_solutions.ipynb) | `lab_section2_random_variables_distributions_full_solutions.ipynb` |
+| Section 3 | Joint and Conditional Probability | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section3_joint_conditional_probability_full_solutions.ipynb) | [Download notebook](labs/lab_section3_joint_conditional_probability_full_solutions.ipynb) | `lab_section3_joint_conditional_probability_full_solutions.ipynb` |
+| Section 4 | Expectations, Moments, and MGF | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section4_expectations_moments_mgf_full_solutions_executed.ipynb) | [Download notebook](labs/lab_section4_expectations_moments_mgf_full_solutions_executed.ipynb) | `lab_section4_expectations_moments_mgf_full_solutions_executed.ipynb` |
+| Section 5 | Transformations | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section5_transformations_full_solutions_executed.ipynb) | [Download notebook](labs/lab_section5_transformations_full_solutions_executed.ipynb) | `lab_section5_transformations_full_solutions_executed.ipynb` |
+| Section 6 | Conditional Expectations | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section6_conditional_expectations_full_solutions.ipynb) | [Download notebook](labs/lab_section6_conditional_expectations_full_solutions.ipynb) | `lab_section6_conditional_expectations_full_solutions.ipynb` |
+| Section 7 | Inequalities and Identities | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section7_inequalities_identities_full_solutions.ipynb) | [Download notebook](labs/lab_section7_inequalities_identities_full_solutions.ipynb) | `lab_section7_inequalities_identities_full_solutions.ipynb` |
+| Section 8 | Sampling and Order Statistics | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section8_sampling_order_statistics_full_solutions.ipynb) | [Download notebook](labs/lab_section8_sampling_order_statistics_full_solutions.ipynb) | `lab_section8_sampling_order_statistics_full_solutions.ipynb` |
+| Section 9 | Convergence Theory | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section9_convergence_theory_full_solutions.ipynb) | [Download notebook](labs/lab_section9_convergence_theory_full_solutions.ipynb) | `lab_section9_convergence_theory_full_solutions.ipynb` |
+| Section 10 | Monte Carlo Sampling | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section10_monte_carlo_sampling_full_solutions.ipynb) | [Download notebook](labs/lab_section10_monte_carlo_sampling_full_solutions.ipynb) | `lab_section10_monte_carlo_sampling_full_solutions.ipynb` |
+| Section 11 | Sufficient Statistics | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab11_Sufficient_Statistics_Full_Solutions.ipynb) | [Download notebook](labs/MATH5010_Lab11_Sufficient_Statistics_Full_Solutions.ipynb) | `MATH5010_Lab11_Sufficient_Statistics_Full_Solutions.ipynb` |
+| Sections 12--13 | Point Estimation | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab12_13_Point_Estimation_Full_Solutions.ipynb) | [Download notebook](labs/MATH5010_Lab12_13_Point_Estimation_Full_Solutions.ipynb) | `MATH5010_Lab12_13_Point_Estimation_Full_Solutions.ipynb` |
+| Sections 14--15 | Hypothesis Tests and Interval Estimation | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab14_15_Hypothesis_Tests_and_Interval_Estimation_Full_Solutions.ipynb) | [Download notebook](labs/MATH5010_Lab14_15_Hypothesis_Tests_and_Interval_Estimation_Full_Solutions.ipynb) | `MATH5010_Lab14_15_Hypothesis_Tests_and_Interval_Estimation_Full_Solutions.ipynb` |
+| Sections 16--17 | ANOVA and Bayesian Statistics | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab16_17_ANOVA_and_Bayesian_Statistics_Full_Solutions.ipynb) | [Download notebook](labs/MATH5010_Lab16_17_ANOVA_and_Bayesian_Statistics_Full_Solutions.ipynb) | `MATH5010_Lab16_17_ANOVA_and_Bayesian_Statistics_Full_Solutions.ipynb` |
+| Sections 18--19 | Bayesian Inference II and ANOVA II | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab18_19_Bayesian_Inference_II_and_ANOVA_II_Full_Solutions.ipynb) | [Download notebook](labs/MATH5010_Lab18_19_Bayesian_Inference_II_and_ANOVA_II_Full_Solutions.ipynb) | `MATH5010_Lab18_19_Bayesian_Inference_II_and_ANOVA_II_Full_Solutions.ipynb` |
+| Section 20 | Bayesian Inference | [Open in Google Colab](https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab20_Bayesian_Inference_Full_Solutions.ipynb) | [Download notebook](labs/MATH5010_Lab20_Bayesian_Inference_Full_Solutions.ipynb) | `MATH5010_Lab20_Bayesian_Inference_Full_Solutions.ipynb` |
+
+## Suggested Weekly Workflow
+
+For each section, a good learning sequence is:
+
+1. Read the corresponding book chapter.
+2. Open the interactive HTML page and experiment with the sliders, plots, or simulations.
+3. Open the corresponding lab in Google Colab.
+4. Run all cells once.
+5. Modify parameters and rerun the code.
+6. Write a short interpretation of the output in statistical language.
+
+## Repository Folder Structure
+
+```{.text}
+Book-ProbabilityStatisticalTheory/
+├── _quarto.yml
+├── index.qmd
+├── introduction.qmd
+├── labs-summary.qmd
+├── chapters/
+│   ├── chapter-01-basic-probability.qmd
+├── ...
+│   └── chapter-20-bayesian-inference.qmd
+├── htmls/
+│   ├── section1_probability_interactive.html
+│   ├── ...
+│   └── section20_bayesian_inference_interactive.html
+└── labs/
+    ├── lab_section1_basic_probability_full_solutions.ipynb
+    ├── ...
+    └── MATH5010_Lab20_Bayesian_Inference_Full_Solutions.ipynb
+```
+
+## Instructor Notes
+
+When adding a new interactive page or lab:
+
+- Put HTML files in the `htmls/` folder.
+- Put notebook files in the `labs/` folder.
+- Add the file to the corresponding table on this page.
+- Use the Colab URL format above for notebooks stored on GitHub.
+

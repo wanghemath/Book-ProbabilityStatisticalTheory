@@ -1,0 +1,409 @@
+---
+title: "Chapter 11: Sufficient Statistics and the Likelihood Principle"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Sufficient Statistics and the Likelihood Principle
+
+This chapter introduces sufficient statistics as a formal data-reduction principle for statistical inference. The main goal is to identify when a statistic keeps all information in the sample about an unknown parameter. The chapter also introduces the likelihood function and the likelihood principle.
+ 
+
+::: {.callout-note title="Topics"}
+Statistics and estimators; heuristic and mathematical definitions of sufficient statistics; the factorization theorem; Bernoulli, normal, uniform, and gamma examples; minimal and complete sufficient statistics; likelihood functions; likelihood principle; binomial versus negative binomial coin-tossing example.
+:::
+
+# Overview
+
+This section introduces sufficient statistics, which formalize the idea of reducing a data set without losing information about an unknown parameter.
+
+In statistical inference, the data set may contain many observations, but often the information relevant to a parameter can be summarized by a lower-dimensional statistic. For example, for Bernoulli data, the total number of successes contains all the information about the success probability. For normal data with known variance, the sample mean contains all the information about the unknown mean.
+
+::: {.callout-tip title="Key idea"}
+A statistic is *sufficient* for a parameter if, after the statistic is known, the remaining details of the sample no longer contain information about the parameter. $$\text{full data} \quad \longrightarrow \quad \text{sufficient statistic} \quad \longrightarrow \quad \text{inference about } \theta.$$
+:::
+
+The main tool in this section is the **factorization theorem**. It gives an efficient way to check sufficiency by factoring the joint density or joint mass function into two parts: one part involving the parameter only through the statistic, and one part independent of the parameter.
+
+# Statistics and Estimators
+
+This section recalls the basic language of statistics before defining sufficient statistics.
+
+::: {.callout-note title="Definition"}
+**Definition 1** (Statistic). Let $X_1,\ldots,X_n$ be a random sample from a population. A **statistic** is any function of the sample, $$T=T(X_1,\ldots,X_n),$$ that does not depend on unknown parameters.
+:::
+
+A statistic is itself a random variable, because it is computed from random data. After the data are observed, the statistic takes a numerical value.
+
+::: {.callout-note title="Example"}
+**Example 2** (Common statistics). Let $X_1,\ldots,X_n$ be a random sample.
+
+1.  The sample mean $$\overline X=\frac{1}{n}\sum_{i=1}^n X_i$$ is a statistic.
+
+2.  The sample variance $$S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\overline X)^2$$ is a statistic.
+
+3.  The maximum $$X_{(n)}=\max\{X_1,\ldots,X_n\}$$ is a statistic.
+
+4.  The constant statistic $T=3$ is also technically a statistic, although it ignores the data.
+:::
+
+::: {.callout-tip title="Solution"}
+Each quantity listed is a function of $X_1,\ldots,X_n$ and does not use an unknown parameter. Therefore each is a statistic. The constant statistic is mathematically allowed, but it is usually not useful because it does not summarize any sample information.
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 3** (Estimator). A statistic $T(X_1,\ldots,X_n)$ is called an **estimator** of a population parameter $\theta$ if it is used to estimate $\theta$.
+:::
+
+For example, $\overline X$ is commonly used to estimate the population mean $\mu$, and $S^2$ is commonly used to estimate the population variance $\sigma^2$.
+
+# Heuristic Meaning of Sufficient Statistics
+
+This section explains the intuitive meaning of sufficiency before giving the formal definition.
+
+A sufficient statistic is a function of the data that captures all the information needed to estimate a parameter $\theta$. Once the sufficient statistic is known, the rest of the data provides no additional information about $\theta$.
+
+::: {.callout-note title="Definition"}
+**Definition 4** (Heuristic definition of sufficiency). Let $X_1,\ldots,X_n$ be a random sample from a model with unknown parameter $\theta$. A statistic $$T=T(X_1,\ldots,X_n)$$ is **sufficient** for $\theta$ if a statistician who knows only $T$ can do just as well for inference about $\theta$ as a statistician who knows the full data set $(X_1,\ldots,X_n)$.
+:::
+
+::: {.callout-tip title="Key idea"}
+Sufficiency is a data-reduction principle: $$(X_1,\ldots,X_n) \quad \leadsto \quad T(X_1,\ldots,X_n).$$ If $T$ is sufficient, then this reduction does not lose information about $\theta$.
+:::
+
+::: {.callout-note title="Example"}
+**Example 5** (Bernoulli intuition). Suppose $X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p)$. Each $X_i$ is $1$ for success and $0$ for failure. If the goal is to learn $p$, the order of successes and failures does not matter. The total number of successes $$T=\sum_{i=1}^n X_i$$ contains all information about $p$.
+:::
+
+::: {.callout-tip title="Solution"}
+For example, the sequences $$(1,1,0,1,0) \quad \text{and} \quad (0,1,1,0,1)$$ both have three successes out of five trials. Their probabilities under the Bernoulli model are both proportional to $$p^3(1-p)^2.$$ For inference about $p$, the relevant information is the number of successes, not the order in which they occurred.
+:::
+
+# Mathematical Definition of Sufficient Statistics
+
+This section gives the formal conditional-distribution definition of sufficiency.
+
+::: {.callout-note title="Definition"}
+**Definition 6** (Sufficient statistic). Let $X_1,\ldots,X_n$ be a random sample from a distribution with parameter $\theta$, and let $$T=T(X_1,\ldots,X_n)$$ be a statistic. We say that $T$ is **sufficient** for $\theta$ if, for every possible value $t$, the conditional distribution of the full sample $$(X_1,\ldots,X_n) \mid T=t$$ does not depend on $\theta$.
+:::
+
+In words, once $T=t$ is known, the remaining randomness in the sample does not involve the unknown parameter. Therefore the remaining details of the sample cannot help us learn about $\theta$.
+
+::: {.callout-important title="Remark"}
+*Remark 7*. The conditional-distribution definition is conceptually important, but it can be difficult to check directly. The factorization theorem gives a much easier method.
+:::
+
+# The Factorization Theorem
+
+This section introduces the main theorem for checking sufficiency.
+
+::: {.callout-important title="Theorem"}
+**Theorem 8** (Neyman--Fisher factorization theorem). *Let $X_1,\ldots,X_n$ be a random sample with joint density or joint mass function $$f(x_1,\ldots,x_n\mid\theta).$$ A statistic $$T=T(X_1,\ldots,X_n)$$ is sufficient for $\theta$ if and only if there exist functions $g$ and $h$ such that, for all sample points $x=(x_1,\ldots,x_n)$ and all parameter values $\theta$, $$f(x_1,\ldots,x_n\mid\theta)
+= g(T(x_1,\ldots,x_n),\theta)\,h(x_1,\ldots,x_n).$$ Here:*
+
+-   *$g(T(x),\theta)$ depends on the data only through $T(x)$ and may depend on $\theta$;*
+
+-   *$h(x)$ may depend on the full data but does not depend on $\theta$.*
+:::
+
+::: {.callout-tip title="Key idea"}
+To prove that $T$ is sufficient:
+
+1.  Write the joint density or joint pmf of the sample.
+
+2.  Rearrange it so that every parameter-dependent term involving the data appears only through $T$.
+
+3.  Put the remaining parameter-free data terms into $h(x)$.
+:::
+
+# Example: Bernoulli Distribution
+
+This section shows the most basic example: the number of successes is sufficient for the Bernoulli parameter.
+
+::: {.callout-note title="Example"}
+**Example 9** (Bernoulli distribution). Let $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p), \qquad 0<p<1.$$ Show that $$T(X)=\sum_{i=1}^n X_i$$ is sufficient for $p$.
+:::
+
+::: {.callout-tip title="Solution"}
+The joint pmf is $$f(x_1,\ldots,x_n\mid p)
+=\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i},$$ where each $x_i\in\{0,1\}$. Therefore $$f(x_1,\ldots,x_n\mid p)
+=p^{\sum_{i=1}^n x_i}(1-p)^{n-\sum_{i=1}^n x_i}.$$ Let $$T(x)=\sum_{i=1}^n x_i.$$ Then $$f(x_1,\ldots,x_n\mid p)
+=\underbrace{p^{T(x)}(1-p)^{n-T(x)}}_{g(T(x),p)}\underbrace{1}_{h(x)}.$$ By the factorization theorem, $T(X)=\sum_{i=1}^n X_i$ is sufficient for $p$.
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 10*. The sample mean $\overline X=T/n$ is also sufficient for $p$, because it contains exactly the same information as $T$.
+:::
+
+# Example: Normal Distribution with Known Variance
+
+This section shows that, for normal data with known variance, the sample mean is sufficient for the unknown mean.
+
+::: {.callout-note title="Example"}
+**Example 11** (Normal distribution with known variance). Let $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2),$$ where $\sigma^2$ is known and $\mu$ is unknown. Show that $$T(X)=\sum_{i=1}^n X_i$$ is sufficient for $\mu$.
+:::
+
+::: {.callout-tip title="Solution"}
+The joint density is $$f(x_1,\ldots,x_n\mid\mu)
+=\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left\{-\frac{(x_i-\mu)^2}{2\sigma^2}\right\}.$$ Thus $$f(x_1,\ldots,x_n\mid\mu)
+=(2\pi)^{-n/2}\sigma^{-n}
+\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right\}.$$ Expand the quadratic term: $$\sum_{i=1}^n (x_i-\mu)^2
+=\sum_{i=1}^n x_i^2-2\mu\sum_{i=1}^n x_i+n\mu^2.$$ Therefore $$\begin{aligned}
+f(x_1,\ldots,x_n\mid\mu)
+&=(2\pi)^{-n/2}\sigma^{-n}
+\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n x_i^2
++\frac{\mu}{\sigma^2}\sum_{i=1}^n x_i
+-\frac{n\mu^2}{2\sigma^2}\right\} \\
+&=\underbrace{\exp\left\{\frac{\mu}{\sigma^2}T(x)-\frac{n\mu^2}{2\sigma^2}\right\}}_{g(T(x),\mu)}
+\underbrace{(2\pi)^{-n/2}\sigma^{-n}\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n x_i^2\right\}}_{h(x)}.
+\end{aligned}$$ The function $h(x)$ does not depend on $\mu$, and the function $g$ depends on the data only through $T(x)=\sum_i x_i$. Hence $T(X)=\sum_i X_i$ is sufficient for $\mu$.
+
+Since $\overline X=T/n$ is a one-to-one function of $T$, the sample mean $\overline X$ is also sufficient for $\mu$.
+:::
+
+# Example: Uniform Population with Unknown Upper Bound
+
+This section illustrates an important point: the sufficient statistic may not be the sample mean.
+
+::: {.callout-note title="Example"}
+**Example 12** (Uniform population). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Uniform}(0,\theta),$$ where $\theta>0$ is unknown. Show that $$T(X)=\max\{X_1,\ldots,X_n\}=X_{(n)}$$ is sufficient for $\theta$.
+:::
+
+::: {.callout-tip title="Solution"}
+The density of one observation is $$f(x\mid\theta)=\frac{1}{\theta}\mathbbm{1}(0\le x\le \theta).$$ The joint density is $$f(x_1,\ldots,x_n\mid\theta)
+=\theta^{-n}\prod_{i=1}^n \mathbbm{1}(0\le x_i\le \theta).$$ The condition $x_i\le \theta$ for all $i$ is equivalent to $$\max\{x_1,\ldots,x_n\}\le \theta.$$ Also, the condition $0\le x_i$ for all $i$ does not involve $\theta$. Therefore $$f(x_1,\ldots,x_n\mid\theta)
+=\underbrace{\theta^{-n}\mathbbm{1}\bigl(\max\{x_1,\ldots,x_n\}\le \theta\bigr)}_{g(T(x),\theta)}
+\underbrace{\prod_{i=1}^n \mathbbm{1}(x_i\ge 0)}_{h(x)}.$$ By the factorization theorem, $T(X)=X_{(n)}$ is sufficient for $\theta$.
+:::
+
+::: {.callout-warning title="Question"}
+**Question 13** (Is the sample mean sufficient?). For the uniform model $X_i\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,\theta)$, is the sample mean $\overline X$ sufficient for $\theta$?
+:::
+
+::: {.callout-tip title="Solution"}
+No. By the factorization theorem, sufficiency would require the indicator $$\mathbbm{1}\bigl(\max\{x_1,\ldots,x_n\}\le \theta\bigr)$$ to be expressible as a function of only $\overline x$ and $\theta$. This is impossible because two samples can have the same sample mean but different maxima.
+
+For example, with $n=2$, $$(0.5,0.5) \quad \text{and} \quad (0,1)$$ have the same sample mean $0.5$, but their maxima are $0.5$ and $1$. If $\theta=0.75$, the first sample is possible under $\operatorname{Uniform}(0,\theta)$, but the second is not. Therefore the sample mean does not contain all information about $\theta$.
+:::
+
+# Example: Gamma Population with Unknown Shape
+
+This section gives an example where the sufficient statistic is a sum of logarithms rather than a sum of observations.
+
+::: {.callout-note title="Example"}
+**Example 14** (Gamma population: shape unknown, rate known). Suppose the population has a gamma distribution with density $$f(x\mid\alpha)=\frac{\beta^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}, \qquad x>0,$$ where $\beta$ is known and $\alpha$ is unknown. Let $X_1,\ldots,X_n$ be a random sample. Show that $$T(X)=\sum_{i=1}^n \log X_i$$ is sufficient for $\alpha$.
+:::
+
+::: {.callout-tip title="Solution"}
+The joint density is $$\begin{aligned}
+f(x_1,\ldots,x_n\mid\alpha)
+&=\prod_{i=1}^n \frac{\beta^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\beta x_i} \\
+&=\frac{\beta^{n\alpha}}{\Gamma(\alpha)^n}
+\left(\prod_{i=1}^n x_i^{\alpha-1}\right)
+\exp\left\{-\beta\sum_{i=1}^n x_i\right\}.
+\end{aligned}$$ Now $$\prod_{i=1}^n x_i^{\alpha-1}
+=\exp\left\{(\alpha-1)\sum_{i=1}^n \log x_i\right\}.$$ Hence $$f(x_1,\ldots,x_n\mid\alpha)
+=\underbrace{\frac{\beta^{n\alpha}}{\Gamma(\alpha)^n}
+\exp\left\{(\alpha-1)T(x)\right\}}_{g(T(x),\alpha)}
+\underbrace{\exp\left\{-\beta\sum_{i=1}^n x_i\right\}}_{h(x)}.$$ Because $h(x)$ does not depend on $\alpha$ and $g$ depends on the data only through $T(x)=\sum_i \log x_i$, the statistic $T(X)=\sum_i \log X_i$ is sufficient for $\alpha$.
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 15*. The statistic $$\exp(T)=\prod_{i=1}^n X_i$$ is also sufficient, because it is a one-to-one transformation of $T$ on the positive sample space. In this model, the sample mean $\overline X$ is not sufficient for the unknown shape parameter $\alpha$.
+:::
+
+# Minimal and Complete Sufficient Statistics
+
+This section introduces two refinements of sufficiency that are important in statistical theory.
+
+::: {.callout-note title="Definition"}
+**Definition 16** (Minimal sufficient statistic). A sufficient statistic $T$ is called **minimal sufficient** if it is the smallest sufficient statistic in the sense that every other sufficient statistic is a function of it.
+:::
+
+Minimal sufficiency means that the statistic gives the most compressed version of the data that still preserves all information about the parameter.
+
+::: {.callout-note title="Definition"}
+**Definition 17** (Complete sufficient statistic). A statistic $T$ is **complete and sufficient** for $\theta$ if it is sufficient and has the following property: $$\mathbb{E}_\theta[g(T)]=0 \text{ for all } \theta
+\quad \Longrightarrow \quad
+\mathbb{P}_\theta(g(T)=0)=1 \text{ for all } \theta.$$
+:::
+
+Completeness is a technical condition that is useful for proving uniqueness and optimality results for unbiased estimators.
+
+::: {.callout-tip title="Key idea"}
+Why sufficiency matters Sufficient statistics are important because they support:
+
+-   **data reduction**: compress the sample without losing information about $\theta$;
+
+-   **maximum likelihood estimation**: MLEs often depend only on sufficient statistics;
+
+-   **Bayesian inference**: posterior distributions often depend on the data only through sufficient statistics;
+
+-   **efficient inference**: sufficient statistics help identify estimators with good theoretical properties.
+:::
+
+# The Likelihood Function
+
+This section introduces the likelihood function, which is the central object connecting observed data to inference about parameters.
+
+::: {.callout-note title="Definition"}
+**Definition 18** (Likelihood function). Let $f(x\mid\theta)$ be the joint density or joint pmf of the sample $X=(X_1,\ldots,X_n)$. After observing $$X=x=(x_1,\ldots,x_n),$$ the **likelihood function** is the function of $\theta$ defined by $$L(\theta\mid x)=f(x\mid\theta).$$
+:::
+
+The joint density and the likelihood function have the same algebraic expression, but they are viewed differently:
+
+-   as a density or pmf, $x$ varies and $\theta$ is fixed;
+
+-   as a likelihood, $x$ is observed and fixed, while $\theta$ varies.
+
+::: {.callout-note title="Example"}
+**Example 19** (Bernoulli likelihood). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p)$, and suppose the observed data have $t=\sum_i x_i$ successes. The likelihood is $$L(p\mid x)=p^t(1-p)^{n-t}, \qquad 0<p<1.$$
+:::
+
+::: {.callout-tip title="Solution"}
+The joint pmf is $$\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}
+=p^{\sum_i x_i}(1-p)^{n-\sum_i x_i}.$$ After the data are observed, $t=\sum_i x_i$ is fixed, so the likelihood as a function of $p$ is $$L(p\mid x)=p^t(1-p)^{n-t}.$$
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 20* (Connection with sufficiency). The factorization theorem says that if $T$ is sufficient, then the likelihood can be written so that all parameter-dependent information from the data passes through $T$.
+:::
+
+# The Likelihood Principle
+
+This section states the likelihood principle, a foundational idea especially important in Bayesian statistics.
+
+::: {.callout-note title="Definition"}
+**Definition 21** (Likelihood principle). If two experiments produce likelihood functions that are proportional as functions of $\theta$, then they provide the same evidence about $\theta$ and should lead to the same inference about $\theta$.
+
+More precisely, if two observed data sets $x$ and $y$ have likelihoods satisfying $$L_1(\theta\mid x)=C(x,y)L_2(\theta\mid y)
+\quad \text{for all } \theta,$$ where $C(x,y)$ does not depend on $\theta$, then the two data sets have the same likelihood information about $\theta$.
+:::
+
+::: {.callout-tip title="Key idea"}
+Interpretation The likelihood principle says that once the data are observed, the evidential content about $\theta$ is contained in the likelihood function. How the data were collected matters only through its effect on the likelihood.
+:::
+
+This principle is central in Bayesian inference, where the posterior is proportional to likelihood times prior: $$\pi(\theta\mid x)\propto L(\theta\mid x)\pi(\theta).$$ If two likelihoods are proportional and the same prior is used, then the posterior distributions are identical.
+
+# Coin-Tossing Example: Binomial versus Negative Binomial
+
+This section illustrates the likelihood principle using two coin-tossing experiments.
+
+::: {.callout-note title="Example"}
+**Example 22** (Coin tossing and the likelihood principle). Consider two different experiments involving a coin with unknown probability $p$ of heads.
+
+**Scenario 1: Binomial experiment.** Toss the coin $n=10$ times and observe $7$ heads. Then $$X=7, \qquad X\sim \operatorname{Binomial}(10,p),$$ and the likelihood is $$L_1(p)=\binom{10}{7}p^7(1-p)^3.$$
+
+**Scenario 2: Negative binomial experiment.** Toss the coin until $7$ heads appear. Suppose it takes $10$ tosses. Then the first $9$ tosses contain $6$ heads and $3$ tails, and the tenth toss is heads. The likelihood is $$L_2(p)=\binom{9}{6}p^7(1-p)^3.$$
+
+Explain why the likelihood principle says these two experiments provide the same evidence about $p$.
+:::
+
+::: {.callout-tip title="Solution"}
+The two likelihoods are $$L_1(p)=\binom{10}{7}p^7(1-p)^3$$ and $$L_2(p)=\binom{9}{6}p^7(1-p)^3.$$ They differ only by a multiplicative constant that does not depend on $p$: $$L_1(p)=\frac{\binom{10}{7}}{\binom{9}{6}}L_2(p).$$ Thus the likelihood functions are proportional as functions of $p$. By the likelihood principle, the two experiments provide the same evidence about $p$, even though the stopping rules were different.
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 23*. Frequentist procedures sometimes depend on the sampling plan or stopping rule, while likelihood-based and Bayesian procedures focus on the likelihood after the data are observed. This is one reason the likelihood principle is philosophically important.
+:::
+
+# Practice Problems
+
+This section gives additional practice with the factorization theorem and likelihood principle.
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 24** (Poisson sufficient statistic). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Poisson}(\lambda)$. Find a sufficient statistic for $\lambda$.
+:::
+
+::: {.callout-tip title="Solution"}
+The joint pmf is $$f(x_1,\ldots,x_n\mid\lambda)
+=\prod_{i=1}^n \frac{e^{-\lambda}\lambda^{x_i}}{x_i!}
+=e^{-n\lambda}\lambda^{\sum_i x_i}\prod_{i=1}^n \frac{1}{x_i!}.$$ Let $$T(X)=\sum_{i=1}^n X_i.$$ Then $$f(x\mid\lambda)=\underbrace{e^{-n\lambda}\lambda^{T(x)}}_{g(T(x),\lambda)}
+\underbrace{\prod_{i=1}^n \frac{1}{x_i!}}_{h(x)}.$$ By the factorization theorem, $T(X)=\sum_i X_i$ is sufficient for $\lambda$.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 25** (Exponential sufficient statistic). Let $X_1,\ldots,X_n \overset{\text{iid}}{\sim}Exp(\lambda)$ with density $$f(x\mid\lambda)=\lambda e^{-\lambda x},\qquad x>0.$$ Find a sufficient statistic for $\lambda$.
+:::
+
+::: {.callout-tip title="Solution"}
+The joint density is $$f(x_1,\ldots,x_n\mid\lambda)
+=\lambda^n\exp\left\{-\lambda\sum_{i=1}^n x_i\right\}
+\prod_{i=1}^n \mathbbm{1}(x_i>0).$$ Let $$T(X)=\sum_{i=1}^n X_i.$$ Then $$f(x\mid\lambda)
+=\underbrace{\lambda^n e^{-\lambda T(x)}}_{g(T(x),\lambda)}
+\underbrace{\prod_{i=1}^n \mathbbm{1}(x_i>0)}_{h(x)}.$$ Therefore $T(X)=\sum_i X_i$ is sufficient for $\lambda$.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 26** (Normal distribution with both parameters unknown). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2)$, where both $\mu$ and $\sigma^2$ are unknown. Find a sufficient statistic for $(\mu,\sigma^2)$.
+:::
+
+::: {.callout-tip title="Solution"}
+The joint density is $$f(x\mid\mu,\sigma^2)
+=(2\pi\sigma^2)^{-n/2}
+\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right\}.$$ Expand: $$\sum_{i=1}^n (x_i-\mu)^2
+=\sum_{i=1}^n x_i^2-2\mu\sum_{i=1}^n x_i+n\mu^2.$$ Thus the joint density depends on the data through $$\sum_{i=1}^n x_i
+\quad \text{and} \quad
+\sum_{i=1}^n x_i^2.$$ Therefore $$T(X)=\left(\sum_{i=1}^n X_i,\sum_{i=1}^n X_i^2\right)$$ is sufficient for $(\mu,\sigma^2)$ by the factorization theorem.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 27** (Uniform lower and upper endpoints). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Uniform}(a,b)$, where both $a$ and $b$ are unknown. Find a sufficient statistic for $(a,b)$.
+:::
+
+::: {.callout-tip title="Solution"}
+The density of one observation is $$f(x\mid a,b)=\frac{1}{b-a}\mathbbm{1}(a\le x\le b).$$ The joint density is $$f(x_1,\ldots,x_n\mid a,b)
+=(b-a)^{-n}\prod_{i=1}^n \mathbbm{1}(a\le x_i\le b).$$ The condition $a\le x_i\le b$ for all $i$ is equivalent to $$a\le \min_i x_i
+\quad \text{and} \quad
+\max_i x_i\le b.$$ Hence $$f(x\mid a,b)
+=(b-a)^{-n}\mathbbm{1}(a\le x_{(1)})\mathbbm{1}(x_{(n)}\le b).$$ This depends on the data only through $$T(X)=(X_{(1)},X_{(n)}).$$ Therefore $(X_{(1)},X_{(n)})$ is sufficient for $(a,b)$.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 28** (Likelihood principle). Suppose two experiments give likelihoods $$L_1(\theta)=12\theta^4(1-\theta)^6,
+\qquad
+L_2(\theta)=3\theta^4(1-\theta)^6,$$ for $0<\theta<1$. Do they provide the same likelihood information about $\theta$?
+:::
+
+::: {.callout-tip title="Solution"}
+Yes. We have $$L_1(\theta)=4L_2(\theta),$$ and the constant $4$ does not depend on $\theta$. Therefore the likelihoods are proportional as functions of $\theta$. By the likelihood principle, they provide the same likelihood information about $\theta$.
+:::
+
+# Summary
+
+This section is about reducing data without losing information about parameters.
+
+::: {.callout-tip title="Key idea"}
+
+1.  A statistic is a function of the random sample.
+
+2.  A statistic is sufficient for $\theta$ if the conditional distribution of the full sample given the statistic does not depend on $\theta$.
+
+3.  The factorization theorem is the main practical tool for proving sufficiency.
+
+4.  For Bernoulli, Poisson, exponential, and normal-with-known-variance models, sums often appear as sufficient statistics.
+
+5.  For a uniform model with unknown endpoint, the maximum is sufficient; the sample mean is not.
+
+6.  The likelihood function is the joint density or pmf viewed as a function of the parameter after observing data.
+
+7.  The likelihood principle says proportional likelihoods provide the same evidence about the parameter.
+:::
+
+# References  
+
+-   Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition.
+
+-   Wasserman, L. *All of Statistics*.
+
+-   ProbabilityCourse.com, online probability text.

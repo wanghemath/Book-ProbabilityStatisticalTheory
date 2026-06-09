@@ -1,0 +1,537 @@
+---
+title: "Chapter 12: Point Estimation I — Finding Estimators"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Point Estimation I: Finding Estimators
+
+This chapter begins the statistical inference part of the course. The main goal is to construct point estimators for unknown parameters using three major principles: method of moments, maximum likelihood estimation, and Bayesian estimation.
+
+ 
+
+::: {.callout-note title="Topics"}
+Point estimators and estimates; method of moments; maximum likelihood estimation; log-likelihood optimization; Hessian and second derivative test; normal, log-normal, Bernoulli, binomial, and uniform examples; invariance property of MLE; Bayesian estimators; beta-binomial conjugacy; posterior mean, variance, mode, credible probabilities; conjugate priors; MAP versus MLE; normal-normal MAP.
+:::
+
+# Overview
+
+This section introduces three main methods for finding point estimators: the method of moments, maximum likelihood estimation, and Bayesian estimation.
+
+In point estimation, we observe a random sample $X_1,\ldots,X_n$ from a population model with density or mass function $f(x\mid \theta)$. The unknown parameter $\theta$, or a function $g(\theta)$, determines important features of the population. The goal is to construct a statistic from the data that gives a reasonable numerical estimate of the unknown quantity.
+
+::: {.callout-tip title="Key idea"}
+A point estimator is a statistic used to estimate an unknown population parameter. This section studies three major construction principles: $$\text{match moments}, \qquad \text{maximize likelihood}, \qquad \text{update prior information by Bayes' rule}.$$
+:::
+
+The method of moments is often simple and intuitive. Maximum likelihood is usually more efficient and is the most widely used method in statistical modeling. Bayesian estimation treats the parameter as uncertain and combines prior information with the likelihood from the observed data.
+
+# Point Estimators and Estimates
+
+This section sets up the language of estimators and estimates.
+
+::: {.callout-note title="Definition"}
+**Definition 1** (Point estimator). Let $X_1,\ldots,X_n$ be a random sample from a population distribution with pdf or pmf $f(x\mid \theta)$. A **point estimator** of $\theta$ or $g(\theta)$ is any statistic $$W=W(X_1,\ldots,X_n)$$ used to estimate the unknown parameter or function of the parameter.
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 2** (Estimate). After observing the sample values $$(X_1,\ldots,X_n)=(x_1,\ldots,x_n),$$ the number $$W(x_1,\ldots,x_n)$$ is called an **estimate**.
+:::
+
+The distinction is important: an estimator is a random variable before observing data; an estimate is the realized numerical value after observing data.
+
+::: {.callout-note title="Example"}
+**Example 3** (Common point estimators). For a random sample $X_1,\ldots,X_n$, common point estimators include:
+
+1.  the sample mean $$\overline X=\frac{1}{n}\sum_{i=1}^n X_i,$$ which estimates the population mean $\mu$;
+
+2.  the sample variance $$S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\overline X)^2,$$ which estimates the population variance $\sigma^2$;
+
+3.  the sample proportion $$\widehat p=\frac{1}{n}\sum_{i=1}^n X_i$$ for Bernoulli data, which estimates the success probability $p$.
+:::
+
+::: {.callout-tip title="Solution"}
+Each quantity is a function of the random sample and does not depend on the unknown parameter. Therefore each is a statistic. When used to estimate a population quantity, it is called a point estimator.
+:::
+
+# Method of Moments
+
+This section introduces the method of moments, also called moment matching.
+
+Suppose $X_1,\ldots,X_n$ is a sample from a population distribution with pdf or pmf $$f(x\mid \boldsymbol\theta), \qquad \boldsymbol\theta=(\theta_1,\ldots,\theta_k).$$ The method of moments estimates the unknown parameters by equating sample moments with population moments.
+
+::: {.callout-note title="Definition"}
+**Definition 4** (Sample and population moments). The first $k$ sample moments are $$m_1=\frac{1}{n}\sum_{i=1}^n X_i, \qquad
+m_2=\frac{1}{n}\sum_{i=1}^n X_i^2, \qquad \ldots, \qquad
+m_k=\frac{1}{n}\sum_{i=1}^n X_i^k.$$ The corresponding population moments are $$\mu_1'=\mathbb{E}[X], \qquad
+\mu_2'=\mathbb{E}[X^2], \qquad \ldots, \qquad
+\mu_k'=\mathbb{E}[X^k].$$ Usually the population moments depend on the unknown parameter vector $\boldsymbol\theta$.
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 5** (Method of moments estimator). The **method of moments estimators** are obtained by solving the system $$m_1=\mu_1'(\boldsymbol\theta), \qquad
+m_2=\mu_2'(\boldsymbol\theta), \qquad \ldots, \qquad
+m_k=\mu_k'(\boldsymbol\theta)$$ for $\theta_1,\ldots,\theta_k$.
+:::
+
+::: {.callout-tip title="Key idea"}
+How to use method of moments
+
+1.  Count the number of unknown parameters.
+
+2.  Write the same number of population moment equations.
+
+3.  Replace population moments by sample moments.
+
+4.  Solve the resulting equations for the parameters.
+:::
+
+## Method of Moments for the Normal Distribution
+
+This subsection shows how method of moments estimates the parameters of a normal distribution.
+
+::: {.callout-note title="Example"}
+**Example 6** (Normal distribution). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2).$$ Find the method of moments estimators of $\mu$ and $\sigma^2$.
+:::
+
+::: {.callout-tip title="Solution"}
+There are two unknown parameters, so we match the first two moments. Let $$\theta_1=\mu, \qquad \theta_2=\sigma^2.$$ The first sample moment is $$m_1=\frac{1}{n}\sum_{i=1}^n X_i=\overline X.$$ The second sample moment is $$m_2=\frac{1}{n}\sum_{i=1}^n X_i^2.$$ For a normal random variable, $$\mu_1'=\mathbb{E}[X]=\mu,$$ and $$\mu_2'=\mathbb{E}[X^2]=\operatorname{Var}(X)+\{\mathbb{E}[X]\}^2=\sigma^2+\mu^2.$$ The method of moments equations are $$m_1=\mu, \qquad m_2=\mu^2+\sigma^2.$$ Therefore $$\widetilde\mu_{\mathrm{MOM}}=\overline X$$ and $$\widetilde\sigma^2_{\mathrm{MOM}}=m_2-m_1^2
+=\frac{1}{n}\sum_{i=1}^n X_i^2-\overline X^{\,2}
+=\frac{1}{n}\sum_{i=1}^n (X_i-\overline X)^2.$$
+:::
+
+## Method of Moments for the Binomial Distribution
+
+This subsection illustrates that method of moments may produce estimators that are algebraically valid but practically imperfect.
+
+::: {.callout-note title="Example"}
+**Example 7** (Binomial distribution with two unknown parameters). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Binomial}(k,p),$$ where both $k$ and $p$ are unknown. Find the method of moments estimators of $k$ and $p$.
+:::
+
+::: {.callout-tip title="Solution"}
+For $X\sim \operatorname{Binomial}(k,p)$, $$\mathbb{E}[X]=kp,$$ and $$\operatorname{Var}(X)=kp(1-p).$$ Therefore $$\mathbb{E}[X^2]=\operatorname{Var}(X)+\{\mathbb{E}[X]\}^2=kp(1-p)+k^2p^2.$$ Let $$m_1=\overline X, \qquad m_2=\frac{1}{n}\sum_{i=1}^n X_i^2.$$ The method of moments equations are $$m_1=kp,$$ and $$m_2=kp(1-p)+k^2p^2.$$ Using $kp=m_1$, we get $$m_2=m_1(1-p)+m_1^2.$$ Thus $$p=1-\frac{m_2-m_1^2}{m_1}.$$ The method of moments estimator of $p$ is $$\widetilde p_{\mathrm{MOM}}
+=1-\frac{m_2-m_1^2}{m_1}.$$ Then $$k=\frac{m_1}{p},$$ so $$\widetilde k_{\mathrm{MOM}}
+=\frac{m_1}{\widetilde p_{\mathrm{MOM}}}.$$
+:::
+
+::: {.callout-warning title="Warning"}
+Important remark For the normal distribution, method of moments gives estimators that agree with intuition. For the binomial model with both $k$ and $p$ unknown, the method of moments estimators may behave poorly. For some data sets, the formulas may even produce impossible parameter values, such as negative estimates or estimates outside the valid parameter space.
+:::
+
+Another famous use of moment matching is the Satterthwaite approximation, where a complicated random quantity is approximated by a scaled chi-square distribution by matching moments.
+
+# Maximum Likelihood Estimation
+
+This section introduces maximum likelihood estimation, the most widely used general method for deriving point estimators.
+
+::: {.callout-note title="Definition"}
+**Definition 8** (Likelihood function). Let $X_1,\ldots,X_n$ be a random sample from a population distribution with pdf or pmf $f(x\mid \boldsymbol\theta)$, where $$\boldsymbol\theta=(\theta_1,\ldots,\theta_k).$$ Given observed data $x_1,\ldots,x_n$, the **likelihood function** is $$L(\boldsymbol\theta\mid \mathbf{x})
+=\prod_{i=1}^n f(x_i\mid \boldsymbol\theta)
+=f(x_1,\ldots,x_n\mid \theta_1,\ldots,\theta_k).$$
+:::
+
+The likelihood function treats the observed data as fixed and the parameter as the variable.
+
+::: {.callout-note title="Definition"}
+**Definition 9** (Maximum likelihood estimator). A **maximum likelihood estimator** is a value of the parameter that maximizes the likelihood function: $$\widehat{\boldsymbol\theta}_{\mathrm{MLE}}(\mathbf{x})
+=\arg\max_{\boldsymbol\theta} L(\boldsymbol\theta\mid \mathbf{x}).$$
+:::
+
+Since logarithm is an increasing function, maximizing the likelihood is equivalent to maximizing the log-likelihood.
+
+::: {.callout-note title="Definition"}
+**Definition 10** (Log-likelihood). The **log-likelihood function** is $$\ell(\boldsymbol\theta\mid \mathbf{x})
+=\log L(\boldsymbol\theta\mid \mathbf{x}).$$ Then $$\arg\max_{\boldsymbol\theta} L(\boldsymbol\theta\mid \mathbf{x})
+=
+\arg\max_{\boldsymbol\theta} \ell(\boldsymbol\theta\mid \mathbf{x}).$$
+:::
+
+::: {.callout-tip title="Key idea"}
+Calculus method for MLE When the parameter space is continuous and the maximum occurs in the interior, solve $$\frac{\partial}{\partial \theta_i}\ell(\boldsymbol\theta\mid \mathbf{x})=0,
+\qquad i=1,\ldots,k.$$ Then check whether the critical point gives a local or global maximum.
+:::
+
+## Review: Hessian and the Second Derivative Test
+
+This subsection recalls the multivariable calculus tool used to classify critical points.
+
+::: {.callout-note title="Definition"}
+**Definition 11** (Hessian matrix). For a smooth function $f:\mathbb{R}^n\to \mathbb{R}$, the **Hessian matrix** is $$Hf(\mathbf{x})=
+\begin{pmatrix}
+\frac{\partial^2 f}{\partial x_1^2} & \cdots & \frac{\partial^2 f}{\partial x_1\partial x_n}\\
+\vdots & \ddots & \vdots\\
+\frac{\partial^2 f}{\partial x_n\partial x_1} & \cdots & \frac{\partial^2 f}{\partial x_n^2}
+\end{pmatrix}.$$
+:::
+
+::: {.callout-important title="Theorem"}
+**Theorem 12** (Second derivative test). *Let $f:\mathbb{R}^n\to \mathbb{R}$ be smooth and suppose $\nabla f(\mathbf{a})=0$.*
+
+1.  *If $Hf(\mathbf{a})$ is positive definite, then $\mathbf{a}$ is a local minimum.*
+
+2.  *If $Hf(\mathbf{a})$ is negative definite, then $\mathbf{a}$ is a local maximum.*
+
+3.  *If $Hf(\mathbf{a})$ has both positive and negative eigenvalues, then $\mathbf{a}$ is a saddle point.*
+
+4.  *Other cases require additional analysis.*
+:::
+
+## MLE for the Normal Distribution
+
+This subsection derives the MLE for the mean and variance of a normal distribution.
+
+::: {.callout-note title="Example"}
+**Example 13** (Normal distribution). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2).$$ Find the MLEs of $\mu$ and $\sigma^2$.
+:::
+
+::: {.callout-tip title="Solution"}
+**Step 1: Write the likelihood.** The density is $$f(x_i\mid \mu,\sigma^2)=\frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left\{-\frac{(x_i-\mu)^2}{2\sigma^2}\right\}.$$ Thus $$L(\mu,\sigma^2\mid \mathbf{x})
+=\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}
+\exp\left\{-\frac{(x_i-\mu)^2}{2\sigma^2}\right\}.$$
+
+**Step 2: Write the log-likelihood.** $$\ell(\mu,\sigma^2\mid \mathbf{x})
+= -\frac{n}{2}\log(2\pi)-\frac{n}{2}\log(\sigma^2)
+-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2.$$
+
+**Step 3: Differentiate with respect to $\mu$.** $$\frac{\partial}{\partial \mu}\ell(\mu,\sigma^2\mid \mathbf{x})
+=\frac{1}{\sigma^2}\sum_{i=1}^n (x_i-\mu)
+=\frac{n}{\sigma^2}(\overline x-\mu).$$ Setting this equal to zero gives $$\widehat\mu_{\mathrm{MLE}}=\overline x=\frac{1}{n}\sum_{i=1}^n x_i.$$
+
+**Step 4: Differentiate with respect to $\sigma^2$.** Treat $\sigma^2$ as the parameter. Then $$\frac{\partial}{\partial \sigma^2}\ell(\mu,\sigma^2\mid \mathbf{x})
+= -\frac{n}{2\sigma^2}+\frac{1}{2(\sigma^2)^2}\sum_{i=1}^n (x_i-\mu)^2.$$ Setting this equal to zero gives $$\sigma^2=\frac{1}{n}\sum_{i=1}^n (x_i-\mu)^2.$$ Replacing $\mu$ by $\widehat\mu_{\mathrm{MLE}}=\overline x$, we obtain $$\widehat\sigma^2_{\mathrm{MLE}}
+=\frac{1}{n}\sum_{i=1}^n (x_i-\overline x)^2.$$ This estimator divides by $n$, not by $n-1$, so it is biased for $\sigma^2$.
+:::
+
+## Exercise: Log-Normal Distribution
+
+This subsection applies the normal MLE calculation after a logarithmic transformation.
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 14** (Log-normal MLE). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{LogNormal}(\mu,\sigma^2),$$ so that $$Y_i=\ln X_i \overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2).$$ The density of $X_i$ is $$f_X(x_i)=\frac{1}{x_i\sqrt{2\pi\sigma^2}}
+\exp\left\{-\frac{(\ln x_i-\mu)^2}{2\sigma^2}\right\},
+\qquad x_i>0.$$ Find the MLEs of $\mu$ and $\sigma^2$.
+:::
+
+::: {.callout-tip title="Solution"}
+Since $Y_i=\ln X_i$ is normal, we can apply the normal MLE result to the transformed data $$y_i=\ln x_i.$$ Thus $$\widehat\mu_{\mathrm{MLE}}=\overline y=\frac{1}{n}\sum_{i=1}^n \ln x_i,$$ and $$\widehat\sigma^2_{\mathrm{MLE}}
+=\frac{1}{n}\sum_{i=1}^n (\ln x_i-\overline y)^2.$$ The extra factor $1/x_i$ in the log-normal density does not depend on $\mu$ or $\sigma^2$, so it does not change the maximizer.
+:::
+
+## MLE for Bernoulli and Binomial Models
+
+This subsection derives MLEs for common discrete models.
+
+::: {.callout-note title="Example"}
+**Example 15** (Bernoulli distribution). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p).$$ Find the MLE of $p$.
+:::
+
+::: {.callout-tip title="Solution"}
+**Step 1: Likelihood.** $$L(p\mid \mathbf{x})=\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}.$$ Let $$S=\sum_{i=1}^n x_i$$ be the total number of successes. Then $$L(p\mid \mathbf{x})=p^S(1-p)^{n-S}.$$
+
+**Step 2: Log-likelihood.** $$\ell(p\mid \mathbf{x})=S\log p+(n-S)\log(1-p).$$
+
+**Step 3: Differentiate and solve.** $$\frac{\partial}{\partial p}\ell(p\mid \mathbf{x})
+=\frac{S}{p}-\frac{n-S}{1-p}.$$ Setting this equal to zero gives $$S(1-p)=p(n-S).$$ Hence $$\widehat p_{\mathrm{MLE}}=\frac{S}{n}=\frac{1}{n}\sum_{i=1}^n x_i=\overline x.$$
+:::
+
+::: {.callout-note title="Example"}
+**Example 16** (Binomial distribution with known number of trials). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Binomial}(k,p),$$ where $k$ is known and $p$ is unknown. Find the MLE of $p$.
+:::
+
+::: {.callout-tip title="Solution"}
+The likelihood is proportional to $$L(p\mid \mathbf{x})\propto \prod_{i=1}^n p^{x_i}(1-p)^{k-x_i}
+=p^{\sum x_i}(1-p)^{kn-\sum x_i}.$$ The log-likelihood is $$\ell(p\mid \mathbf{x})=S\log p+(kn-S)\log(1-p)+\text{constant},$$ where $S=\sum_{i=1}^n x_i$. Differentiating gives $$\frac{S}{p}-\frac{kn-S}{1-p}=0.$$ Therefore $$\widehat p_{\mathrm{MLE}}=\frac{S}{kn}=\frac{\sum_{i=1}^n x_i}{kn}.$$ This is the total number of observed successes divided by the total number of trials.
+:::
+
+## Binomial MLE with Unknown Number of Trials
+
+This subsection describes a harder binomial MLE problem where the parameter is discrete.
+
+::: {.callout-note title="Example"}
+**Example 17** (Binomial model with known $p$ and unknown $k$). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Binomial}(k,p),$$ where $p$ is known and $k$ is unknown. The likelihood is $$L(k\mid \mathbf{x},p)=\prod_{i=1}^n {k\choose x_i}p^{x_i}(1-p)^{k-x_i}.$$ Explain why this MLE problem is not solved by ordinary differentiation.
+:::
+
+::: {.callout-tip title="Solution"}
+The parameter $k$ is a positive integer, not a continuous real number. The likelihood contains binomial coefficients involving factorials, $${k\choose x_i}=\frac{k!}{x_i!(k-x_i)!},$$ so ordinary calculus with respect to $k$ is not the natural tool. Instead, we compare likelihood values at neighboring integers. A common approach is to study the likelihood ratio $$\frac{L(k\mid \mathbf{x},p)}{L(k-1\mid \mathbf{x},p)}.$$ The likelihood increases while this ratio is at least $1$ and decreases after it falls below $1$. Therefore the MLE is found by discrete optimization over integer values satisfying $$k\geq \max_i x_i.$$
+:::
+
+The lecture notes also mention an equivalent transformation $z=1/k$, which turns the likelihood condition into an equation in $z$ on the interval $$0<z<\frac{1}{\max_i x_i}.$$ The relevant function is strictly decreasing, so a unique solution $\widehat z$ exists, and the corresponding estimate is $$\widehat k_{\mathrm{MLE}}=\frac{1}{\widehat z}.$$ In practice, because $k$ must be an integer, one checks the nearest admissible integer values.
+
+## MLE for a Scale Uniform Distribution
+
+This subsection gives an example where the maximum occurs at the boundary of the parameter space.
+
+::: {.callout-note title="Example"}
+**Example 18** (Uniform distribution on $(0,\theta)$ ). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Uniform}(0,\theta),$$ where $\theta>0$ is unknown. Find the MLE of $\theta$.
+:::
+
+::: {.callout-tip title="Solution"}
+The density is $$f(x\mid \theta)=\frac{1}{\theta}, \qquad 0\leq x\leq \theta.$$ The likelihood is $$L(\theta\mid \mathbf{x})
+=\prod_{i=1}^n \frac{1}{\theta}\mathbbm{1}\{0\leq x_i\leq \theta\}
+=\theta^{-n}\mathbbm{1}\{\theta\geq x_{(n)}\},$$ where $$x_{(n)}=\max\{x_1,\ldots,x_n\}.$$ For all feasible $\theta\geq x_{(n)}$, the function $\theta^{-n}$ is decreasing in $\theta$. Therefore it is maximized by choosing the smallest feasible value: $$\widehat\theta_{\mathrm{MLE}}=x_{(n)}=\max\{x_1,\ldots,x_n\}.$$
+:::
+
+::: {.callout-warning title="Warning"}
+Boundary maximum In the uniform example, the derivative method does not find the answer because the maximum occurs at the boundary $\theta=x_{(n)}$, not at an interior critical point.
+:::
+
+# Invariance Property of Maximum Likelihood Estimators
+
+This section explains how to estimate a function of a parameter once the MLE of the parameter is known.
+
+::: {.callout-important title="Theorem"}
+**Theorem 19** (Invariance property of MLE). *Suppose $\widehat\theta$ is the MLE of $\theta$. Then, for any function $g(\theta)$, the MLE of $g(\theta)$ is $$g(\widehat\theta).$$*
+:::
+
+::: {.callout-note title="Proof"}
+*Proof.* The MLE chooses the value of $\theta$ that maximizes the likelihood. Reparametrizing by $\phi=g(\theta)$ changes the label of the parameter but not the height of the likelihood curve. Therefore the maximizing value of the transformed parameter is the transformation of the maximizing value of the original parameter. ◻
+:::
+
+::: center
+:::
+
+::: {.callout-note title="Example"}
+**Example 20** (MLE of the normal standard deviation). Suppose $$X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2).$$ We already found $$\widehat\sigma^2_{\mathrm{MLE}}=\frac{1}{n}\sum_{i=1}^n (x_i-\overline x)^2.$$ Find the MLE of $\sigma$.
+:::
+
+::: {.callout-tip title="Solution"}
+Since $\sigma=g(\sigma^2)=\sqrt{\sigma^2}$, the invariance property gives $$\widehat\sigma_{\mathrm{MLE}}
+=\sqrt{\widehat\sigma^2_{\mathrm{MLE}}}
+=\sqrt{\frac{1}{n}\sum_{i=1}^n (x_i-\overline x)^2}.$$
+:::
+
+# Bayesian Estimators
+
+This section introduces the Bayesian approach to point estimation.
+
+In the method of moments and maximum likelihood estimation, the parameter $\theta$ is considered unknown but fixed. In the Bayesian approach, $\theta$ is treated as an uncertain quantity described by a probability distribution.
+
+::: {.callout-note title="Definition"}
+**Definition 21** (Prior and posterior). Let $X_1,\ldots,X_n$ be sampled from a population distribution with pdf or pmf $f(x\mid \theta)$. In Bayesian inference:
+
+1.  The **prior distribution** $\pi(\theta)$ represents belief about $\theta$ before seeing the data.
+
+2.  The **posterior distribution** $\pi(\theta\mid \mathbf{x})$ represents updated belief about $\theta$ after observing the data $\mathbf{x}=(x_1,\ldots,x_n)$.
+
+By Bayes' rule, $$\pi(\theta\mid \mathbf{x})
+=\frac{f(\mathbf{x}\mid \theta)\pi(\theta)}{m(\mathbf{x})},$$ where $$m(\mathbf{x})=\int f(\mathbf{x}\mid \theta)\pi(\theta)\,d\theta$$ is the marginal distribution, or evidence, of the data.
+:::
+
+::: {.callout-tip title="Key idea"}
+Bayesian update $$\text{posterior} \; \propto \; \text{likelihood} \times \text{prior}.$$ Equivalently, $$P(\boldsymbol\theta\mid \mathcal D)
+=\frac{P(\mathcal D\mid \boldsymbol\theta)P(\boldsymbol\theta)}{P(\mathcal D)}.$$
+:::
+
+Once the posterior distribution has been derived, several point estimates are possible:
+
+1.  posterior mean: $\mathbb{E}[\theta\mid \mathbf{x}]$;
+
+2.  posterior median;
+
+3.  posterior mode, also called the MAP estimate.
+
+::: {.callout-note title="Definition"}
+**Definition 22** (MAP estimator). The **maximum a posteriori** estimator is $$\widehat\theta_{\mathrm{MAP}}=\arg\max_\theta \pi(\theta\mid \mathbf{x}).$$
+:::
+
+## Bayesian Coin Tossing: Beta-Binomial Model
+
+This subsection studies the standard Bayesian model for an unknown coin probability.
+
+::: {.callout-note title="Example"}
+**Example 23** (Bayesian estimation for a coin). Suppose a coin has unknown probability $\theta$ of heads. We toss the coin $n$ times and observe $x$ heads. The likelihood is $$P(x\mid n,\theta)={n\choose x}\theta^x(1-\theta)^{n-x}.$$ Use a beta prior $$\theta\sim \operatorname{Beta}(\alpha,\beta).$$ Find the posterior distribution.
+:::
+
+::: {.callout-tip title="Solution"}
+The beta prior has density $$p(\theta\mid \alpha,\beta)
+=\frac{1}{B(\alpha,\beta)}\theta^{\alpha-1}(1-\theta)^{\beta-1},
+\qquad 0<\theta<1,$$ where $$B(\alpha,\beta)=\int_0^1 \theta^{\alpha-1}(1-\theta)^{\beta-1}\,d\theta$$ and equivalently $$B(\alpha,\beta)=\frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.$$ Using Bayes' rule, $$p(\theta\mid x,n,\alpha,\beta)
+\propto P(x\mid n,\theta)p(\theta\mid \alpha,\beta).$$ Therefore $$p(\theta\mid x,n,\alpha,\beta)
+\propto
+\theta^x(1-\theta)^{n-x}\theta^{\alpha-1}(1-\theta)^{\beta-1}.$$ Combining powers gives $$p(\theta\mid x,n,\alpha,\beta)
+\propto
+\theta^{\alpha+x-1}(1-\theta)^{\beta+n-x-1}.$$ Thus $$\theta\mid x,n,\alpha,\beta \sim \operatorname{Beta}(\alpha+x,\beta+n-x).$$ The normalized posterior density is $$p(\theta\mid x,n,\alpha,\beta)
+=\frac{1}{B(\alpha+x,\beta+n-x)}
+\theta^{\alpha+x-1}(1-\theta)^{\beta+n-x-1}.$$
+:::
+
+::: {.callout-tip title="Key idea"}
+Pseudocount interpretation The beta hyperparameters $\alpha$ and $\beta$ act like prior pseudocounts. After observing $x$ heads and $n-x$ tails, the posterior parameters become $$\alpha \longmapsto \alpha+x,
+\qquad
+\beta \longmapsto \beta+n-x.$$
+:::
+
+::: {.callout-note title="Example"}
+**Example 24** (Prior, likelihood, posterior). Suppose $$(\alpha,\beta)=(3,5), \qquad (x,n)=(5,6).$$ Find the posterior distribution.
+:::
+
+::: {.callout-tip title="Solution"}
+The posterior is $$\theta\mid x,n,\alpha,\beta \sim \operatorname{Beta}(\alpha+x,\beta+n-x).$$ Substituting the values gives $$\theta\mid \mathcal D \sim \operatorname{Beta}(3+5,5+6-5)=\operatorname{Beta}(8,6).$$ The posterior distribution is shifted toward larger values of $\theta$ because $5$ heads were observed in $6$ tosses.
+:::
+
+## Posterior Mean, Variance, Mode, and Credible Probability
+
+This subsection extracts useful point estimates and uncertainty summaries from the beta posterior.
+
+::: {.callout-important title="Theorem"}
+**Theorem 25** (Beta-binomial posterior summaries). *If $$\theta\mid \mathcal D\sim \operatorname{Beta}(\alpha+x,\beta+n-x),$$ then $$\mathbb{E}[\theta\mid \mathcal D]
+=\frac{\alpha+x}{\alpha+\beta+n},$$ $$\operatorname{Var}(\theta\mid \mathcal D)
+=\frac{(\alpha+x)(\beta+n-x)}{(\alpha+\beta+n)^2(\alpha+\beta+n+1)},$$ and, when $\alpha+x>1$ and $\beta+n-x>1$, the posterior mode is $$\operatorname{Mode}(\theta\mid \mathcal D)
+=\frac{\alpha+x-1}{\alpha+\beta+n-2}.$$*
+:::
+
+::: {.callout-note title="Example"}
+**Example 26** (Posterior probability as a Bayesian test). In the coin example, compute the posterior probability that the coin is biased toward tails: $$\mathbb{P}\left(\theta<\frac12\mid x,n,\alpha,\beta\right).$$
+:::
+
+::: {.callout-tip title="Solution"}
+The posterior distribution is $$\theta\mid x,n,\alpha,\beta\sim \operatorname{Beta}(\alpha+x,\beta+n-x).$$ Therefore $$\mathbb{P}\left(\theta<\frac12\mid x,n,\alpha,\beta\right)
+=\int_0^{1/2}
+\frac{1}{B(\alpha+x,\beta+n-x)}
+\theta^{\alpha+x-1}(1-\theta)^{\beta+n-x-1}
+\,d\theta.$$ This is a posterior probability. It plays a role similar to a hypothesis test, but its interpretation is directly probabilistic under the Bayesian model.
+:::
+
+# Conjugate Priors
+
+This section explains why the beta prior is especially convenient for binomial data.
+
+::: {.callout-note title="Definition"}
+**Definition 27** (Conjugate prior). For a likelihood $P(\mathcal D\mid \boldsymbol\theta)$, a prior $P(\boldsymbol\theta)$ is called a **conjugate prior** if the posterior distribution $P(\boldsymbol\theta\mid \mathcal D)$ belongs to the same distribution family as the prior.
+:::
+
+::: {.callout-note title="Example"}
+**Example 28** (Beta-binomial conjugacy). For binomial data, $$P(x\mid n,\theta)={n\choose x}\theta^x(1-\theta)^{n-x},$$ the beta prior $$\theta\sim \operatorname{Beta}(\alpha,\beta)$$ is conjugate because the posterior is again beta: $$\theta\mid x,n\sim \operatorname{Beta}(\alpha+x,\beta+n-x).$$
+:::
+
+::: {.callout-tip title="Solution"}
+The posterior is obtained by multiplying the likelihood and prior: $$\theta^x(1-\theta)^{n-x}\theta^{\alpha-1}(1-\theta)^{\beta-1}
+=\theta^{\alpha+x-1}(1-\theta)^{\beta+n-x-1}.$$ This has the beta form, so the beta prior is conjugate to the binomial likelihood.
+:::
+
+::: {.callout-tip title="Key idea"}
+Why conjugacy helps When the prior is conjugate, we can update parameters without recomputing the full integral every time. In the beta-binomial case, $$(\alpha,\beta) \longrightarrow (\alpha+x,\beta+n-x).$$ This makes Bayesian updating fast and interpretable.
+:::
+
+For many likelihoods in the exponential family, conjugate priors also exist. For example, the conjugate prior for the mean of a normal distribution with known variance is also normal.
+
+# MAP versus MLE
+
+This section compares maximum likelihood estimation with maximum a posteriori estimation.
+
+Suppose $\boldsymbol\theta$ denotes model parameters and $$\mathcal D=\{(\mathbf{x}_i,\mathbf{y}_i):i=1,\ldots,N\}$$ denotes observed data. The likelihood is $$P(\mathcal D\mid \boldsymbol\theta).$$ The MLE is $$\widehat{\boldsymbol\theta}_{\mathrm{MLE}}
+=\arg\max_{\boldsymbol\theta}P(\mathcal D\mid \boldsymbol\theta)
+=\arg\max_{\boldsymbol\theta}\log P(\mathcal D\mid \boldsymbol\theta).$$
+
+In Bayesian statistics, after choosing a prior $P(\boldsymbol\theta)$, the posterior is $$P(\boldsymbol\theta\mid \mathcal D)
+=\frac{P(\mathcal D\mid \boldsymbol\theta)P(\boldsymbol\theta)}{P(\mathcal D)}.$$ The MAP estimator is $$\widehat{\boldsymbol\theta}_{\mathrm{MAP}}
+=\arg\max_{\boldsymbol\theta} P(\boldsymbol\theta\mid \mathcal D).$$ Since $P(\mathcal D)$ does not depend on $\boldsymbol\theta$, $$\widehat{\boldsymbol\theta}_{\mathrm{MAP}}
+=\arg\max_{\boldsymbol\theta} P(\mathcal D\mid \boldsymbol\theta)P(\boldsymbol\theta)
+=\arg\max_{\boldsymbol\theta}\left\{\log P(\mathcal D\mid \boldsymbol\theta)+\log P(\boldsymbol\theta)\right\}.$$
+
+::: {.callout-tip title="Key idea"}
+Comparison $$\text{MLE: maximize likelihood only.}$$ $$\text{MAP: maximize likelihood plus prior information.}$$ The prior term $\log P(\boldsymbol\theta)$ can be viewed as a regularization term.
+:::
+
+## MAP for the Mean of a Normal Distribution
+
+This subsection derives a normal-normal Bayesian estimator.
+
+::: {.callout-note title="Example"}
+**Example 29** (MAP for $\mu$ with known variance). Suppose $$x_1,\ldots,x_N$$ are observed from $$X_i\mid \mu \sim \operatorname{Normal}(\mu,\sigma^2),$$ where $\sigma^2$ is known. Assume the prior $$\mu\sim \operatorname{Normal}(\mu_0,\sigma_0^2).$$ Find the MAP estimate of $\mu$.
+:::
+
+::: {.callout-tip title="Solution"}
+The likelihood is $$P(\mathcal D\mid \mu)
+=\prod_{i=1}^N \frac{1}{\sqrt{2\pi}\sigma}
+\exp\left\{-\frac{(x_i-\mu)^2}{2\sigma^2}\right\}.$$ The prior density is $$P(\mu)=\frac{1}{\sqrt{2\pi}\sigma_0}
+\exp\left\{-\frac{(\mu-\mu_0)^2}{2\sigma_0^2}\right\}.$$ The MAP estimate maximizes the posterior, equivalently minimizes the negative log-posterior: $$\widehat\mu_{\mathrm{MAP}}
+=\arg\min_\mu \left\{
+\frac{1}{2\sigma_0^2}(\mu-\mu_0)^2
++\sum_{i=1}^N \frac{1}{2\sigma^2}(x_i-\mu)^2
+\right\}.$$ Differentiate with respect to $\mu$: $$\frac{\mu-\mu_0}{\sigma_0^2}
++\sum_{i=1}^N \frac{\mu-x_i}{\sigma^2}=0.$$ Thus $$\mu\left(\frac{1}{\sigma_0^2}+\frac{N}{\sigma^2}\right)
+=\frac{\mu_0}{\sigma_0^2}+\frac{\sum_{i=1}^N x_i}{\sigma^2}.$$ Solving gives $$\widehat\mu_{\mathrm{MAP}}
+=\frac{\sigma_0^2\sum_{i=1}^N x_i+\sigma^2\mu_0}{N\sigma_0^2+\sigma^2}.$$ Equivalently, $$\widehat\mu_{\mathrm{MAP}}
+=\frac{N\sigma_0^2}{N\sigma_0^2+\sigma^2}\overline x
++\frac{\sigma^2}{N\sigma_0^2+\sigma^2}\mu_0.$$ So the MAP estimate is a weighted average of the sample mean and the prior mean.
+
+The posterior variance is $$\operatorname{Var}(\mu\mid \mathbf{x})
+=\left(\frac{1}{\sigma_0^2}+\frac{N}{\sigma^2}\right)^{-1}
+=\frac{\sigma^2\sigma_0^2}{\sigma^2+N\sigma_0^2}.$$ As $\sigma_0^2\to \infty$, the prior becomes very diffuse and $$\widehat\mu_{\mathrm{MAP}}\to \overline x=\widehat\mu_{\mathrm{MLE}}.$$
+:::
+
+# Practice Problems
+
+This section gives additional problems that reinforce the main estimation methods.
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 30** (Method of moments for exponential data). Suppose $$X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Exponential}(\lambda),$$ with density $f(x\mid \lambda)=\lambda e^{-\lambda x}$ for $x\geq 0$. Find the method of moments estimator of $\lambda$.
+:::
+
+::: {.callout-tip title="Solution"}
+For $X\sim \operatorname{Exponential}(\lambda)$, $$\mathbb{E}[X]=\frac{1}{\lambda}.$$ The first sample moment is $m_1=\overline X$. Equating sample and population moments gives $$\overline X=\frac{1}{\lambda}.$$ Thus $$\widetilde\lambda_{\mathrm{MOM}}=\frac{1}{\overline X}.$$
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 31** (MLE for exponential data). For the same exponential model, $$X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Exponential}(\lambda),$$ find the MLE of $\lambda$.
+:::
+
+::: {.callout-tip title="Solution"}
+The likelihood is $$L(\lambda\mid \mathbf{x})=\prod_{i=1}^n \lambda e^{-\lambda x_i}
+=\lambda^n e^{-\lambda\sum_{i=1}^n x_i}.$$ The log-likelihood is $$\ell(\lambda\mid \mathbf{x})=n\log\lambda-\lambda\sum_{i=1}^n x_i.$$ Differentiating gives $$\frac{\partial \ell}{\partial \lambda}=\frac{n}{\lambda}-\sum_{i=1}^n x_i.$$ Setting this equal to zero gives $$\widehat\lambda_{\mathrm{MLE}}=\frac{n}{\sum_{i=1}^n x_i}=\frac{1}{\overline x}.$$ In this model, the MOM estimator and MLE coincide.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 32** (MLE invariance). Suppose $\widehat\lambda_{\mathrm{MLE}}=1/\overline X$ is the MLE for the exponential rate $\lambda$. Find the MLE for the mean $\theta=1/\lambda$.
+:::
+
+::: {.callout-tip title="Solution"}
+By the invariance property, $$\widehat\theta_{\mathrm{MLE}}=\frac{1}{\widehat\lambda_{\mathrm{MLE}}}
+=\overline X.$$
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 33** (Bayesian beta-binomial update). Suppose $\theta\sim \operatorname{Beta}(2,2)$ and then $n=10$ coin tosses produce $x=7$ heads. Find the posterior distribution, posterior mean, and posterior mode.
+:::
+
+::: {.callout-tip title="Solution"}
+The posterior is $$\theta\mid \mathcal D\sim \operatorname{Beta}(2+7,2+10-7)=\operatorname{Beta}(9,5).$$ The posterior mean is $$\mathbb{E}[\theta\mid \mathcal D]=\frac{9}{9+5}=\frac{9}{14}.$$ The posterior mode is $$\frac{9-1}{9+5-2}=\frac{8}{12}=\frac{2}{3}.$$
+:::
+
+# Summary
+
+This section developed the first set of tools for finding point estimators.
+
+::: {.callout-tip title="Key idea"}
+
+1.  A point estimator is a statistic used to estimate an unknown parameter.
+
+2.  Method of moments estimates parameters by matching sample moments to population moments.
+
+3.  Maximum likelihood estimation chooses the parameter value that makes the observed data most likely.
+
+4.  The log-likelihood is usually easier to optimize than the likelihood.
+
+5.  MLEs satisfy the invariance property: the MLE of $g(\theta)$ is $g(\widehat\theta)$.
+
+6.  Bayesian estimation combines prior information with the likelihood to form a posterior distribution.
+
+7.  MAP estimation maximizes the posterior; posterior mean and posterior mode are both common Bayesian point estimators.
+
+8.  Conjugate priors make Bayesian updating algebraically simple, as in the beta-binomial model.
+:::
+
+# References
+
+These notes follow the course lecture slides for MATH 5010 and standard references including Casella and Berger, *Statistical Inference*; Wasserman, *All of Statistics*; ProbabilityCourse.com; Penn State STAT 415; Harvard Stat 110; and online notes on mathematical statistics.

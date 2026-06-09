@@ -1,0 +1,862 @@
+---
+title: "Chapter 1: Basic Probability"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+---
+
+# Basic Probability
+
+This chapter introduces the language of probability used throughout MATH 5010. Events are sets, probability is a function on events, and conditional probability is the basic operation for updating uncertainty after new information is observed.
+
+ 
+
+**Topics.** Set theory; probability spaces; counting; conditional probability; independence; total probability; Bayes' theorem; classical examples and paradoxes.
+
+## Why Probability Theory?
+
+Probability theory gives a mathematical language for uncertainty. In statistics, machine learning, scientific experiments, and data analysis, we often observe only partial information about a system. Probability provides a model for possible outcomes, while statistical inference uses observed data to learn about the model.
+
+::: {.callout-tip title="Learning box"}
+Main distinction
+
+-   **Probability:** assume a probability model is known, and use it to predict the behavior of data.
+
+-   **Statistical inference:** observe data, and use the data to infer an unknown probability model or its parameters.
+:::
+
+In this section, we build the foundational objects of probability theory:
+
+1.  set theory terminology;
+
+2.  sample spaces, events, and probability measures;
+
+3.  classical counting methods;
+
+4.  conditional probability and independence;
+
+5.  Bayes' theorem and its applications.
+
+## Set Theory Terminology Review
+
+The goal of this section is to review the set language that will become the language of events in probability.
+
+Probability begins with sets. The set of all possible outcomes is called the sample space, and events are subsets of the sample space. Therefore, set operations become event operations.
+
+### Basic set operations
+
+This subsection introduces the basic operations that translate English statements such as "not", "or", and "and" into set notation.
+
+Let $S$ be a universal set, and let $A,B\subseteq S$.
+
+::: {.definition}
+**Definition 1** (Complement, union, intersection, and difference). $$\begin{aligned}
+A^c &= S\setminus A && \text{the complement of $A$; this means ``not $A$''},\\
+A\cup B &= \{x\in S: x\in A \text{ or } x\in B\} && \text{the union; this means ``$A$ or $B$''},\\
+A\cap B &= \{x\in S: x\in A \text{ and } x\in B\} && \text{the intersection; this means ``$A$ and $B$''},\\
+A\setminus B &= \{x\in S: x\in A \text{ and } x\notin B\} && \text{the difference.}
+\end{aligned}$$
+:::
+
+
+### Algebra of sets
+
+This subsection records the algebraic rules that allow us to rewrite complicated events in simpler equivalent forms.
+
+The following identities are used constantly in probability.
+
+::: {.proposition}
+**Proposition 2** (Properties of set operations). *For sets $A,B,C\subseteq S$:*
+
+1.  ***Commutativity:** $$A\cup B=B\cup A,\qquad A\cap B=B\cap A.$$*
+
+2.  ***Associativity:** $$(A\cup B)\cup C=A\cup(B\cup C),\qquad (A\cap B)\cap C=A\cap(B\cap C).$$*
+
+3.  ***Distributive laws:** $$A\cup(B\cap C)=(A\cup B)\cap(A\cup C),$$ $$A\cap(B\cup C)=(A\cap B)\cup(A\cap C).$$*
+
+4.  ***DeMorgan's laws:** $$(A\cup B)^c=A^c\cap B^c,\qquad (A\cap B)^c=A^c\cup B^c.$$*
+:::
+
+::: {.remark}
+*Remark 3*. In probability language, DeMorgan's laws say:
+
+-   "not $(A$ or $B)$" is the same as "not $A$ and not $B$";
+
+-   "not $(A$ and $B)$" is the same as "not $A$ or not $B$".
+:::
+
+### Disjoint events, partitions, cardinality, and countability
+
+This subsection introduces disjointness, partitions, and sizes of sets, which are especially important for additivity and counting.
+
+::: {.definition}
+**Definition 4** (Pairwise disjoint). A collection of sets $A_1,A_2,\ldots$ is called **pairwise disjoint** or **mutually exclusive** if $$A_i\cap A_j=\varnothing\qquad \text{for all } i\ne j.$$
+:::
+
+::: {.definition}
+**Definition 5** (Partition). A collection $A_1,A_2,\ldots$ is called a **partition** of $S$ if
+
+1.  $A_i\cap A_j=\varnothing$ for all $i\ne j$;
+
+2.  $\displaystyle \bigcup_{i=1}^{\infty} A_i=S$.
+:::
+
+
+::: {.definition}
+**Definition 6** (Cardinality and countability). The notation $|A|$ denotes the number of elements in $A$, called the **cardinality** of $A$. A set $S$ is **countable** if its cardinality is less than or equal to the cardinality of the natural numbers $\mathbb{N}$.
+:::
+
+::: {.example}
+**Example 7** (Partition of $[0,\infty)$). Let $$A_i=[i,i+1),\qquad i=0,1,2,\ldots.$$ Then the sets $A_i$ are pairwise disjoint and $$[0,\infty)=\bigcup_{i=0}^{\infty} A_i.$$ Thus $\{A_i\}_{i=0}^{\infty}$ is a countable partition of $[0,\infty)$.
+
+::: {.callout-note title="Solution" collapse="true"}
+The intervals $A_i=[i,i+1)$ do not overlap because each real number belongs to at most one such half-open interval. Every $x\ge 0$ has a unique integer part $i=\lfloor x\rfloor$, so $x\in [i,i+1)$. Therefore the intervals are pairwise disjoint and their union is exactly $[0,\infty)$.
+:::
+:::
+
+::: {.example}
+**Example 8** (Rational numbers). The set of rational numbers $\mathbb{Q}$ is countable. One can list rational numbers systematically by arranging fractions $p/q$ in a two-dimensional grid and moving diagonally through the grid while skipping duplicates.
+
+::: {.callout-note title="Solution" collapse="true"}
+A rational number can be written as $p/q$ with $p\in\mathbb Z$ and $q\in\mathbb N$. The pairs $(p,q)$ form a countable grid, and a countable union of countable rows is countable. Removing duplicate fractions such as $1/2=2/4$ leaves a subset of a countable set, so $\mathbb Q$ is countable.
+:::
+:::
+
+## Sample Spaces and Events
+
+The goal of this section is to identify the universe of possible outcomes and the events whose probabilities we want to compute.
+
+::: {.definition}
+**Definition 9** (Experiment, sample space, outcome, event). An **experiment** is a repeatable procedure with a set of possible results. Each possible result is called an **outcome**, **realization**, or **element**. The **sample space** is $$S=\{\text{all possible outcomes of the experiment}\}.$$ An **event** is a subset of $S$.
+:::
+
+::: {.example}
+**Example 10** (Flipping a coin once). If the experiment is flipping a coin once, then $$S=\{H,T\},$$ where $H$ means heads and $T$ means tails. The event "heads occurs" is $\{H\}$.
+
+::: {.callout-note title="Solution" collapse="true"}
+There are two possible outcomes, heads or tails, so the sample space is $S=\{H,T\}$. The event that heads occurs is the subset containing only the outcome $H$, namely $\{H\}$.
+:::
+:::
+
+::: {.example}
+**Example 11** (Rolling a six-sided die once). If the experiment is rolling a six-sided die once, then $$S=\{1,2,3,4,5,6\}.$$ The event "the result is even" is $$E=\{2,4,6\}.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+For a fair die, each singleton has probability $1/6$. The event $E=\{2,4,6\}$ contains three equally likely outcomes, so $\mathbb{P}(E)=3(1/6)=1/2$.
+:::
+:::
+
+::: {.example}
+**Example 12** (Tossing a coin until heads appears). Toss a coin repeatedly until heads appears, and record the number of tosses needed. Then $$S=\{1,2,3,\ldots\}.$$ This sample space is infinite, countable, and discrete.
+
+::: {.callout-note title="Solution" collapse="true"}
+The first head could occur on toss $1$, toss $2$, toss $3$, and so on. Thus the possible recorded values are all positive integers, giving $S=\{1,2,3,\ldots\}$.
+:::
+:::
+
+::: {.example}
+**Example 13** (Dropping a point in a disk). Suppose a point is randomly dropped inside the unit disk. The sample space is $$S=\{(x_1,x_2)\in \mathbb{R}^2: x_1^2+x_2^2<1\}.$$ This sample space is uncountable and continuous.
+
+
+::: {.callout-note title="Solution" collapse="true"}
+A point in the plane is represented by coordinates $(x_1,x_2)$. Being inside the unit disk means its squared distance from the origin is less than $1$, so $x_1^2+x_2^2<1$. Hence the sample space is the open unit disk.
+:::
+:::
+
+::: {.example}
+**Example 14** (Brownian motion sample space). A Brownian motion experiment observes the path of a particle suspended in a liquid or gaseous medium. The outcome is not a single number, but a continuous path. A simplified way to write the sample space is $$S=\{\text{all continuous paths } x:[0,\infty)\to \mathbb{R}^d\}.$$ This sample space is continuous but not finite-dimensional.
+
+::: {.callout-note title="Solution" collapse="true"}
+For Brownian motion, one observation is an entire function of time rather than a finite vector of measurements. Therefore the sample space is naturally a set of continuous paths, which is infinite-dimensional in spirit.
+:::
+:::
+
+::: {.example}
+**Example 15** (Infinitely many coin tosses). If we toss a coin infinitely many times, then an outcome is an infinite sequence such as $$HHHTHTTHT\cdots.$$ Thus $$S=\{H,T\}^{\mathbb{N}}.$$ This sample space is uncountable. It can be connected conceptually to binary expansions of numbers in $[0,1]$.
+
+::: {.callout-note title="Solution" collapse="true"}
+Each outcome chooses either $H$ or $T$ at every positive integer time. Therefore an outcome is an element of $\{H,T\}^{\mathbb N}$. Since infinite binary sequences can be matched with binary expansions of numbers in $[0,1]$ up to the usual non-unique endpoints, this space is uncountable.
+:::
+:::
+
+::: {.callout-warning title="Warning"}
+Important point A sample space can be finite, countably infinite, uncountable, geometric, functional, or infinite-dimensional. The probability framework is designed to handle all of these examples in one language.
+:::
+
+## Probability Measures and Probability Spaces
+
+The goal of this section is to define probability rigorously as a function on a suitable collection of events.
+
+The modern axiomatic definition of probability was formalized by Andrey Kolmogorov in the 1930s. The core idea is that probability is a function assigning numbers to events.
+
+### Sigma-algebras
+
+This subsection explains why we need a designated collection of measurable events before assigning probabilities.
+
+Before defining a probability measure, we need to specify which subsets are allowed to be events. In finite sample spaces, every subset can be treated as an event. In uncountable spaces such as intervals or disks, not every subset behaves well enough to have a probability assigned to it. This motivates the notion of a sigma-algebra.
+
+::: {.definition}
+**Definition 16** (Sigma-algebra). Let $S$ be a sample space. A **$\sigma$-algebra** $\mathcal{B}$ on $S$ is a collection of subsets of $S$ satisfying:
+
+1.  $S\in \mathcal{B}$ and $\varnothing\in\mathcal{B}$;
+
+2.  if $A\in\mathcal{B}$, then $A^c\in\mathcal{B}$;
+
+3.  if $A_1,A_2,\ldots\in\mathcal{B}$, then $\displaystyle \bigcup_{i=1}^{\infty}A_i\in\mathcal{B}$.
+
+The sets in $\mathcal{B}$ are called **measurable sets**. The pair $(S,\mathcal{B})$ is called a **measurable space**.
+:::
+
+::: {.remark}
+*Remark 17*. This course does not focus on measure theory. The main practical idea is: $\mathcal{B}$ is the collection of events to which the probability function is allowed to assign probabilities.
+:::
+
+### Kolmogorov axioms
+
+This subsection states the three axioms that define probability in the modern mathematical framework.
+
+::: {.definition}
+**Definition 18** (Probability measure). Let $S$ be a sample space and let $\mathcal{B}$ be a $\sigma$-algebra of subsets of $S$. A **probability measure** is a function $$\mathbb{P}:\mathcal{B}\to \mathbb{R}$$ satisfying the following three axioms:
+
+1.  **Nonnegativity:** $\mathbb{P}(A)\ge 0$ for all $A\in\mathcal{B}$.
+
+2.  **Normalization:** $\mathbb{P}(S)=1$.
+
+3.  **Countable additivity:** if $A_i\cap A_j=\varnothing$ for all $i\ne j$, then $$\mathbb{P}\left(\bigcup_{i=1}^{\infty}A_i\right)=\sum_{i=1}^{\infty}\mathbb{P}(A_i).$$
+
+The triple $(S,\mathcal{B},\mathbb{P})$ is called a **probability space**.
+:::
+
+### Consequences of the axioms
+
+This subsection derives the probability rules that we will use repeatedly throughout the course.
+
+::: {.proposition}
+**Proposition 19** (Basic properties of probability). *Let $(S,\mathcal{B},\mathbb{P})$ be a probability space and let $A,B\in\mathcal{B}$. Then:*
+
+1.  *$\mathbb{P}(\varnothing)=0$;*
+
+2.  *$0\le \mathbb{P}(A)\le 1$;*
+
+3.  *if $A\subseteq B$, then $\mathbb{P}(A)\le \mathbb{P}(B)$;*
+
+4.  *$\mathbb{P}(A^c)=1-\mathbb{P}(A)$;*
+
+5.  *$\mathbb{P}(A\cup B)=\mathbb{P}(A)+\mathbb{P}(B)-\mathbb{P}(A\cap B)$;*
+
+6.  *$\mathbb{P}(A\cup B)\le \mathbb{P}(A)+\mathbb{P}(B)$;*
+
+7.  *$\mathbb{P}(A\cap B)\ge \mathbb{P}(A)+\mathbb{P}(B)-1$.*
+:::
+
+::: {.proof}
+*Proof.* We prove the main identities.
+
+First, $S$ and $\varnothing$ are disjoint and $S\cup\varnothing=S$. By additivity, $$1=\mathbb{P}(S)=\mathbb{P}(S\cup\varnothing)=\mathbb{P}(S)+\mathbb{P}(\varnothing)=1+\mathbb{P}(\varnothing),$$ so $\mathbb{P}(\varnothing)=0$.
+
+Next, $A$ and $A^c$ are disjoint and $A\cup A^c=S$. Therefore $$1=\mathbb{P}(S)=\mathbb{P}(A)+\mathbb{P}(A^c),$$ so $\mathbb{P}(A^c)=1-\mathbb{P}(A)$. Since probabilities are nonnegative, $\mathbb{P}(A^c)\ge0$, and hence $\mathbb{P}(A)\le1$.
+
+If $A\subseteq B$, then $B=A\cup(B\setminus A)$, and this is a disjoint union. Thus $$\mathbb{P}(B)=\mathbb{P}(A)+\mathbb{P}(B\setminus A)\ge \mathbb{P}(A).$$
+
+Finally, write $$A\cup B=A\cup(B\setminus A),$$ where the union is disjoint. Also $$B=(B\setminus A)\cup(A\cap B),$$ again disjoint. Hence $\mathbb{P}(B\setminus A)=\mathbb{P}(B)-\mathbb{P}(A\cap B)$, so $$\mathbb{P}(A\cup B)=\mathbb{P}(A)+\mathbb{P}(B)-\mathbb{P}(A\cap B).$$ The inequalities follow from $\mathbb{P}(A\cap B)\ge0$ and $\mathbb{P}(A\cup B)\le1$. ◻
+:::
+
+::: {.remark}
+*Remark 20* (Bonferroni's inequality). The inequality $$\mathbb{P}(A\cap B)\ge \mathbb{P}(A)+\mathbb{P}(B)-1$$ is a two-event version of a Bonferroni inequality. It is useful when we know two marginal probabilities but do not know the exact overlap.
+:::
+
+### Law of total probability for partitions
+
+This subsection introduces the idea that a partition lets us break an event into disjoint pieces.
+
+If $A_1,A_2,\ldots$ form a partition of $S$, then any event $B$ can be decomposed into disjoint pieces: $$B=(B\cap A_1)\cup(B\cap A_2)\cup(B\cap A_3)\cup\cdots.$$ Therefore, $$\mathbb{P}(B)=\mathbb{P}(B\cap A_1)+\mathbb{P}(B\cap A_2)+\mathbb{P}(B\cap A_3)+\cdots.$$
+
+
+## Continuity of Probability
+
+The goal of this section is to explain how probabilities behave when events grow or shrink through limits.
+
+A probability measure behaves continuously with respect to increasing and decreasing limits of events.
+
+::: {.definition}
+**Definition 21** (Increasing and decreasing sequences of events). A sequence of events $A_1,A_2,\ldots$ is called **increasing** if $$A_n\subseteq A_{n+1}\qquad \text{for all } n\ge1.$$ It is called **decreasing** if $$A_n\supseteq A_{n+1}\qquad \text{for all } n\ge1.$$ For an increasing sequence, define $$\lim_{n\to\infty} A_n=\bigcup_{n=1}^{\infty}A_n.$$ For a decreasing sequence, define $$\lim_{n\to\infty} A_n=\bigcap_{n=1}^{\infty}A_n.$$
+:::
+
+::: {.theorem}
+**Theorem 22** (Continuity of probability). *Let $(S,\mathcal{B},\mathbb{P})$ be a probability space.*
+
+1.  *If $A_n\subseteq A_{n+1}$ for all $n$, then $$\mathbb{P}\left(\bigcup_{n=1}^{\infty}A_n\right)=\lim_{n\to\infty}\mathbb{P}(A_n).$$*
+
+2.  *If $A_n\supseteq A_{n+1}$ for all $n$, then $$\mathbb{P}\left(\bigcap_{n=1}^{\infty}A_n\right)=\lim_{n\to\infty}\mathbb{P}(A_n).$$*
+
+*Equivalently, for monotone event sequences, $$\mathbb{P}\left(\lim_{n\to\infty}A_n\right)=\lim_{n\to\infty}\mathbb{P}(A_n).$$*
+:::
+
+::: {.proof}
+*Proof.* For the increasing case, define disjoint sets $$B_1=A_1,\qquad B_n=A_n\setminus A_{n-1},\quad n\ge2.$$ Then $$\bigcup_{n=1}^{\infty}A_n=\bigcup_{n=1}^{\infty}B_n$$ and the $B_n$ are pairwise disjoint. Thus $$\mathbb{P}\left(\bigcup_{n=1}^{\infty}A_n\right)=\sum_{n=1}^{\infty}\mathbb{P}(B_n)=\lim_{N\to\infty}\sum_{n=1}^{N}\mathbb{P}(B_n)=\lim_{N\to\infty}\mathbb{P}(A_N).$$ For the decreasing case, apply the increasing result to the complements $A_n^c$, since $A_n^c\subseteq A_{n+1}^c$, and use DeMorgan's law. ◻
+:::
+
+## Examples of Probability Models
+
+The goal of this section is to translate familiar random experiments into explicit probability models.
+
+### Unfair coin
+
+This subsection begins with the simplest non-equally-likely probability model.
+
+::: {.example}
+**Example 23** (Flipping an unfair coin once). Let $$S=\{H,T\}.$$ If the coin is unfair, we may assign $$\mathbb{P}(H)=p,\qquad \mathbb{P}(T)=1-p,$$ where $0\le p\le1$. This is a probability model because probabilities are nonnegative and sum to one.
+
+::: {.callout-note title="Solution" collapse="true"}
+We must assign nonnegative probabilities that sum to one. If $\mathbb{P}(H)=p$ with $0\le p\le 1$, then the only possible value for $\mathbb{P}(T)$ is $1-p$. Thus $\mathbb{P}(H)+\mathbb{P}(T)=p+(1-p)=1$.
+:::
+:::
+
+### Rolling a die
+
+This subsection shows how a finite equally likely sample space leads to probability by counting.
+
+::: {.example}
+**Example 24** (Rolling a six-sided die once). For a fair die, $$S=\{1,2,3,4,5,6\},\qquad \mathbb{P}(\{i\})=\frac16,\quad i=1,\ldots,6.$$ For the event $E=\{2,4,6\}$ of rolling an even number, $$\mathbb{P}(E)=\frac{|E|}{|S|}=\frac{3}{6}=\frac12.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+For a fair die, each singleton has probability $1/6$. The event $E=\{2,4,6\}$ contains three equally likely outcomes, so $\mathbb{P}(E)=3(1/6)=1/2$.
+:::
+:::
+
+### Dart board model
+
+This subsection gives a geometric probability model where probability is proportional to area.
+
+::: {.example}
+**Example 25** (Dart board). Suppose a circular dart board has radius $r$, and the distance between adjacent rings is $r/5$. Assume the dart always hits the board and the hit location is uniformly distributed over area.
+
+The probability of scoring $i$ points is $$\mathbb{P}(\text{scoring } i \text{ points})=\frac{\text{area of region }i}{\text{area of dart board}}.$$ For $i=1,2,3,4,5$, the ring for score $i$ has outer radius $(6-i)r/5$ and inner radius $(5-i)r/5$. Hence $$\mathbb{P}(\text{scoring } i \text{ points})
+=\frac{\pi\left((6-i)r/5\right)^2-\pi\left((5-i)r/5\right)^2}{\pi r^2}
+=\frac{(6-i)^2-(5-i)^2}{5^2}.$$
+
+
+::: {.callout-note title="Solution" collapse="true"}
+The board is assumed uniformly hit over area, so probability equals area ratio. The score-$i$ ring has area $\pi((6-i)r/5)^2-\pi((5-i)r/5)^2$. Dividing by the total area $\pi r^2$ gives $\big((6-i)^2-(5-i)^2\big)/25$.
+:::
+:::
+
+## Classical Probability and Counting
+
+The goal of this section is to compute probabilities by counting equally likely outcomes.
+
+### Classical definition of probability
+
+This subsection states the counting formula for finite equally likely sample spaces.
+
+If the outcomes of an experiment are all equally likely and the sample space is finite, probability can be computed by counting.
+
+::: {.definition}
+**Definition 26** (Classical probability). Suppose $S$ is finite and all outcomes in $S$ are equally likely. For an event $A\subseteq S$, $$\mathbb{P}(A)=\frac{|A|}{|S|}=\frac{\text{number of ways the event can happen}}{\text{total number of possible outcomes}}.$$
+:::
+
+::: {.example}
+**Example 27** (Flipping a fair coin two times). The sample space is $$S=\{HH,HT,TH,TT\}.$$ All four outcomes are equally likely. If $A$ is the event "exactly one head occurs," then $$A=\{HT,TH\},\qquad \mathbb{P}(A)=\frac{|A|}{|S|}=\frac24=\frac12.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+The four outcomes $HH,HT,TH,TT$ are equally likely. Exactly one head occurs in $HT$ and $TH$, so there are two favorable outcomes out of four total outcomes. Therefore the probability is $2/4=1/2$.
+:::
+:::
+
+### Fundamental theorem of counting
+
+This subsection explains the product rule for multi-stage choices.
+
+::: {.theorem}
+**Theorem 28** (Fundamental theorem of counting). *If operation A can be performed in $m$ different ways and operation B can be performed in $n$ different ways, then the sequence "operation A followed by operation B" can be performed in $$m\times n$$ different ways.*
+:::
+
+::: {.example}
+**Example 29** (Two-stage experiment). If a password begins with one of $26$ letters and ends with one of $10$ digits, then the number of possible passwords is $$26\times 10=260.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+Choose the first character in $26$ ways and the second character in $10$ ways. By the product rule, the total number of passwords is $26\cdot 10=260$.
+:::
+:::
+
+### Permutations
+
+This subsection studies ordered selections without replacement.
+
+::: {.definition}
+**Definition 30** (Permutation rule). The number of ways to arrange $k$ objects from a set of $n$ distinct elements, where order matters and no replacement is allowed, is $$P_k^n=\frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1).$$
+:::
+
+::: {.example}
+**Example 31** (Three-letter arrangements). From the five letters $A,B,C,D,E$, the number of ordered three-letter arrangements without repetition is $$P_3^5=\frac{5!}{(5-3)!}=5\cdot4\cdot3=60.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+There are $5$ choices for the first letter, $4$ choices for the second, and $3$ choices for the third. Therefore the total is $5\cdot4\cdot3=60$, which equals $P_3^5$.
+:::
+:::
+
+### Combinations
+
+This subsection studies unordered selections without replacement.
+
+::: {.definition}
+**Definition 32** (Combination rule). The number of ways to choose a subset of $k$ objects from $n$ distinct objects, where order does not matter and no replacement is allowed, is $$C_k^n=\binom{n}{k}=\frac{n!}{(n-k)!k!}=\frac{P_k^n}{k!}.$$
+:::
+
+::: {.example}
+**Example 33** (Committee selection). The number of ways to choose $3$ students from $10$ students for a committee is $$\binom{10}{3}=120.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+Here order does not matter: choosing Alice, Bob, and Carol is the same committee in any order. Thus the count is $\binom{10}{3}=10!/(7!3!)=120$.
+:::
+:::
+
+### Four basic counting situations
+
+This subsection organizes counting problems by whether replacement is allowed and whether order matters.
+
+::: {.text-center}
+  **Replacement?**   **Order matters?**   **Number of ways**           **Example**
+  ------------------ -------------------- ---------------------------- --------------------------------------------------------------
+  Yes                Yes                  $n^r$                        -digit codes using digits 0--9: $10^3=1000$
+  No                 Yes                  $P_r^n=\dfrac{n!}{(n-r)!}$   -letter arrangements from 5 letters
+  No                 No                   $\binom{n}{r}$               Choose 3 students from 10
+  Yes                No                   $\binom{n+r-1}{r}$           Choose 3 ice-cream scoops from 5 flavors, repetition allowed
+:::
+
+::: {.example}
+**Example 34** (Stars and bars: ice cream scoops). Choosing $3$ scoops from $5$ flavors with repetition allowed and order not important is the same as distributing $3$ identical scoops into $5$ flavor bins. The number of choices is $$\binom{5+3-1}{3}=\binom{7}{3}=35.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $x_j$ be the number of scoops of flavor $j$. We need nonnegative integer solutions to $x_1+x_2+x_3+x_4+x_5=3$. By stars and bars, the number of solutions is $\binom{3+5-1}{5-1}=\binom{7}{4}=\binom{7}{3}=35$.
+:::
+:::
+
+## Frequency Interpretation of Probability
+
+The goal of this section is to connect probability with long-run relative frequencies from repeated experiments.
+
+::: {.definition}
+**Definition 35** (Frequency definition). The probability of an event can be interpreted as the limiting relative frequency with which that event occurs in a large number of repeated trials under identical conditions: $$\mathbb{P}(A)\approx \frac{\text{number of times event $A$ occurs}}{\text{total number of repeated trials}}.$$ In the limit of many trials, this relative frequency stabilizes to the probability.
+:::
+
+::: {.example}
+**Example 36** (Coin toss frequency). If a fair coin is flipped many times, the relative frequency of heads should be close to $0.5$ in the long run. This does not mean that every short sequence must have half heads and half tails. Rather, it means that the long-run relative frequency tends to stabilize around $1/2$.
+
+::: {.callout-note title="Solution" collapse="true"}
+In a short run, the proportion of heads can deviate substantially from $1/2$. In many repeated flips of a fair coin, however, the law of large numbers says the relative frequency of heads tends to $1/2$.
+:::
+:::
+
+::: {.callout-tip title="Learning box"}
+Classical vs. frequency interpretation
+
+-   The **classical** definition is based on equally likely finite outcomes.
+
+-   The **frequency** interpretation is based on repeated experiments and long-run relative frequencies.
+:::
+
+## Conditional Probability
+
+The goal of this section is to update probabilities after new information is observed.
+
+Conditional probability is the probability of an event after we learn that another event has occurred.
+
+::: {.definition}
+**Definition 37** (Conditional probability). Let $A$ and $B$ be events with $\mathbb{P}(B)>0$. The **conditional probability of $A$ given $B$** is $$\mathbb{P}(A\mid B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}.$$
+:::
+
+::: {.remark}
+*Remark 38*. For fixed $B$ with $\mathbb{P}(B)>0$, the function $$A\mapsto \mathbb{P}(A\mid B)$$ is itself a probability measure on the same sample space. In other words, conditional probability is ordinary probability after restricting attention to the event $B$.
+:::
+
+::: {.example}
+**Example 39** (Die roll given even). Roll a fair six-sided die once. Let $$A=\{6\},\qquad B=\{2,4,6\}.$$ The event $B$ is "the result is even." We want the probability that the result is $6$ given that the result is even: $$\mathbb{P}(A\mid B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}=\frac{\mathbb{P}(\{6\})}{\mathbb{P}(\{2,4,6\})}=\frac{1/6}{3/6}=\frac13.$$
+
+::: {.callout-note title="Solution" collapse="true"}
+Conditioning on $B=\{2,4,6\}$ restricts the possible outcomes to three equally likely even results. Among these, only one result is $6$. Thus the conditional probability is $1/3$.
+:::
+:::
+
+::: {.example}
+**Example 40** (Two dice). Roll a fair six-sided die twice. Let $$A=\{\text{the first die is even}\},\qquad B=\{\text{the second die is }6\}.$$ There are $36$ equally likely ordered outcomes. We have $$\mathbb{P}(A)=\frac{18}{36}=\frac12,
+\qquad
+\mathbb{P}(B)=\frac{6}{36}=\frac16,$$ and $$\mathbb{P}(A\cap B)=\frac{3}{36}=\frac{1}{12}.$$ Thus $$\mathbb{P}(A\mid B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}=\frac{1/12}{1/6}=\frac12=\mathbb{P}(A).$$ Knowing the second die is $6$ does not change the probability that the first die is even.
+
+::: {.callout-note title="Solution" collapse="true"}
+There are $36$ equally likely ordered outcomes. Event $A$ contains $3\cdot6=18$ outcomes, event $B$ contains $6$ outcomes, and $A\cap B$ contains $(2,6),(4,6),(6,6)$, so $\mathbb{P}(A\cap B)=3/36=1/12$. Hence $\mathbb{P}(A\mid B)=(1/12)/(1/6)=1/2$.
+:::
+:::
+
+## Independence
+
+The goal of this section is to formalize when information about one event does not change the probability of another event.
+
+::: {.definition}
+**Definition 41** (Independence of two events). Two events $A$ and $B$ are called **independent** if $$\mathbb{P}(A\cap B)=\mathbb{P}(A)\mathbb{P}(B).$$
+:::
+
+::: {.proposition}
+**Proposition 42** (Independence and conditional probability). *Suppose $\mathbb{P}(A)>0$ and $\mathbb{P}(B)>0$. Then the following are equivalent:*
+
+1.  *$A$ and $B$ are independent;*
+
+2.  *$\mathbb{P}(A\mid B)=\mathbb{P}(A)$;*
+
+3.  *$\mathbb{P}(B\mid A)=\mathbb{P}(B)$.*
+:::
+
+::: {.proof}
+*Proof.* If $A$ and $B$ are independent, then $$\mathbb{P}(A\mid B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}=\frac{\mathbb{P}(A)\mathbb{P}(B)}{\mathbb{P}(B)}=\mathbb{P}(A).$$ Similarly, $\mathbb{P}(B\mid A)=\mathbb{P}(B)$. Conversely, if $\mathbb{P}(A\mid B)=\mathbb{P}(A)$, then $$\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}=\mathbb{P}(A),$$ so $\mathbb{P}(A\cap B)=\mathbb{P}(A)\mathbb{P}(B)$. ◻
+:::
+
+::: {.callout-tip title="Learning box"}
+Interpretation of independence Events $A$ and $B$ are independent if knowing that one occurred does not change the probability of the other.
+:::
+
+::: {.example}
+**Example 43** (Two dice are independent). For the two-dice example above, $$\mathbb{P}(A\cap B)=\frac{1}{12}=\frac12\cdot\frac16=\mathbb{P}(A)\mathbb{P}(B).$$ Therefore $A$ and $B$ are independent.
+
+::: {.callout-note title="Solution" collapse="true"}
+Using the previous computation, $\mathbb{P}(A\cap B)=1/12$ and $\mathbb{P}(A)\mathbb{P}(B)=(1/2)(1/6)=1/12$. Since the two quantities are equal, $A$ and $B$ are independent.
+:::
+:::
+
+::: {.callout-warning title="Warning"}
+Disjoint is not the same as independent If $A$ and $B$ are disjoint and both have positive probability, then $$\mathbb{P}(A\cap B)=0,$$ but $$\mathbb{P}(A)\mathbb{P}(B)>0.$$ Thus disjoint events with positive probabilities are not independent. Mutually exclusive means they cannot happen together. Independent means one does not provide information about the other.
+:::
+
+## Law of Total Probability and Bayes' Theorem
+
+The goal of this section is to decompose probabilities through cases and then reverse conditional probabilities using Bayes' theorem.
+
+### Law of total probability
+
+This subsection gives the finite form of total probability using a partition of the sample space.
+
+::: {.theorem}
+**Theorem 44** (Law of total probability). *Let $A_1,A_2,\ldots,A_n$ be a finite partition of $S$; that is, $$S=\bigcup_{i=1}^{n}A_i,\qquad A_i\cap A_j=\varnothing\quad \text{for }i\ne j.$$ Then, for any event $B$, $$\mathbb{P}(B)=\sum_{i=1}^{n}\mathbb{P}(B\cap A_i)=\sum_{i=1}^{n}\mathbb{P}(B\mid A_i)\mathbb{P}(A_i),$$ provided $\mathbb{P}(A_i)>0$ for all $i$ in the second expression.*
+:::
+
+::: {.proof}
+*Proof.* Since $A_1,\ldots,A_n$ partition $S$, the sets $$B\cap A_1,\ldots,B\cap A_n$$ are pairwise disjoint and their union is $B$. Hence $$\mathbb{P}(B)=\sum_{i=1}^{n}\mathbb{P}(B\cap A_i).$$ Using the definition of conditional probability, $$\mathbb{P}(B\cap A_i)=\mathbb{P}(B\mid A_i)\mathbb{P}(A_i).$$ Substituting gives the result. ◻
+:::
+
+### Bayes' theorem
+
+This subsection shows how to reverse conditional probabilities using total probability.
+
+::: {.theorem}
+**Theorem 45** (Bayes' theorem). *Let $A_1,A_2,\ldots,A_n$ be a finite partition of $S$. Suppose $\mathbb{P}(A_i)>0$ for all $i$ and $\mathbb{P}(B)>0$. Then, for each $j=1,\ldots,n$, $$\mathbb{P}(A_j\mid B)
+=\frac{\mathbb{P}(B\mid A_j)\mathbb{P}(A_j)}{\sum_{i=1}^{n}\mathbb{P}(B\mid A_i)\mathbb{P}(A_i)}.$$*
+:::
+
+::: {.proof}
+*Proof.* By conditional probability, $$\mathbb{P}(A_j\mid B)=\frac{\mathbb{P}(A_j\cap B)}{\mathbb{P}(B)}.$$ The numerator is $$\mathbb{P}(A_j\cap B)=\mathbb{P}(B\mid A_j)\mathbb{P}(A_j),$$ and by the law of total probability, $$\mathbb{P}(B)=\sum_{i=1}^{n}\mathbb{P}(B\mid A_i)\mathbb{P}(A_i).$$ Combining these identities gives Bayes' theorem. ◻
+:::
+
+::: {.callout-tip title="Learning box"}
+Prior, likelihood, posterior Bayes' theorem is often read as $$\text{posterior}\propto \text{likelihood}\times \text{prior}.$$ Here $\mathbb{P}(A_j)$ is the prior probability of hypothesis $A_j$, $\mathbb{P}(B\mid A_j)$ is the likelihood of observing evidence $B$ under hypothesis $A_j$, and $\mathbb{P}(A_j\mid B)$ is the posterior probability after observing $B$.
+:::
+
+## Applications of Bayes' Rule
+
+The goal of this section is to practice Bayes' theorem in examples where intuition can be misleading.
+
+### Medical testing example
+
+This subsection applies Bayes' theorem to a binary classification problem with sensitivity, specificity, and prevalence.
+
+::: {.example}
+**Example 46** (Testing for Covid-19). Let $$D=1 \quad \text{mean infected},\qquad D=0 \quad \text{mean not infected},$$ and $$Y=1 \quad \text{mean test positive},\qquad Y=0 \quad \text{mean test negative}.$$ The main quantities are: $$\begin{aligned}
+\text{sensitivity} &= \mathbb{P}(Y=1\mid D=1),\\
+\text{specificity} &= \mathbb{P}(Y=0\mid D=0),\\
+\text{prevalence} &= \mathbb{P}(D=1).
+\end{aligned}$$ Suppose $$\mathbb{P}(D=1)=0.01,
+\qquad
+\mathbb{P}(Y=1\mid D=1)=0.875,
+\qquad
+\mathbb{P}(Y=0\mid D=0)=0.975.$$ Then $$\mathbb{P}(Y=1\mid D=0)=1-0.975=0.025,$$ and $$\mathbb{P}(D=0)=0.99.$$ If a person tests positive, the probability that the person is truly infected is $$\begin{aligned}
+\mathbb{P}(D=1\mid Y=1)
+&=\frac{\mathbb{P}(Y=1\mid D=1)\mathbb{P}(D=1)}{\mathbb{P}(Y=1\mid D=1)\mathbb{P}(D=1)+\mathbb{P}(Y=1\mid D=0)\mathbb{P}(D=0)}\\
+&=\frac{0.875\cdot0.01}{0.875\cdot0.01+0.025\cdot0.99}\\
+&\approx 0.2612.
+\end{aligned}$$ Thus the probability is about $26\%$.
+
+Similarly, the probability that a person is infected given a negative test is $$\begin{aligned}
+\mathbb{P}(D=1\mid Y=0)
+&=\frac{\mathbb{P}(Y=0\mid D=1)\mathbb{P}(D=1)}{\mathbb{P}(Y=0\mid D=1)\mathbb{P}(D=1)+\mathbb{P}(Y=0\mid D=0)\mathbb{P}(D=0)}\\
+&=\frac{0.125\cdot0.01}{0.125\cdot0.01+0.975\cdot0.99}\\
+&\approx 0.00129.
+\end{aligned}$$ Thus the probability is about $0.13\%$.
+
+::: {.callout-note title="Solution" collapse="true"}
+Apply Bayes' theorem with the disease status as the partition. The positive predictive probability is approximately $0.2612$, so a positive test gives about a $26\%$ chance of infection under these assumptions. The negative-test infection probability is about $0.00129$, or $0.13\%$.
+:::
+:::
+
+::: {.callout-warning title="Warning"}
+Base-rate effect Even with a good test, a positive result may not mean the person is very likely infected when the disease prevalence is low. Bayes' theorem correctly combines test accuracy with the base rate.
+:::
+
+### Monty Hall problem
+
+This subsection uses total probability to explain why switching doors is advantageous.
+
+::: {.example}
+**Example 47** (Monty Hall problem). There are three doors. Behind one door is a prize, and behind the other two doors are goats. You first choose one door. The host, who knows where the prize is, opens one of the other doors and shows a goat. You are then offered the chance to switch. Should you switch?
+
+Let $$C=\{\text{the first choice is correct}\},$$ so $\mathbb{P}(C)=1/3$ and $\mathbb{P}(C^c)=2/3$. Let $$S=\{\text{win after switching}\},\qquad T=\{\text{win without switching}\}.$$ If your first choice is correct, switching loses, so $\mathbb{P}(S\mid C)=0$. If your first choice is incorrect, switching wins, so $\mathbb{P}(S\mid C^c)=1$. Therefore $$\mathbb{P}(S)=\mathbb{P}(S\mid C)\mathbb{P}(C)+\mathbb{P}(S\mid C^c)\mathbb{P}(C^c)
+=0\cdot\frac13+1\cdot\frac23=\frac23.$$ Similarly, $$\mathbb{P}(T)=\mathbb{P}(T\mid C)\mathbb{P}(C)+\mathbb{P}(T\mid C^c)\mathbb{P}(C^c)
+=1\cdot\frac13+0\cdot\frac23=\frac13.$$ **Conclusion:** you should switch.
+
+
+::: {.callout-note title="Solution" collapse="true"}
+Switching wins exactly when the original choice was wrong. The original choice is wrong with probability $2/3$, so switching wins with probability $2/3$. Staying wins exactly when the original choice was correct, which has probability $1/3$.
+:::
+:::
+
+### Bayesian inference example
+
+This subsection shows how data update prior beliefs into posterior probabilities.
+
+::: {.example}
+**Example 48** (Can someone always toss heads?). Suppose I tell you that I can toss a coin so that it always comes up heads. You are initially $95\%$ certain that I am lying. Then I toss a coin $5$ times in front of you and get heads every time. How certain are you now that I am lying?
+
+Define two hypotheses: $$H_1=\{\text{I am lying; the coin is fair}\},
+\qquad
+H_2=\{\text{I can always toss heads}\}.$$ The prior probabilities are $$\mathbb{P}(H_1)=0.95,
+\qquad
+\mathbb{P}(H_2)=0.05.$$ Let the data be $$D=\{\text{5 tosses and 5 heads}\}.$$ Under $H_1$, the coin is fair, so by independence, $$\mathbb{P}(D\mid H_1)=\left(\frac12\right)^5.$$ Under $H_2$, heads always occurs, so $$\mathbb{P}(D\mid H_2)=1.$$ By Bayes' theorem, $$\begin{aligned}
+\mathbb{P}(H_1\mid D)
+&=\frac{\mathbb{P}(D\mid H_1)\mathbb{P}(H_1)}{\mathbb{P}(D\mid H_1)\mathbb{P}(H_1)+\mathbb{P}(D\mid H_2)\mathbb{P}(H_2)}\\
+&=\frac{(0.5)^5(0.95)}{(0.5)^5(0.95)+1(0.05)}\\
+&\approx 0.3725.
+\end{aligned}$$ After observing five heads, your probability that I am lying decreases from $95\%$ to about $37\%$.
+
+::: {.callout-note title="Solution" collapse="true"}
+The data $D$ are much more likely under $H_2$ than under $H_1$, because $\mathbb{P}(D\mid H_2)=1$ while $\mathbb{P}(D\mid H_1)=2^{-5}$. Bayes' theorem gives $\mathbb{P}(H_1\mid D)\approx0.3725$, so the belief that the person is lying drops to about $37\%$.
+:::
+:::
+
+::: {.remark}
+*Remark 49* (Further Bayes examples). Bayes' rule is used in many applications, including spam filtering, medical diagnosis, Bayesian inference, and classification. A common machine learning example is Naive Bayes, where features are assumed conditionally independent given the class label.
+:::
+
+## Conditional Independence
+
+The goal of this section is to distinguish ordinary independence from independence after conditioning on additional information.
+
+Independence and conditional independence are related concepts, but neither one automatically implies the other.
+
+::: {.definition}
+**Definition 50** (Conditional independence of events). Two events $A$ and $B$ are **conditionally independent given $C$** if $\mathbb{P}(C)>0$ and $$\mathbb{P}(A\cap B\mid C)=\mathbb{P}(A\mid C)\mathbb{P}(B\mid C).$$
+:::
+
+::: {.definition}
+**Definition 51** (Conditional independence of random variables). Random variables $X$ and $Y$ are **conditionally independent given $Z$** if, for all relevant $x,y,z$, $$F_{X,Y\mid Z}(x,y\mid z)=F_{X\mid Z}(x\mid z)F_{Y\mid Z}(y\mid z).$$
+:::
+
+::: {.remark}
+*Remark 52*. There is no direct implication between independence and conditional independence:
+
+-   $A$ and $B$ can be independent but become dependent after conditioning on $C$.
+
+-   $A$ and $B$ can be dependent but become independent after conditioning on $C$.
+
+This point is fundamental in statistics, causal inference, and machine learning.
+:::
+
+## Paradoxes and Cautions
+
+The goal of this section is to see how conditioning, aggregation, and selection can lead to surprising conclusions.
+
+This section is not just about formulas. Probability is also about learning how intuition can fail.
+
+### Simpson's paradox
+
+This subsection illustrates how aggregation can reverse comparisons that hold within subgroups.
+
+::: {.example}
+**Example 53** (Kidney stone treatment). Consider two treatments A and B for kidney stones. The success rates by stone size are:
+
+::: {.text-center}
+  **Stone size**     **Treatment A**     **Treatment B**
+  ---------------- ------------------- -------------------
+  Small stones       $93\%\ (81/87)$    $87\%\ (234/270)$
+  Large stones      $73\%\ (192/263)$    $69\%\ (55/80)$
+  Both              $78\%\ (273/350)$   $83\%\ (289/350)$
+:::
+
+Treatment A has a higher success rate for both small stones and large stones separately. However, treatment B has a higher overall success rate. This reversal is called **Simpson's paradox**. It happens because the two treatments were applied to different mixtures of small and large stones.
+
+::: {.callout-note title="Solution" collapse="true"}
+Within each stone-size group, Treatment A has a higher success rate: $93\%>87\%$ for small stones and $73\%>69\%$ for large stones. Overall, Treatment B has $289/350\approx83\%$ while Treatment A has $273/350\approx78\%$. The reversal occurs because Treatment A was used more often on large stones, which are harder to treat, while Treatment B was used more often on small stones.
+:::
+:::
+
+::: {.callout-tip title="Learning box"}
+Lesson from Simpson's paradox Aggregated data can tell a different story from stratified data. When comparing groups, always ask whether there are important hidden variables or confounders.
+:::
+
+::: {.example}
+**Example 54** (Baseball batting averages). A similar reversal can happen with batting averages. For example, one batter may have a higher batting average in each of two years separately, while another batter has a higher combined batting average because the numbers of at-bats are distributed differently across the years.
+
+::: {.callout-note title="Solution" collapse="true"}
+The combined batting average is a weighted average, with weights determined by the number of at-bats in each year. Different weights can reverse the comparison even if one player is better in each separate year.
+:::
+:::
+
+### Berkson's paradox
+
+This subsection illustrates how conditioning on selection can create spurious negative association.
+
+::: {.example}
+**Example 55** (Selection bias). Suppose talent and attractiveness are uncorrelated in the general population. Now suppose we only sample celebrities, where becoming a celebrity may require some combination of talent and attractiveness. In this restricted sample, talent and attractiveness may appear negatively correlated: among celebrities, someone with lower attractiveness may need higher talent to enter the sample, and vice versa.
+
+This phenomenon is an example of **Berkson's paradox**, a selection-bias effect caused by conditioning on membership in a selected group.
+
+::: {.callout-note title="Solution" collapse="true"}
+Conditioning on being a celebrity changes the population. If celebrity status tends to require a high combined level of talent and attractiveness, then within the selected celebrity group, very high talent can compensate for lower attractiveness and vice versa. This creates a negative association in the selected sample even if none exists in the original population.
+:::
+:::
+
+::: {.callout-warning title="Warning"}
+Probability intuition warning Monty Hall, Simpson's paradox, and Berkson's paradox all show the same message: conditioning changes the probability space. Many mistakes come from forgetting what information has been conditioned on.
+:::
+
+## Frequentist and Bayesian Views
+
+The goal of this section is to compare two common interpretations of probability used throughout statistics.
+
+There are different philosophical interpretations of probability. Both are useful in statistics.
+
+::: {.callout-tip title="Learning box"}
+Two interpretations
+
+-   **Frequentist view:** probability is interpreted as a limiting frequency over repetitions in identical situations.
+
+-   **Bayesian/subjective view:** probability quantifies degree of belief or uncertainty.
+:::
+
+One subjective interpretation is that the probability of an event $E$ is the price one is just willing to pay to enter a game in which one wins one unit of money if $E$ is true.
+
+::: {.example}
+**Example 56** (Betting interpretation). If I believe a coin is fair and I win $1$ unit if heads appears, then I would pay $1/2$ unit to enter the bet. This corresponds to assigning probability $1/2$ to heads.
+
+::: {.callout-note title="Solution" collapse="true"}
+If the payoff is $1$ unit when heads occurs and the subjective probability of heads is $1/2$, then the fair price is expected payoff $(1/2)\cdot1=1/2$. Paying more than $1/2$ would be unfavorable, while paying less would be favorable.
+:::
+:::
+
+## Brief History of Probability
+
+The goal of this section is to place the mathematical ideas in historical context.
+
+-   Ideas about chance can be traced back to ancient civilizations and Greek philosophy.
+
+-   Modern probability began to develop in the study of games of chance. Gerolamo Cardano wrote *Book on Games of Chance* in the sixteenth century.
+
+-   Blaise Pascal and Pierre de Fermat laid groundwork for probability theory in the 1650s through problems about gambling and fair division of stakes.
+
+-   Jacob Bernoulli's work, published in 1713, developed early versions of the law of large numbers.
+
+-   Pierre-Simon Laplace further developed probability and Bayesian ideas in the early nineteenth century.
+
+-   In the early twentieth century, R. A. Fisher developed many statistical methods for experimental design and data analysis.
+
+-   Computational probability, including Monte Carlo simulation, became central with the development of modern computing.
+
+-   Kolmogorov formalized probability theory using measure-theoretic axioms in the 1930s, leading to modern probability spaces, martingales, and stochastic processes.
+
+## Practice Problems
+
+The goal of this section is to give students a chance to check understanding through short computations.
+
+::: {.exercise}
+**Practice Problem 57** (Set operations). Let $S=\{1,2,3,4,5,6,7,8,9,10\}$, $A=\{1,2,3,4,5\}$, and $B=\{2,4,6,8,10\}$. Find $A^c$, $A\cup B$, $A\cap B$, and $A\setminus B$.
+
+::: {.callout-note title="Solution" collapse="true"}
+Since $S=\{1,2,3,4,5,6,7,8,9,10\}$ and $A=\{1,2,3,4,5\}$, $$A^c=\{6,7,8,9,10\}.$$ Also, $$A\cup B=\{1,2,3,4,5,6,8,10\},$$ $$A\cap B=\{2,4\},$$ and $$A\setminus B=\{1,3,5\}.$$
+:::
+:::
+
+::: {.exercise}
+**Practice Problem 58** (Counting). How many passwords of length $4$ can be made using digits $0$--$9$ if repetition is allowed? How many if repetition is not allowed?
+
+::: {.callout-note title="Solution" collapse="true"}
+With repetition allowed, each of the $4$ positions has $10$ choices, so the number is $$10^4=10000.$$ Without repetition, the choices are $10,9,8,7$, so the number is $$10\cdot9\cdot8\cdot7=5040.$$
+:::
+:::
+
+::: {.exercise}
+**Practice Problem 59** (Conditional probability). Roll a fair die once. Given that the result is at least $4$, what is the probability that the result is even?
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $B=\{4,5,6\}$ be the event that the result is at least $4$, and let $A=\{2,4,6\}$ be the event that the result is even. Then $$A\cap B=\{4,6\}.$$ Thus $$\mathbb{P}(A\mid B)=\frac{|A\cap B|}{|B|}=\frac{2}{3}.$$
+:::
+:::
+
+::: {.exercise}
+**Practice Problem 60** (Independence). Let $A$ and $B$ be events with $\mathbb{P}(A)=0.4$, $\mathbb{P}(B)=0.5$, and $\mathbb{P}(A\cap B)=0.2$. Are $A$ and $B$ independent?
+
+::: {.callout-note title="Solution" collapse="true"}
+Check whether $\mathbb{P}(A\cap B)=\mathbb{P}(A)\mathbb{P}(B)$. We have $$\mathbb{P}(A)\mathbb{P}(B)=0.4\cdot0.5=0.2.$$ This equals $\mathbb{P}(A\cap B)=0.2$, so $A$ and $B$ are independent.
+:::
+:::
+
+::: {.exercise}
+**Practice Problem 61** (Bayes' theorem). A disease has prevalence $0.02$. A test has sensitivity $0.90$ and specificity $0.95$. If a person tests positive, what is the probability that the person has the disease?
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $D$ be the event of disease and $+$ be the event of a positive test. Then $$\mathbb{P}(D)=0.02,\quad \mathbb{P}(+\mid D)=0.90,\quad \mathbb{P}(-\mid D^c)=0.95.$$ So $\mathbb{P}(+\mid D^c)=0.05$ and $\mathbb{P}(D^c)=0.98$. By Bayes' theorem, $$\mathbb{P}(D\mid+)=\frac{0.90\cdot0.02}{0.90\cdot0.02+0.05\cdot0.98}
+=\frac{0.018}{0.067}\approx0.2687.$$ The probability is about $26.9\%$.
+:::
+:::
+
+::: {.exercise}
+**Practice Problem 62** (Monty Hall). Repeat the Monty Hall calculation if there are $4$ doors, one prize, and the host opens two goat doors after your first choice. What is the probability of winning if you switch?
+
+::: {.callout-note title="Solution" collapse="true"}
+With $4$ doors, the initial choice is correct with probability $1/4$ and incorrect with probability $3/4$. If the initial choice is incorrect and the host opens two goat doors, switching to the only remaining unopened door wins. Therefore $$\mathbb{P}(\text{win by switching})=\frac34.$$
+:::
+:::
+
+## Summary
+
+The goal of this section is to collect the main takeaways before moving to random variables.
+
+-   Events are sets; probability is a function on events.
+
+-   A probability space is a triple $(S,\mathcal{B},\mathbb{P})$.
+
+-   Kolmogorov's axioms are nonnegativity, normalization, and countable additivity.
+
+-   Classical probability uses counting when the sample space is finite and equally likely.
+
+-   Conditional probability is $\mathbb{P}(A\mid B)=\mathbb{P}(A\cap B)/\mathbb{P}(B)$.
+
+-   Independence means $\mathbb{P}(A\cap B)=\mathbb{P}(A)\mathbb{P}(B)$.
+
+-   The law of total probability decomposes an event using a partition.
+
+-   Bayes' theorem updates probabilities after observing evidence.
+
+-   Many probability mistakes come from ignoring conditioning, selection bias, or hidden variables.
+
+## References and Further Reading 
+
+1. George Casella and Roger L. Berger, *Statistical Inference*, 2nd edition.
+2. Larry Wasserman, *All of Statistics*.
+3. C. M. Grinstead and J. L. Snell, *Introduction to Probability*. American Mathematical Society, 2012.
+4. Sheldon Ross, *Introduction to Probability Models*, 12th edition.
+5. ProbabilityCourse.com: <https://www.probabilitycourse.com/>
+6. Penn State STAT 415: <https://online.stat.psu.edu/stat415/>
+7. Harvard STAT 110: <https://stat110.hsites.harvard.edu/>
+8. E. García-Portugués, *Notes for Predictive Modeling*: <https://bookdown.org/egarpor/inference/>
+9. Baby measure theory notes: <https://www.stat.umn.edu/geyer/8501/measure.pdf>

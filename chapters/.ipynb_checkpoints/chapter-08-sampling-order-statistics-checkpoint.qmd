@@ -1,0 +1,619 @@
+---
+title: "Chapter 8: Sampling and Order Statistics"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Sampling and Order Statistics
+
+This chapter moves from individual random variables to random samples. The central idea is that statistics such as the sample mean, sample variance, minimum, maximum, median, and range are themselves random variables before the data are observed. Their distributions are called **sampling distributions**.
+
+ 
+
+**Topics.** Random samples; statistics and sampling distributions; sample mean and sample variance; sums of random samples; convolution; sampling from the normal distribution; chi-square, Student's $t$, and $F$ distributions; order statistics; sample range and median.
+
+## Overview
+
+This section moves from single random variables to random samples, which are the mathematical objects behind statistical inference.
+
+A statistical data set is usually modeled as a collection of random variables $X_1,\ldots,X_n$. The most important case is that the variables are independent and identically distributed. From a random sample we build statistics such as the sample mean, sample variance, maximum, minimum, median, and sample range. The probability distributions of these statistics are called sampling distributions.
+
+::: {.callout-tip title="Main message"}
+A random sample produces random summaries. Statistical inference studies the distributions of those summaries. $$X_1,\ldots,X_n \quad \longrightarrow \quad T(X_1,\ldots,X_n).$$ The distribution of $T$ tells us how the statistic behaves before the data are observed.
+:::
+
+The key objects in this section are:
+
+-   random samples and iid assumptions;
+
+-   sample mean $\overline X$ and sample variance $S^2$;
+
+-   sums of independent variables and convolutions;
+
+-   normal sampling theory: chi-square, $t$, and $F$ distributions;
+
+-   order statistics $X_{(1)}<\cdots<X_{(n)}$.
+
+## Random Samples
+
+This section defines the random-sample model and explains why independence is a modeling assumption, not automatic from the word "sample."
+
+::: {.callout-note title="Definition"}
+**Definition 1** (Independent and identically distributed random variables). Suppose $X_1,\ldots,X_n$ are mutually independent random variables and the marginal pdf or pmf of each $X_i$ is the same function $f(x)$. Then $X_1,\ldots,X_n$ are called **independent and identically distributed**, abbreviated **iid**, with pdf or pmf $f(x)$.
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 2** (Random sample). If $X_1,\ldots,X_n$ are iid from a population distribution with pdf or pmf $f(x)$, then $X_1,\ldots,X_n$ is called a **random sample of size $n$** from the population $f(x)$.
+:::
+
+If $X_1,\ldots,X_n$ are a random sample from $f$, then their joint density or mass function factors as $$f_{X_1,\ldots,X_n}(x_1,\ldots,x_n)
+ = \prod_{i=1}^n f(x_i).$$ This product form is one of the main reasons random samples are mathematically tractable.
+
+::: {.callout-tip title="Example"}
+**Example 3** (Exponential lifetime sample). Let $X_1,\ldots,X_n$ be a random sample from the exponential population $$f(x;\beta)=\frac{1}{\beta}e^{-x/\beta},\qquad x>0,\ \beta>0.$$ In an engineering application, $X_1,\ldots,X_n$ might be the lifetimes, in years, of $n$ identical lightbulbs placed on test and used until failure. Find the joint pdf of the sample.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Since $X_1,\ldots,X_n$ are iid, the joint pdf is the product of the marginal pdfs: $$f(x_1,\ldots,x_n;\beta)
+ =\prod_{i=1}^n \frac{1}{\beta}e^{-x_i/\beta}
+ =\frac{1}{\beta^n}\exp\left(-\frac{1}{\beta}\sum_{i=1}^n x_i\right),$$ for $x_1>0,\ldots,x_n>0$, and $0$ otherwise.
+:::
+
+### How random samples arise
+
+This subsection explains two common mechanisms that produce iid random variables.
+
+A random sample $X_1,\ldots,X_n$ can be obtained when:
+
+1.  the population is effectively infinite and each observation is independently selected;
+
+2.  sampling is done **with replacement** from a finite population. Sampling with replacement is also the basis of the bootstrap idea.
+
+### Sampling without replacement
+
+This subsection emphasizes that sampling without replacement from a finite population usually destroys independence.
+
+Suppose the finite population is $\{x_1,\ldots,x_N\}$. If we sample without replacement, then the first and second draws are not independent. For distinct population elements $x$ and $y$, $$\mathbb{P}(X_1=x)=\frac{1}{N},
+\qquad
+\mathbb{P}(X_2=y\mid X_1=x)=\frac{1}{N-1}.$$ Also, $$\mathbb{P}(X_2=y\mid X_1=y)=0,$$ because the value $y$ cannot be drawn again after it has already been selected.
+
+Thus $X_1$ and $X_2$ are not independent. However, they have the same marginal distribution. When $N$ is very large and $n$ is small compared with $N$, sampling without replacement may be approximately treated as independent.
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 4** (Sampling without replacement). A population consists of $\{1,2,3,4\}$. Two values are sampled without replacement. Let $X_1$ be the first draw and $X_2$ the second draw. Are $X_1$ and $X_2$ independent?
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+No. For example, $$\mathbb{P}(X_2=1)=\frac14,$$ but $$\mathbb{P}(X_2=1\mid X_1=1)=0.$$ Because the conditional probability differs from the marginal probability, $X_1$ and $X_2$ are not independent.
+:::
+
+## Statistics and Sampling Distributions
+
+This section introduces statistics as functions of random samples and defines the sampling distribution of a statistic.
+
+::: {.callout-note title="Definition"}
+**Definition 5** (Statistic). Let $X_1,\ldots,X_n$ be a random sample from a population. A **statistic** is any function of the sample: $$Y=T(X_1,\ldots,X_n).$$ The distribution of $Y$ is called the **sampling distribution** of the statistic $T$.
+:::
+
+After the data are observed, we use lower-case letters $x_1,\ldots,x_n$ for the observed values. The statistic $T(X_1,\ldots,X_n)$ is random before the data are observed, while $T(x_1,\ldots,x_n)$ is the realized numerical value after observation.
+
+::: {.callout-tip title="Example"}
+**Example 6** (Statistics). Each of the following is a statistic:
+
+1.  $T=\max{X_1,\ldots,X_n}$;
+
+2.  $T=\min{X_1,\ldots,X_n}$;
+
+3.  $T=\overline X$;
+
+4.  $T=S^2$;
+
+5.  $T=3$.
+
+The last example is a strange statistic because it ignores the data, but it is still a function of the sample.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+A statistic only needs to be a function of the random sample. It does not need to be useful. Therefore a constant such as $T=3$ is technically a statistic, although it contains no information about the population.
+:::
+
+### Sample mean and sample variance
+
+This subsection introduces the two most common statistics in the course.
+
+::: {.callout-note title="Definition"}
+**Definition 7** (Sample mean). The **sample mean** is $$\overline X=\frac{X_1+\cdots+X_n}{n}=\frac1n\sum_{i=1}^n X_i.$$ For observed values $x_1,\ldots,x_n$, the observed sample mean is $$\overline x=\frac1n\sum_{i=1}^n x_i.$$
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 8** (Sample variance and sample standard deviation). The **sample variance** is $$S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\overline X)^2.$$ The **sample standard deviation** is $S=\sqrt{S^2}$. Observed values are denoted by $s^2$ and $s$.
+:::
+
+Two useful algebraic formulas for observed values are $$\min_{a\in\mathbb{R}}\sum_{i=1}^n (x_i-a)^2=\sum_{i=1}^n (x_i-\overline x)^2,$$ and $$(n-1)s^2=\sum_{i=1}^n (x_i-\overline x)^2
+=\sum_{i=1}^n x_i^2-n\overline x^{\,2}.$$
+
+::: {.callout-important title="Proposition"}
+**Proposition 9** (Least-squares property of the sample mean). *For fixed observed values $x_1,\ldots,x_n$, the function $$Q(a)=\sum_{i=1}^n (x_i-a)^2$$ is minimized at $a=\overline x$.*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Expand and differentiate: $$Q(a)=\sum_{i=1}^n x_i^2-2a\sum_{i=1}^n x_i+na^2.$$ Then $$Q'(a)=-2\sum_{i=1}^n x_i+2na.$$ Setting $Q'(a)=0$ gives $$a=\frac1n\sum_{i=1}^n x_i=\overline x.$$ Also $Q''(a)=2n>0$, so this critical point is a minimum. ◻
+:::
+
+::: {.callout-important title="Proposition"}
+**Proposition 10** (Computational formula for sample variance). *For observed data $x_1,\ldots,x_n$, $$\sum_{i=1}^n (x_i-\overline x)^2=\sum_{i=1}^n x_i^2-n\overline x^{\,2}.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Using $\sum_{i=1}^n x_i=n\overline x$, $$\begin{aligned}
+\sum_{i=1}^n (x_i-\overline x)^2
+&=\sum_{i=1}^n \left(x_i^2-2\overline x x_i+\overline x^{\,2}\right)\\
+&=\sum_{i=1}^n x_i^2-2\overline x\sum_{i=1}^n x_i+n\overline x^{\,2}\\
+&=\sum_{i=1}^n x_i^2-2n\overline x^{\,2}+n\overline x^{\,2}\\
+&=\sum_{i=1}^n x_i^2-n\overline x^{\,2}.
+\end{aligned}$$ ◻
+:::
+
+### Mean and variance of the sample mean
+
+This subsection explains why $\overline X$ estimates the population mean and why its variance decreases as the sample size increases.
+
+::: {.callout-important title="Theorem"}
+**Theorem 11** (Basic properties of $\overline X$ and $S^2$). *Let $X_1,\ldots,X_n$ be a random sample from a population with mean $\mu$ and variance $\sigma^2$. Then $$\mathbb{E}[\overline X]=\mu,
+\qquad
+\operatorname{Var}(\overline X)=\frac{\sigma^2}{n},
+\qquad
+\mathbb{E}[S^2]=\sigma^2.$$ Thus $\overline X$ is an unbiased estimator of $\mu$, and $S^2$ is an unbiased estimator of $\sigma^2$.*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* By linearity of expectation, $$\mathbb{E}[\overline X]
+=\mathbb{E}\left[\frac1n\sum_{i=1}^n X_i\right]
+=\frac1n\sum_{i=1}^n \mathbb{E}[X_i]
+=\frac1n(n\mu)=\mu.$$ Since the observations are independent, $$\operatorname{Var}(\overline X)
+=\operatorname{Var}\left(\frac1n\sum_{i=1}^n X_i\right)
+=\frac1{n^2}\sum_{i=1}^n\operatorname{Var}(X_i)
+=\frac{n\sigma^2}{n^2}=\frac{\sigma^2}{n}.$$ For the sample variance, use $$\sum_{i=1}^n (X_i-\overline X)^2=\sum_{i=1}^n (X_i-\mu)^2-n(\overline X-\mu)^2.$$ Taking expectations gives $$\mathbb{E}\left[\sum_{i=1}^n (X_i-\overline X)^2\right]
+=n\sigma^2-n\operatorname{Var}(\overline X)
+=n\sigma^2-n\frac{\sigma^2}{n}
+=(n-1)\sigma^2.$$ Therefore $$\mathbb{E}[S^2]
+=\mathbb{E}\left[\frac1{n-1}\sum_{i=1}^n (X_i-\overline X)^2\right]
+=\sigma^2.$$ ◻
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 12** (Unbiasedness check). Let $X_1,\ldots,X_n$ be iid with mean $10$ and variance $4$. Find $\mathbb{E}[\overline X]$, $\operatorname{Var}(\overline X)$, and $\mathbb{E}[S^2]$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Using the theorem, $$\mathbb{E}[\overline X]=10,
+\qquad
+\operatorname{Var}(\overline X)=\frac{4}{n},
+\qquad
+\mathbb{E}[S^2]=4.$$
+:::
+
+## Sums of Random Samples
+
+This section studies how the distribution of a sum, and therefore the sample mean, can be derived from the distribution of the original sample.
+
+Let $$Y=X_1+\cdots+X_n,
+\qquad
+\overline X=\frac{Y}{n}.$$ If the pdf of $Y$ is $f_Y$, then the pdf of $\overline X=Y/n$ is $$f_{\overline X}(x)=n f_Y(nx).$$ This follows from the one-dimensional change-of-variables formula.
+
+### MGF method
+
+This subsection uses moment generating functions to identify the distribution of sums and sample means.
+
+::: {.callout-important title="Theorem"}
+**Theorem 13** (MGF of the sample mean). *Let $X_1,\ldots,X_n$ be a random sample from a population with moment generating function $M_X(t)$. Then $$M_{\overline X}(t)=\left[M_X\left(\frac{t}{n}\right)\right]^n.$$ Equivalently, for the sum $Y=X_1+\cdots+X_n$, $$M_Y(t)=\left[M_X(t)\right]^n.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* By independence, $$M_Y(t)=\mathbb{E}[e^{t(X_1+\cdots+X_n)}]
+=\prod_{i=1}^n \mathbb{E}[e^{tX_i}]
+=\left[M_X(t)\right]^n.$$ Since $\overline X=Y/n$, $$M_{\overline X}(t)
+=\mathbb{E}[e^{tY/n}]
+=M_Y(t/n)
+=\left[M_X(t/n)\right]^n.$$ ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 14** (Normal sample mean). Suppose $X_i\overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2)$ for $i=1,\ldots,n$. Find the distribution of $\overline X$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The MGF of $X_i$ is $$M_X(t)=\exp\left(\mu t+\frac{\sigma^2t^2}{2}\right).$$ Thus $$\begin{aligned}
+M_{\overline X}(t)
+&=\left[M_X(t/n)\right]^n\\
+&=\left[\exp\left(\mu\frac{t}{n}+\frac{\sigma^2(t/n)^2}{2}\right)\right]^n\\
+&=\exp\left(\mu t+\frac{\sigma^2 t^2}{2n}\right).
+\end{aligned}$$ This is the MGF of $\operatorname{Normal}(\mu,\sigma^2/n)$. Therefore $$\overline X\sim \operatorname{Normal}\left(\mu,\frac{\sigma^2}{n}\right).$$
+:::
+
+::: {.callout-tip title="Example"}
+**Example 15** (Gamma sample mean). Suppose $X_i\overset{\text{iid}}{\sim}\operatorname{Gamma}(\alpha,\beta)$, where $\beta$ is the rate parameter, so $$M_X(t)=\left(\frac{\beta}{\beta-t}\right)^\alpha,
+\qquad t<\beta.$$ Find the distribution of $\overline X$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+First, $$Y=\sum_{i=1}^n X_i\sim \operatorname{Gamma}(n\alpha,\beta),$$ because the MGF of $Y$ is $$M_Y(t)=\left(\frac{\beta}{\beta-t}\right)^{n\alpha}.$$ Since $\overline X=Y/n$, $$M_{\overline X}(t)=M_Y(t/n)
+=\left(\frac{\beta}{\beta-t/n}\right)^{n\alpha}
+=\left(\frac{n\beta}{n\beta-t}\right)^{n\alpha}.$$ Therefore $$\overline X\sim \operatorname{Gamma}(n\alpha,n\beta)$$ under the rate parameterization. Under a scale parameterization $\theta=1/\beta$, this is $$\overline X\sim \operatorname{Gamma}(n\alpha,\theta/n).$$
+:::
+
+### Convolution method
+
+This subsection gives the general integral formula for the density of a sum of independent continuous random variables.
+
+::: {.callout-important title="Theorem"}
+**Theorem 16** (Convolution formula). *If $X$ and $Y$ are independent continuous random variables with pdfs $f_X$ and $f_Y$, then the pdf of $Z=X+Y$ is $$f_Z(z)=\int_{-\infty}^{\infty} f_X(w)f_Y(z-w)\,dw.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Let $$Z=X+Y,
+\qquad
+W=X.$$ Then $$X=W,
+\qquad
+Y=Z-W.$$ The Jacobian determinant of the inverse transformation $(z,w)\mapsto (x,y)=(w,z-w)$ has absolute value $1$. Hence $$f_{Z,W}(z,w)=f_{X,Y}(w,z-w)=f_X(w)f_Y(z-w).$$ Integrating out $w$ gives $$f_Z(z)=\int_{-\infty}^{\infty}f_X(w)f_Y(z-w)\,dw.$$ ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 17** (Sum of two exponential random variables). Let $X,Y\overset{\text{iid}}{\sim}\operatorname{Exp}(1)$, so $f_X(x)=e^{-x}$ for $x\geq0$. Find the pdf of $Z=X+Y$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For $z>0$, $$f_Z(z)=\int_{0}^{z}e^{-w}e^{-(z-w)}\,dw
+=\int_0^z e^{-z}\,dw
+=ze^{-z}.$$ For $z\leq0$, $f_Z(z)=0$. Therefore $$f_Z(z)=ze^{-z}\mathbf{1}_{\{z>0\}},$$ which is a gamma density with shape $2$ and rate $1$.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 18** (Sum of Cauchy random variables). Suppose $U$ and $V$ are independent Cauchy random variables: $$U\sim \operatorname{Cauchy}(0,\sigma),
+\qquad
+V\sim \operatorname{Cauchy}(0,\tau),$$ with pdfs $$f_U(u)=\frac{1}{\pi\sigma}\frac{1}{1+(u/\sigma)^2},
+\qquad
+f_V(v)=\frac{1}{\pi\tau}\frac{1}{1+(v/\tau)^2}.$$ Find the distribution of $Z=U+V$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+By convolution, $$f_Z(z)=\int_{-\infty}^{\infty}
+\frac{1}{\pi\sigma}\frac{1}{1+(w/\sigma)^2}
+\frac{1}{\pi\tau}\frac{1}{1+((z-w)/\tau)^2}\,dw.$$ A standard Cauchy convolution calculation gives $$f_Z(z)=\frac{1}{\pi(\sigma+\tau)}\frac{1}{1+(z/(\sigma+\tau))^2}.$$ Thus $$Z=U+V\sim \operatorname{Cauchy}(0,\sigma+\tau).$$ This is an important example showing that averaging Cauchy variables does not produce a distribution with smaller spread in the usual variance sense; the Cauchy distribution does not have a finite mean or variance.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 19** (Convolution practice). Let $X,Y\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1)$. Use convolution to find the pdf of $Z=X+Y$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For $0<z<1$, $$f_Z(z)=\int_0^z 1\,dw=z.$$ For $1\leq z<2$, $$f_Z(z)=\int_{z-1}^{1}1\,dw=2-z.$$ Thus $$f_Z(z)=
+\begin{cases}
+z, &0<z<1,\\
+2-z, &1\leq z<2,\\
+0, &\text{otherwise}.
+\end{cases}$$
+:::
+
+## Sampling from the Normal Distribution
+
+This section presents the central normal-sampling facts that lead to the chi-square, Student's $t$, and $F$ distributions.
+
+### Normal sample mean and sample variance
+
+This subsection states the special independence and chi-square results that hold only for normal samples.
+
+::: {.callout-important title="Theorem"}
+**Theorem 20** (Normal sampling theorem). *Let $X_1,\ldots,X_n$ be a random sample from $\operatorname{Normal}(\mu,\sigma^2)$. Then*
+
+1.  *$\overline X\sim \operatorname{Normal}\left(\mu,\sigma^2/n\right)$;*
+
+2.  *$\overline X$ and $S^2$ are independent;*
+
+3.  *$$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1}.$$*
+:::
+
+::: {.callout-tip title="Why this theorem matters"}
+The theorem says that for normal samples, uncertainty about the mean and uncertainty about the variance separate cleanly. This is the starting point for the $t$ distribution, confidence intervals, and many classical tests.
+:::
+
+### Chi-square random variables
+
+This subsection reviews the chi-square distribution and its relationship with squared standard normals.
+
+::: {.callout-important title="Theorem"}
+**Theorem 21** (Chi-square facts). *The chi-square distribution with $k$ degrees of freedom is a gamma distribution: $$\chi_k^2\sim \operatorname{Gamma}\left(\alpha=\frac{k}{2},\theta=2\right),$$ where $\theta$ is the scale parameter. Also:*
+
+1.  *If $Z\sim \operatorname{Normal}(0,1)$, then $Z^2\sim \chi^2_1$.*
+
+2.  *If $X_i\sim\chi^2_{p_i}$ are independent, then $$X_1+\cdots+X_n\sim \chi^2_{p_1+\cdots+p_n}.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof sketch.* If $Z\sim\operatorname{Normal}(0,1)$, then by the transformation $Y=Z^2$, the density of $Y$ is $$f_Y(y)=\frac{1}{\sqrt{2\pi y}}e^{-y/2},\qquad y>0,$$ which is $\operatorname{Gamma}(1/2,2)$, hence $\chi_1^2$. The sum property follows from multiplying MGFs. The MGF of $\chi_k^2$ is $(1-2t)^{-k/2}$, and products of such MGFs add the degrees of freedom. ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 22** (Normal sample variance). Let $X_1,\ldots,X_{10}$ be a random sample from $\operatorname{Normal}(\mu,\sigma^2)$. What is the distribution of $9S^2/\sigma^2$?
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+By the normal sampling theorem, $$\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1}.$$ With $n=10$, $$\frac{9S^2}{\sigma^2}\sim \chi^2_9.$$
+:::
+
+### Student's $t$ distribution
+
+This subsection introduces the distribution used when the population variance is unknown.
+
+This topic was first addressed by W. S. Gosset, who published under the pseudonym *Student*, in the early 1900s.
+
+If $X_1,\ldots,X_n$ is a random sample from a normal population with mean $\mu$ and variance $\sigma^2$, and if $\sigma^2$ is known, then $$\frac{\overline X-\mu}{\sigma/\sqrt n}\sim \operatorname{Normal}(0,1).$$ When $\sigma^2$ is unknown, we replace $\sigma$ by the sample standard deviation $S$ and study $$T=\frac{\overline X-\mu}{S/\sqrt n}.$$
+
+::: {.callout-note title="Definition"}
+**Definition 23** (Student's $t$ distribution). Let $U\sim\operatorname{Normal}(0,1)$ and $V\sim \chi^2_p$ be independent. Then $$T=\frac{U}{\sqrt{V/p}}$$ has a **Student's $t$ distribution** with $p$ degrees of freedom, denoted $t_p$.
+:::
+
+For a normal sample, $$\frac{\overline X-\mu}{S/\sqrt n}
+=\frac{(\overline X-\mu)/(\sigma/\sqrt n)}{\sqrt{{(n-1)S^2/\sigma^2}/(n-1)}}
+\sim t_{n-1}.$$
+
+The pdf of $T\sim t_p$ is $$f_T(t)=\frac{\Gamma\left(\frac{p+1}{2}\right)}{\sqrt{p\pi}\,\Gamma\left(\frac p2\right)}
+\left(1+\frac{t^2}{p}\right)^{-(p+1)/2},
+\qquad -\infty<t<\infty.$$
+
+::: {.callout-note title="Remark"}
+*Remark 24*. If $p=1$, the Student's $t$ distribution becomes the Cauchy distribution. The $t$ distribution has heavier tails than the normal distribution. It has no MGF because it does not have moments of all orders. If $T\sim t_p$, then only moments of order less than $p$ exist. In particular, $$\mathbb{E}[T]=0 \quad \text{for } p>1,
+\qquad
+\operatorname{Var}(T)=\frac{p}{p-2}\quad \text{for } p>2.$$
+:::
+
+::: {.callout-tip title="Example"}
+**Example 25** (Constructing a $t$ statistic). Suppose $X_1,\ldots,X_{16}$ are iid $\operatorname{Normal}(\mu,\sigma^2)$. Find the distribution of $$T=\frac{\overline X-\mu}{S/4}.$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Since $n=16$, $\sqrt n=4$. Therefore $$T=\frac{\overline X-\mu}{S/\sqrt n}\sim t_{n-1}=t_{15}.$$
+:::
+
+### $F$ distribution
+
+This subsection introduces the distribution of a ratio of scaled independent chi-square random variables, which is used to compare variances.
+
+Let $X_1,\ldots,X_n$ be a random sample from $\operatorname{Normal}(\mu_X,\sigma_X^2)$, and let $Y_1,\ldots,Y_m$ be an independent random sample from $\operatorname{Normal}(\mu_Y,\sigma_Y^2)$. Then $$\frac{(n-1)S_X^2}{\sigma_X^2}\sim \chi^2_{n-1},
+\qquad
+\frac{(m-1)S_Y^2}{\sigma_Y^2}\sim \chi^2_{m-1}.$$
+
+::: {.callout-note title="Definition"}
+**Definition 26** ($F$ distribution). If $U\sim\chi^2_p$ and $V\sim\chi^2_q$ are independent, then $$F=\frac{U/p}{V/q}$$ has an **$F$ distribution** with $p$ and $q$ degrees of freedom, denoted $F_{p,q}$.
+:::
+
+Thus $$\frac{S_X^2/\sigma_X^2}{S_Y^2/\sigma_Y^2}
+\sim F_{n-1,m-1}.$$ The pdf of $F\sim F_{p,q}$ is, for $x>0$, $$f_F(x)=
+\frac{1}{B(p/2,q/2)}
+\left(\frac{p}{q}\right)^{p/2}
+\frac{x^{p/2-1}}{\left(1+\frac{p}{q}x\right)^{(p+q)/2}}.$$
+
+::: {.callout-important title="Theorem"}
+**Theorem 27** (Basic relationships for the $F$ distribution).
+
+1.  *If $X\sim F_{p,q}$, then $1/X\sim F_{q,p}$.*
+
+2.  *If $T\sim t_q$, then $T^2\sim F_{1,q}$.*
+
+3.  *If $X\sim F_{p,q}$, then $$\frac{(p/q)X}{1+(p/q)X}\sim \operatorname{Beta}\left(\frac p2,\frac q2\right).$$*
+:::
+
+::: {.callout-tip title="Example"}
+**Example 28** (Expected variance ratio). Let $$F=\frac{S_X^2/\sigma_X^2}{S_Y^2/\sigma_Y^2}\sim F_{n-1,m-1}.$$ Assume $m>3$. Find $\mathbb{E}[F]$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Write $$F=\frac{\chi^2_{n-1}/(n-1)}{\chi^2_{m-1}/(m-1)},$$ where the numerator and denominator are independent. Since $$\mathbb{E}\left[\frac{\chi^2_{n-1}}{n-1}\right]=1$$ and, for $m-1>2$, $$\mathbb{E}\left[\frac{m-1}{\chi^2_{m-1}}\right]=\frac{m-1}{m-3},$$ we get $$\mathbb{E}[F]=\frac{m-1}{m-3}.$$ For large $m$, $$\mathbb{E}[F]=\frac{m-1}{m-3}\approx 1.$$
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 29** ($t$ and $F$). If $T\sim t_{12}$, what is the distribution of $T^2$?
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+By the relationship between $t$ and $F$ distributions, $$T^2\sim F_{1,12}.$$
+:::
+
+## Order Statistics
+
+This section studies the sorted values of a random sample, which are used to describe extremes, quantiles, ranges, and medians.
+
+::: {.callout-note title="Definition"}
+**Definition 30** (Order statistics). Let $X_1,\ldots,X_n$ be a random sample. The **order statistics** are the ordered values $$X_{(1)}<X_{(2)}<\cdots<X_{(n)},$$ where $X_{(j)}$ is the $j$-th smallest value among $X_1,\ldots,X_n$. In particular, $$X_{(1)}=\min{X_1,\ldots,X_n},
+\qquad
+X_{(n)}=\max{X_1,\ldots,X_n}.$$
+:::
+
+If ties are possible, as in discrete distributions, one may write $$X_{(1)}\leq X_{(2)}\leq\cdots\leq X_{(n)}.$$ For continuous distributions, ties have probability zero, so strict ordering is usually safe.
+
+### Discrete order statistics
+
+This subsection gives the distribution of an order statistic when the population is discrete.
+
+::: {.callout-important title="Theorem"}
+**Theorem 31** (Discrete order statistics). *Let $X_1,\ldots,X_n$ be a random sample from a discrete distribution with pmf $$f_X(x_i)=p_i,
+\qquad x_1<x_2<\cdots.$$ Define $$P_0=0,
+\qquad
+P_i=p_1+\cdots+p_i.$$ Then $$\mathbb{P}(X_{(j)}\leq x_i)=\sum_{k=j}^n {n\choose k}P_i^k(1-P_i)^{n-k},$$ and $$\mathbb{P}(X_{(j)}=x_i)
+=\sum_{k=j}^n {n\choose k}
+\left[P_i^k(1-P_i)^{n-k}-P_{i-1}^k(1-P_{i-1})^{n-k}\right].$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* The event ${X_{(j)}\leq x_i}$ occurs exactly when at least $j$ of the $n$ observations are less than or equal to $x_i$. Each observation has probability $P_i$ of being less than or equal to $x_i$. Therefore the number of observations less than or equal to $x_i$ is $\operatorname{Binomial}(n,P_i)$, giving $$\mathbb{P}(X_{(j)}\leq x_i)=\sum_{k=j}^n {n\choose k}P_i^k(1-P_i)^{n-k}.$$ Then $$\mathbb{P}(X_{(j)}=x_i)
+=\mathbb{P}(X_{(j)}\leq x_i)-\mathbb{P}(X_{(j)}\leq x_{i-1}),$$ which gives the stated formula. ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 32** (Median of three fair die rolls). Roll a fair six-sided die three times. Let $X_{(2)}$ be the sample median. Find $\mathbb{P}(X_{(2)}\leq 4)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For a fair die, $$P_4=\mathbb{P}(X\leq 4)=\frac46=\frac23.$$ The event $X_{(2)}\leq4$ means at least two of the three observations are at most $4$. Hence $$\begin{aligned}
+\mathbb{P}(X_{(2)}\leq4)
+&={3\choose2}\left(\frac23\right)^2\left(\frac13\right)
++{3\choose3}\left(\frac23\right)^3\\
+&=3\cdot\frac49\cdot\frac13+\frac8{27}
+=\frac{12}{27}+\frac{8}{27}
+=\frac{20}{27}.
+\end{aligned}$$
+:::
+
+### Continuous order statistics
+
+This subsection gives the density formulas for continuous order statistics.
+
+::: {.callout-important title="Theorem"}
+**Theorem 33** (Pdf of a continuous order statistic). *Let $X_1,\ldots,X_n$ be a random sample from a continuous population with cdf $F_X(x)$ and pdf $f_X(x)$. Then the pdf of $X_{(j)}$ is $$f_{X_{(j)}}(x)
+=\frac{n!}{(j-1)!(n-j)!}
+ f_X(x)[F_X(x)]^{j-1}[1-F_X(x)]^{n-j}.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* For $X_{(j)}$ to fall in a small interval near $x$, one observation must fall near $x$, exactly $j-1$ observations must be below $x$, and $n-j$ observations must be above $x$. The combinatorial factor counts which observations play these roles: $$\frac{n!}{(j-1)!1!(n-j)!}.$$ The probability contribution is approximately $$[F_X(x)]^{j-1} f_X(x)\,dx [1-F_X(x)]^{n-j}.$$ Dividing by $dx$ gives the density. ◻
+:::
+
+::: {.callout-important title="Theorem"}
+**Theorem 34** (Joint pdf of two continuous order statistics). *Let $1\leq i<j\leq n$. The joint pdf of $X_{(i)}$ and $X_{(j)}$ is, for $u<v$, $$\begin{aligned}
+f_{X_{(i)},X_{(j)}}(u,v)
+&=\frac{n!}{(i-1)!(j-1-i)!(n-j)!}
+ f_X(u)f_X(v)[F_X(u)]^{i-1}\\
+&\qquad \times [F_X(v)-F_X(u)]^{j-1-i}[1-F_X(v)]^{n-j}.
+\end{aligned}$$ It is $0$ otherwise.*
+:::
+
+::: {.callout-important title="Theorem"}
+**Theorem 35** (Joint pdf of all continuous order statistics). *The joint pdf of $X_{(1)},X_{(2)},\ldots,X_{(n)}$ is $$f_{X_{(1)},\ldots,X_{(n)}}(x_1,\ldots,x_n)
+=
+\begin{cases}
+n! f_X(x_1)\cdots f_X(x_n), & -\infty<x_1<\cdots<x_n<\infty,\\
+0, &\text{otherwise}.
+\end{cases}$$*
+:::
+
+::: {.callout-tip title="Example"}
+**Example 36** (Uniform order statistic). Let $X_1,\ldots,X_n$ be a random sample from $\operatorname{Uniform}(0,1)$. Find the distribution of $X_{(j)}$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For $\operatorname{Uniform}(0,1)$, $$f_X(x)=1,
+\qquad
+F_X(x)=x,
+\qquad 0<x<1.$$ Thus $$f_{X_{(j)}}(x)
+=\frac{n!}{(j-1)!(n-j)!}x^{j-1}(1-x)^{n-j},
+\qquad 0<x<1.$$ This is the beta density with parameters $j$ and $n-j+1$. Therefore $$X_{(j)}\sim \operatorname{Beta}(j,n-j+1).$$
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 37** (Maximum of uniforms). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1)$. Find the cdf and pdf of $X_{(n)}=\max{X_1,\ldots,X_n}$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For $0<x<1$, $$F_{X_{(n)}}(x)=\mathbb{P}(X_{(n)}\leq x)=\mathbb{P}(X_1\leq x,\ldots,X_n\leq x)=x^n.$$ Therefore $$f_{X_{(n)}}(x)=nx^{n-1},\qquad 0<x<1.$$ This agrees with $\operatorname{Beta}(n,1)$.
+:::
+
+### Sample range and median
+
+This subsection introduces range, median, and quartiles as statistics built from order statistics.
+
+::: {.callout-note title="Definition"}
+**Definition 38** (Sample range). The **sample range** is $$R=X_{(n)}-X_{(1)}.$$ It measures the distance between the smallest and largest observations.
+:::
+
+::: {.callout-note title="Definition"}
+**Definition 39** (Sample median and quartiles). The **sample median** is a number $M$ such that approximately one-half of the observations are below $M$ and one-half are above $M$. The lower quartile is the 25th percentile, and the upper quartile is the 75th percentile.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 40** (Range from a uniform sample). Let $X_1,\ldots,X_n$ be a random sample from $\operatorname{Uniform}(0,a)$. Find the distribution of the sample range $$R=X_{(n)}-X_{(1)}.$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The joint pdf of the minimum and maximum is $$f_{X_{(1)},X_{(n)}}(x_1,x_n)
+=\frac{n(n-1)}{a^n}(x_n-x_1)^{n-2},
+\qquad 0<x_1<x_n<a.$$ Define $$V=\frac{X_{(n)}+X_{(1)}}{2},
+\qquad
+R=X_{(n)}-X_{(1)}.$$ Then $$X_{(1)}=V-\frac{R}{2},
+\qquad
+X_{(n)}=V+\frac{R}{2}.$$ The absolute value of the Jacobian is $1$. The support is $$0<r<a,
+\qquad
+\frac r2<v<a-\frac r2.$$ Thus $$f_{R,V}(r,v)=\frac{n(n-1)r^{n-2}}{a^n},
+\qquad 0<r<a,\quad \frac r2<v<a-\frac r2.$$ Integrating out $v$ gives $$\begin{aligned}
+f_R(r)
+&=\int_{r/2}^{a-r/2}\frac{n(n-1)r^{n-2}}{a^n}\,dv\\
+&=\frac{n(n-1)r^{n-2}(a-r)}{a^n},
+\qquad 0<r<a.
+\end{aligned}$$ If $a=1$, then $$R\sim \operatorname{Beta}(n-1,2).$$ For arbitrary $a$, $$\frac{R}{a}\sim \operatorname{Beta}(n-1,2).$$
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 41** (Expected range from uniforms). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1)$. Use the distribution of $R$ to compute $\mathbb{E}[R]$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For $a=1$, $$f_R(r)=n(n-1)r^{n-2}(1-r),
+\qquad 0<r<1.$$ Therefore $$\begin{aligned}
+\mathbb{E}[R]
+&=\int_0^1 r\,n(n-1)r^{n-2}(1-r)\,dr\\
+&=n(n-1)\int_0^1 (r^{n-1}-r^n)\,dr\\
+&=n(n-1)\left(\frac1n-\frac1{n+1}\right)\\
+&=\frac{n-1}{n+1}.
+\end{aligned}$$
+:::
+
+## Summary
+
+This section summarizes the main formulas and ideas from sampling and order statistics.
+
+::: {.callout-tip title="Key formulas"}
+For a random sample $X_1,\ldots,X_n$ with mean $\mu$ and variance $\sigma^2$, $$\mathbb{E}[\overline X]=\mu,
+\qquad
+\operatorname{Var}(\overline X)=\frac{\sigma^2}{n},
+\qquad
+\mathbb{E}[S^2]=\sigma^2.$$ If the sample is normal, $$\overline X\sim \operatorname{Normal}\left(\mu,\frac{\sigma^2}{n}\right),
+\qquad
+\frac{(n-1)S^2}{\sigma^2}\sim \chi^2_{n-1},
+\qquad
+\frac{\overline X-\mu}{S/\sqrt n}\sim t_{n-1}.$$ For continuous order statistics, $$f_{X_{(j)}}(x)
+=\frac{n!}{(j-1)!(n-j)!}f_X(x)[F_X(x)]^{j-1}[1-F_X(x)]^{n-j}.$$
+:::
+
+::: {.callout-tip title="Conceptual summary"}
+-   Random samples are iid random variables from a population distribution.
+
+-   Statistics are functions of the random sample.
+
+-   The sampling distribution describes how a statistic varies from sample to sample.
+
+-   Normal samples produce especially simple and important sampling distributions.
+
+-   Order statistics describe sorted data and are used for medians, quantiles, minima, maxima, and ranges.
+:::
+
+## References  
+
+These notes follow the course lecture material and the standard references:
+
+-   Casella and Berger, *Statistical Inference*, 2nd edition, Sections 5.1--5.4.
+
+-   Larry Wasserman, *All of Statistics*.
+
+-   C. M. Grinstead and J. L. Snell, *Introduction to Probability*.
+
+-   Sheldon Ross, *Introduction to Probability Models*.
+
+-   Online resource: <https://www.probabilitycourse.com/>.

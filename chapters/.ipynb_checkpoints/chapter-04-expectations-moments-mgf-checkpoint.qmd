@@ -1,0 +1,801 @@
+---
+title: "Chapter 4: Expectations, Moments, and Moment Generating Functions"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+---
+
+# Expectations, Moments, and Moment Generating Functions
+
+This chapter develops numerical summaries of random variables and introduces moment generating functions as a compact way to encode moments and distributions.
+ 
+
+**Topics.** Expected value; variance and standard deviation; expectations of functions; moments; skewness; kurtosis; moment generating functions; multivariate MGFs.
+
+## Overview
+
+This section develops numerical summaries of random variables and introduces moment generating functions as a compact way to encode distributions.
+
+In earlier sections, we described random variables by distributions: CDFs, pmfs, and pdfs. In this section, we ask what numbers can summarize a distribution. The most important summaries are expected value, variance, and higher moments. Moment generating functions then package all raw moments into one function, and they become especially powerful for sums of independent random variables and normal distributions.
+
+::: {.callout-tip title="Main message"}
+
+Expectation is the mathematical version of long-run average. Variance measures spread. Higher moments describe shape. The moment generating function, when it exists near $0$, generates all moments and can identify a distribution.
+
+:::
+
+## Expected Value
+
+This section reviews the central idea of expectation and explains how it connects probability theory with averages observed in data.
+
+### Definition for discrete and continuous random variables
+
+This subsection gives the two most common formulas for expected value: one for sums and one for integrals.
+
+::: {.definition}
+
+**Definition 1** (Expected value). Let $X$ be a random variable.
+
+- If $X$ is discrete with pmf $p_X(k)$, then $$\mathbb{E}[X]=\sum_{\text{all }k} k p_X(k).$$
+
+- If $X$ is continuous with pdf $f_X(x)$, then $$\mathbb{E}[X]=\int_{-\infty}^{\infty} x f_X(x)\,dx.$$
+
+:::
+
+Expected value is a generalization of the concept “average.” It is not necessarily the most likely value, and it does not need to be a value that $X$ can actually take. It is the weighted average of possible values, where the weights are probabilities.
+
+::: {.example}
+
+**Example 2** (Bernoulli random variable). Let $X\sim \operatorname{Bernoulli}(p)$, so $$\mathbb{P}(X=0)=1-p,\qquad \mathbb{P}(X=1)=p.$$ Find $\mathbb{E}[X]$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Using the definition of expectation for a discrete random variable, $$\mathbb{E}[X]=\sum_k k p_X(k)=0\cdot (1-p)+1\cdot p=p.$$ Thus the mean of a Bernoulli random variable is its success probability.
+
+:::
+
+::: {.example}
+
+**Example 3** (Outcome of a fair die). Let $X$ be the outcome of rolling a fair six-sided die. Find $\mathbb{E}[X]$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Here $X\in\{1,2,3,4,5,6\}$ and each outcome has probability $1/6$. Therefore $$\mathbb{E}[X]=\sum_{k=1}^6 k\cdot \frac16
+=\frac{1+2+3+4+5+6}{6}=\frac{21}{6}=3.5.$$ Notice that $3.5$ is not a possible die outcome. The expected value is a long-run average, not necessarily a possible observation.
+
+:::
+
+### Operational meaning: long-run average
+
+This subsection explains why the expected value is the number we expect empirical averages to approach after many repeated trials.
+
+Suppose we measure a random variable $X$ in $n$ independent trials and record $$X_1,X_2,\ldots,X_n.$$ The sample average is $$\overline X_n=\frac{1}{n}(X_1+\cdots+X_n).$$ The operational meaning of expected value is that $\mathbb{E}[X]$ is the long-run average value of repeated measurements of $X$. Later, the Law of Large Numbers will make this statement precise: $$\lim_{n\to\infty}\overline X_n=\mathbb{E}[X]$$ in an appropriate probabilistic sense.
+
+::: {.callout-tip title="Interpretation"}
+
+If a casino game has expected gain $-0.05$ dollars per play, then one play can be positive or negative, but over many plays the average gain per play tends to be close to $-0.05$.
+
+:::
+
+### Linearity of expectation
+
+This subsection presents one of the most useful properties in probability: expectation is linear.
+
+::: {.theorem}
+
+**Theorem 4** (Linearity for one random variable). *For constants $a,b\in\mathbb{R}$, $$\mathbb{E}[aX+b]=a\mathbb{E}[X]+b.$$*
+
+:::
+
+::: {.proof}
+
+*Proof.* For the discrete case, $$\mathbb{E}[aX+b]=\sum_x (ax+b)p_X(x)
+=a\sum_x xp_X(x)+b\sum_x p_X(x)=a\mathbb{E}[X]+b.$$ The continuous case is the same argument with integrals: $$\mathbb{E}[aX+b]=\int_{-\infty}^{\infty} (ax+b)f_X(x)\,dx
+=a\mathbb{E}[X]+b.$$ ◻
+
+:::
+
+::: {.theorem}
+
+**Theorem 5** (Linearity for multiple random variables). *For any random variables $X$ and $Y$ defined on the same probability space, $$\mathbb{E}[aX+bY]=a\mathbb{E}[X]+b\mathbb{E}[Y].$$ This is true whether or not $X$ and $Y$ are independent.*
+
+:::
+
+::: {.callout-warning title="Common mistake"}
+
+Linearity says $\mathbb{E}[aX+bY]=a\mathbb{E}[X]+b\mathbb{E}[Y]$. It does *not* say $\mathbb{E}[g(X)]=g(\mathbb{E}[X])$ for a nonlinear function $g$.
+
+:::
+
+::: {.example}
+
+**Example 6** (Linearity without independence). Let $X$ be any random variable with $\mathbb{E}[X]=3$, and let $Y=2X+1$. Find $\mathbb{E}[4X-5Y]$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Even though $X$ and $Y$ are clearly dependent, linearity still applies. First, $$\mathbb{E}[Y]=\mathbb{E}[2X+1]=2\mathbb{E}[X]+1=7.$$ Therefore, $$\mathbb{E}[4X-5Y]=4\mathbb{E}[X]-5\mathbb{E}[Y]=4(3)-5(7)=12-35=-23.$$
+
+:::
+
+## Variance and Standard Deviation
+
+This section introduces variance as a measurement of spread around the expected value.
+
+### Definition and calculation formula
+
+This subsection gives both the conceptual definition and the computational formula for variance.
+
+::: {.definition}
+
+**Definition 7** (Variance and standard deviation). The variance of a random variable $X$ is $$\operatorname{Var}(X)=\mathbb{E}\big[(X-\mathbb{E}[X])^2\big].$$ The standard deviation is $$\operatorname{SD}(X)=\sqrt{\operatorname{Var}(X)}.$$
+
+:::
+
+Variance is the expected squared distance from the mean. It measures how spread out the distribution is. Standard deviation puts the measurement back into the original units of $X$.
+
+::: {.proposition}
+
+**Proposition 8** (Computational formula). *$$\operatorname{Var}(X)=\mathbb{E}[X^2]-\big(\mathbb{E}[X]\big)^2.$$*
+
+:::
+
+::: {.proof}
+
+*Proof.* Let $\mu=\mathbb{E}[X]$. Then $$\operatorname{Var}(X)=\mathbb{E}[(X-\mu)^2]
+=\mathbb{E}[X^2-2\mu X+\mu^2]
+=\mathbb{E}[X^2]-2\mu\mathbb{E}[X]+\mu^2.$$ Since $\mu=\mathbb{E}[X]$, this becomes $$\operatorname{Var}(X)=\mathbb{E}[X^2]-2\mu^2+\mu^2=\mathbb{E}[X^2]-\mu^2.$$ ◻
+
+:::
+
+::: {.proposition}
+
+**Proposition 9** (Scaling and shifting). *For constants $a,b\in\mathbb{R}$, $$\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X).$$*
+
+:::
+
+::: {.proof}
+
+*Proof.* Since $\mathbb{E}[aX+b]=a\mathbb{E}[X]+b$, $$(aX+b)-\mathbb{E}[aX+b]=aX+b-(a\mathbb{E}[X]+b)=a(X-\mathbb{E}[X]).$$ Therefore, $$\operatorname{Var}(aX+b)=\mathbb{E}\left[a^2(X-\mathbb{E}[X])^2\right]=a^2\operatorname{Var}(X).$$ ◻
+
+:::
+
+::: {.example}
+
+**Example 10** (Variance of a Bernoulli random variable). Let $X\sim\operatorname{Bernoulli}(p)$. Find $\operatorname{Var}(X)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Since $X$ takes values $0$ and $1$, we have $X^2=X$. Therefore $$\mathbb{E}[X^2]=\mathbb{E}[X]=p.$$ Using the computational formula, $$\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=p-p^2=p(1-p).$$
+
+:::
+
+::: {.example}
+
+**Example 11** (Variance of a fair die). Let $X$ be the outcome of rolling a fair six-sided die. Find $\operatorname{Var}(X)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+We already know $\mathbb{E}[X]=3.5=7/2$. Next, $$\mathbb{E}[X^2]=\frac{1^2+2^2+3^2+4^2+5^2+6^2}{6}
+=\frac{91}{6}.$$ Thus $$\operatorname{Var}(X)=\frac{91}{6}-\left(\frac72\right)^2
+=\frac{91}{6}-\frac{49}{4}
+=\frac{182-147}{12}=\frac{35}{12}.$$ So the standard deviation is $$\operatorname{SD}(X)=\sqrt{\frac{35}{12}}.$$
+
+:::
+
+## Expectation of a Function
+
+This section explains how to compute the expectation of a transformed random variable without first finding the full distribution of the transformed variable.
+
+### The law of the unconscious statistician
+
+This subsection introduces a practical formula: to compute $\mathbb{E}[g(X)]$, average $g(x)$ with respect to the distribution of $X$.
+
+Suppose $Y=g(X)$. One way to compute $\mathbb{E}[Y]$ is to first find the distribution of $Y$ and then sum or integrate over $Y$. Often this is unnecessary.
+
+::: {.theorem}
+
+**Theorem 12** (Expectation of a function). *Let $Y=g(X)$.*
+
+- *If $X$ is discrete, then $$\mathbb{E}[g(X)]=\sum_x g(x)p_X(x).$$*
+
+- *If $X$ is continuous, then $$\mathbb{E}[g(X)]=\int_{-\infty}^{\infty} g(x)f_X(x)\,dx.$$*
+
+:::
+
+::: {.proof}
+
+*Proof idea for the discrete case.* Let the possible values of $X$ be $x_k$. Then $$\mathbb{E}[Y]=\sum_y y\mathbb{P}(Y=y)
+=\sum_y y\sum_{k:g(x_k)=y}\mathbb{P}(X=x_k).$$ Since $y=g(x_k)$ on the event $\{g(X)=y\}$, $$\mathbb{E}[Y]=\sum_k g(x_k)\mathbb{P}(X=x_k).$$ ◻
+
+:::
+
+::: {.example}
+
+**Example 13** (Computing a second moment directly). Let $X$ be the outcome of a fair six-sided die. Use the function formula to compute $\mathbb{E}[X^2]$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Here $g(x)=x^2$ and $p_X(x)=1/6$ for $x=1,2,3,4,5,6$. Therefore $$\mathbb{E}[X^2]=\sum_{x=1}^6 x^2\frac16
+=\frac{1+4+9+16+25+36}{6}=\frac{91}{6}.$$
+
+:::
+
+::: {.example}
+
+**Example 14** (Uniform distribution). Let $X\sim \operatorname{Uniform}(0,1)$. Compute $\mathbb{E}[X^m]$ for an integer $m\ge 1$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+The pdf is $f_X(x)=1$ for $0\le x\le 1$. Thus $$\mathbb{E}[X^m]=\int_0^1 x^m\,dx=\frac{1}{m+1}.$$ In particular, $\mathbb{E}[X]=1/2$ and $\mathbb{E}[X^2]=1/3$.
+
+:::
+
+::: {.callout-warning title="Important distinction"}
+
+In general, $$\mathbb{E}[g(X)]\ne g(\mathbb{E}[X]).$$ For example, if $X$ is not constant, then $\mathbb{E}[X^2]\ne (\mathbb{E}[X])^2$ in general. Their difference is the variance.
+
+:::
+
+### Products of independent random variables
+
+This subsection records the special multiplication rule for independent variables.
+
+::: {.theorem}
+
+**Theorem 15** (Expectation of products under independence). *If $X$ and $Y$ are independent, then $$\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y].$$ More generally, for suitable functions $f$ and $g$, $$\mathbb{E}[f(X)g(Y)]=\mathbb{E}[f(X)]\mathbb{E}[g(Y)].$$*
+
+:::
+
+::: {.callout-note title="Remark"}
+
+*Remark 16*. The converse is not true in general. The equality $\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y]$ only says $X$ and $Y$ are uncorrelated; it does not necessarily imply independence.
+
+:::
+
+::: {.example}
+
+**Example 17** (Independent Bernoulli variables). Let $X\sim\operatorname{Bernoulli}(p)$ and $Y\sim\operatorname{Bernoulli}(q)$ be independent. Find $\mathbb{E}[XY]$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+By independence, $$\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y]=pq.$$ This also has a direct probability interpretation: $XY=1$ exactly when $X=1$ and $Y=1$, so $$\mathbb{E}[XY]=\mathbb{P}(X=1,Y=1)=pq.$$
+
+:::
+
+## Moments
+
+This section introduces moments as numerical summaries that describe center, spread, asymmetry, and tail behavior.
+
+### Raw and centered moments
+
+This subsection defines the main moment quantities used in probability and statistics.
+
+::: {.definition}
+
+**Definition 18** (Raw moment). The $m$-th moment, or $m$-th raw moment, of a random variable $X$ is $$\mathbb{E}[X^m].$$
+
+:::
+
+::: {.definition}
+
+**Definition 19** (Centered moment). The $m$-th centered moment of a random variable $X$ is $$\mathbb{E}\left[(X-\mathbb{E}[X])^m\right].$$
+
+:::
+
+The first raw moment is the mean. The second centered moment is the variance: $$\operatorname{Var}(X)=\mathbb{E}\left[(X-\mathbb{E}[X])^2\right].$$ The square root of variance is the standard deviation: $$\sigma=\sqrt{\operatorname{Var}(X)}.$$
+
+::: {.example}
+
+**Example 20** (First two moments of $\operatorname{Uniform}(0,1)$). Let $X\sim \operatorname{Uniform}(0,1)$. Compute $\mathbb{E}[X]$, $\mathbb{E}[X^2]$, and $\operatorname{Var}(X)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Using the previous formula $\mathbb{E}[X^m]=1/(m+1)$, $$\mathbb{E}[X]=\frac12,\qquad \mathbb{E}[X^2]=\frac13.$$ Therefore $$\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=\frac13-\frac14=\frac{1}{12}.$$
+
+:::
+
+### Mean and variance table
+
+This subsection summarizes common means and variances that will be used repeatedly in the course.
+
+| **Name**                                                 | **Mean**                | **Variance**                                            |
+|:---------------------------------------------------------|:------------------------|:--------------------------------------------------------|
+| $\operatorname{Bernoulli}(p)$                            | $p$                     | $p(1-p)$                                                |
+| $\operatorname{Binomial}(n,p)$                           | $np$                    | $np(1-p)$                                               |
+| $\operatorname{Geometric}(p)$                            | $1/p$                   | $(1-p)/p^2$                                             |
+| $\operatorname{Poisson}(\lambda)$                        | $\lambda$               | $\lambda$                                               |
+| $\operatorname{Exponential}(\lambda)$                    | $1/\lambda$             | $1/\lambda^2$                                           |
+| $\operatorname{Gamma}(n,\lambda)$, rate parameterization | $n/\lambda$             | $n/\lambda^2$                                           |
+| $\operatorname{Uniform}(a,b)$                            | $(a+b)/2$               | $(b-a)^2/12$                                            |
+| $\operatorname{Normal}(\mu,\sigma^2)$                    | $\mu$                   | $\sigma^2$                                              |
+| $\operatorname{Beta}(\alpha,\beta)$                      | $\alpha/(\alpha+\beta)$ | $\dfrac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}$ |
+
+
+::: {.callout-note title="Remark"}
+
+*Remark 21*. Some texts parameterize the Gamma distribution by scale $\theta$ instead of rate $\lambda$. If $X\sim\operatorname{Gamma}(n,\theta)$ in the scale parameterization, then $\mathbb{E}[X]=n\theta$ and $\operatorname{Var}(X)=n\theta^2$. If $\lambda=1/\theta$, then this becomes $n/\lambda$ and $n/\lambda^2$.
+:::
+
+### Skewness
+
+This subsection describes how the third standardized moment measures asymmetry.
+
+::: {.definition}
+
+**Definition 22** (Skewness). Let $\mu=\mathbb{E}[X]$ and $\sigma=\sqrt{\operatorname{Var}(X)}$. The skewness of $X$ is $$\mathbb{E}\left[\left(\frac{X-\mu}{\sigma}\right)^3\right]
+=\frac{\mathbb{E}[(X-\mu)^3]}{\sigma^3}.$$
+
+:::
+
+Skewness measures asymmetry of a probability distribution. A distribution with a long right tail usually has positive skewness. A distribution with a long left tail usually has negative skewness.
+
+
+::: {.example}
+
+**Example 23** (Symmetric distributions have zero skewness). Suppose $X$ has a distribution symmetric around its mean $\mu$. What is the skewness?
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Let $Z=X-\mu$. Symmetry around $\mu$ means $Z$ and $-Z$ have the same distribution. Therefore $\mathbb{E}[Z^3]=\mathbb{E}[(-Z)^3]=-\mathbb{E}[Z^3]$, so $\mathbb{E}[Z^3]=0$. Hence $$\frac{\mathbb{E}[(X-\mu)^3]}{\sigma^3}=0.$$ Thus the skewness is $0$.
+
+:::
+
+### Kurtosis
+
+This subsection describes how the fourth standardized moment measures tail behavior and peakedness.
+
+::: {.definition}
+
+**Definition 24** (Kurtosis). Let $\mu=\mathbb{E}[X]$ and $\sigma=\sqrt{\operatorname{Var}(X)}$. The kurtosis of $X$ is $$\mathbb{E}\left[\left(\frac{X-\mu}{\sigma}\right)^4\right]
+=\frac{\mathbb{E}[(X-\mu)^4]}{\sigma^4}.$$
+
+:::
+
+Kurtosis characterizes the “tailedness” of a distribution. Distributions with heavier tails often have larger kurtosis. Examples often compared by tail behavior include the Laplace (double exponential), hyperbolic secant, logistic, normal, raised cosine, Wigner semicircle, and uniform distributions.
+
+::: {.example}
+
+**Example 25** (Kurtosis of the standard normal). Let $Z\sim \operatorname{Normal}(0,1)$. What is the kurtosis of $Z$?
+
+:::
+
+::: {.callout-note title="Solution"}
+
+For the standard normal distribution, $$\mathbb{E}[Z]=0,\qquad \operatorname{Var}(Z)=1,\qquad \mathbb{E}[Z^4]=3.$$ Thus $$\text{kurtosis}=\mathbb{E}\left[\left(\frac{Z-0}{1}\right)^4\right]=\mathbb{E}[Z^4]=3.$$ The excess kurtosis is often defined as kurtosis minus $3$, so the standard normal has excess kurtosis $0$.
+
+:::
+
+## Moment Generating Functions
+
+This section introduces moment generating functions and explains why they are useful for moments, distribution identification, and sums.
+
+### Definition and moment generation
+
+This subsection defines the MGF and shows how derivatives of the MGF produce moments.
+
+::: {.definition}
+
+**Definition 26** (Moment generating function). The moment generating function (MGF) of a random variable $X$ is $$M_X(t)=\mathbb{E}[e^{tX}],$$ for values of $t$ where the expectation exists.
+
+:::
+
+When $M_X(t)$ exists in an open neighborhood of $0$, Taylor expansion gives $$e^{tX}=1+tX+\frac{(tX)^2}{2!}+\frac{(tX)^3}{3!}+\cdots.$$ Taking expectations, $$M_X(t)=1+t\mathbb{E}[X]+\frac{t^2\mathbb{E}[X^2]}{2!}+\frac{t^3\mathbb{E}[X^3]}{3!}+\cdots.$$ Therefore, $$\mathbb{E}[X^m]=M_X^{(m)}(0)=\left.\frac{d^m}{dt^m}M_X(t)\right|_{t=0}.$$
+
+::: {.callout-tip title="Why the name “moment generating”?"}
+
+The derivatives of $M_X(t)$ at $t=0$ generate the raw moments $\mathbb{E}[X]$, $\mathbb{E}[X^2]$, $\mathbb{E}[X^3]$, and so on.
+
+:::
+
+::: {.example}
+
+**Example 27** (Using an MGF to find moments). Suppose a random variable has MGF $$M_X(t)=\frac{1}{1-t},\qquad t<1.$$ Find $\mathbb{E}[X]$ and $\mathbb{E}[X^2]$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Differentiate: $$M_X'(t)=\frac{1}{(1-t)^2},
+\qquad
+M_X''(t)=\frac{2}{(1-t)^3}.$$ Thus $$\mathbb{E}[X]=M_X'(0)=1,
+\qquad
+\mathbb{E}[X^2]=M_X''(0)=2.$$ Therefore $$\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=2-1^2=1.$$
+
+:::
+
+### Uniqueness and transformation rules
+
+This subsection states two key reasons MGFs are useful: they can identify distributions and they behave nicely under shifts, scales, and independent sums.
+
+::: {.theorem}
+
+**Theorem 28** (MGF determines the distribution). *Suppose $M_X(t)$ and $M_Y(t)$ exist for all $t$ in an open neighborhood of $0$. If $$M_X(t)=M_Y(t)$$ for all such $t$, then $X$ and $Y$ have the same distribution.*
+
+:::
+
+::: {.theorem}
+
+**Theorem 29** (Bounded support and moments). *Suppose all moments exist for random variables $X$ and $Y$. If $X$ and $Y$ have bounded support, then the CDFs of $X$ and $Y$ are equal if and only if all moments are equal.*
+
+:::
+
+::: {.theorem}
+
+**Theorem 30** (MGF transformation rules). *Let $a,b\in\mathbb{R}$. $$M_{aX+b}(t)=e^{bt}M_X(at).$$ If $X$ and $Y$ are independent, then $$M_{X+Y}(t)=M_X(t)M_Y(t).$$*
+
+:::
+
+::: {.proof}
+
+*Proof.* For the affine transformation, $$M_{aX+b}(t)=\mathbb{E}[e^{t(aX+b)}]=e^{bt}\mathbb{E}[e^{(at)X}]=e^{bt}M_X(at).$$ If $X$ and $Y$ are independent, $$M_{X+Y}(t)=\mathbb{E}[e^{t(X+Y)}]=\mathbb{E}[e^{tX}e^{tY}]=\mathbb{E}[e^{tX}]\mathbb{E}[e^{tY}]=M_X(t)M_Y(t).$$ ◻
+
+:::
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 31** (Affine transformation). If $M_X(t)$ is known, find the MGF of $Y=3X-2$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Use $a=3$ and $b=-2$: $$M_Y(t)=M_{3X-2}(t)=e^{-2t}M_X(3t).$$
+
+:::
+
+## MGFs of Common Distributions
+
+This section computes MGFs for several common distributions and uses them to recover moments.
+
+### Bernoulli and Binomial distributions
+
+This subsection shows how the binomial MGF follows from the Bernoulli MGF and independence.
+
+::: {.example}
+
+**Example 32** (Bernoulli MGF). Let $X\sim\operatorname{Bernoulli}(p)$. Find $M_X(t)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Since $X=1$ with probability $p$ and $X=0$ with probability $1-p$, $$M_X(t)=\mathbb{E}[e^{tX}]=e^{t\cdot 1}p+e^{t\cdot 0}(1-p)=pe^t+(1-p).$$ Therefore, $$M_X(t)=1-p+pe^t.$$ As a check, $$M_X'(t)=pe^t,\qquad M_X'(0)=p=\mathbb{E}[X].$$
+
+:::
+
+::: {.example}
+
+**Example 33** (Binomial MGF). Let $Y\sim\operatorname{Binomial}(n,p)$. Find $M_Y(t)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Write $$Y=X_1+\cdots+X_n,$$ where $X_i\sim\operatorname{Bernoulli}(p)$ are independent. Then $$M_Y(t)=\prod_{i=1}^n M_{X_i}(t)=\left(1-p+pe^t\right)^n.$$ Thus $$M_Y(t)=\left(pe^t+1-p\right)^n.$$
+
+:::
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 34** (Mean and variance from the binomial MGF). Use the binomial MGF $M_Y(t)=(1-p+pe^t)^n$ to find $\mathbb{E}[Y]$ and $\operatorname{Var}(Y)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Let $q=1-p+pe^t$. Then $$M_Y'(t)=nq^{n-1}pe^t,$$ so $$\mathbb{E}[Y]=M_Y'(0)=n(1)^{n-1}p=np.$$ For the second derivative, $$M_Y''(t)=n(n-1)q^{n-2}(pe^t)^2+nq^{n-1}pe^t.$$ Thus $$\mathbb{E}[Y^2]=M_Y''(0)=n(n-1)p^2+np.$$ Therefore $$\operatorname{Var}(Y)=\mathbb{E}[Y^2]-(\mathbb{E}[Y])^2
+=n(n-1)p^2+np-n^2p^2=np(1-p).$$
+
+:::
+
+### Poisson distribution
+
+This subsection derives the MGF of the Poisson distribution using the exponential series.
+
+::: {.example}
+
+**Example 35** (Poisson MGF). Let $X\sim\operatorname{Poisson}(\lambda)$. Find $M_X(t)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+The pmf is $$\mathbb{P}(X=k)=\frac{\lambda^k e^{-\lambda}}{k!},\qquad k=0,1,2,\ldots.$$ Therefore $$\begin{aligned}
+M_X(t)
+&=\mathbb{E}[e^{tX}]
+=\sum_{k=0}^{\infty} e^{tk}\frac{\lambda^k e^{-\lambda}}{k!}\\
+&=e^{-\lambda}\sum_{k=0}^{\infty}\frac{(\lambda e^t)^k}{k!}
+=e^{-\lambda}\exp(\lambda e^t)\\
+&=\exp\{\lambda(e^t-1)\}.
+\end{aligned}$$ Thus $$M_X(t)=e^{\lambda(e^t-1)}.$$
+
+:::
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 36** (Sum of independent Poisson variables). Suppose $X\sim\operatorname{Poisson}(\lambda_1)$ and $Y\sim\operatorname{Poisson}(\lambda_2)$ are independent. Use MGFs to find the distribution of $X+Y$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+By independence, $$M_{X+Y}(t)=M_X(t)M_Y(t)
+=e^{\lambda_1(e^t-1)}e^{\lambda_2(e^t-1)}
+=e^{(\lambda_1+\lambda_2)(e^t-1)}.$$ This is the MGF of a $\operatorname{Poisson}(\lambda_1+\lambda_2)$ random variable. Therefore $$X+Y\sim\operatorname{Poisson}(\lambda_1+\lambda_2).$$
+
+:::
+
+### Exponential distribution
+
+This subsection derives the MGF of the exponential distribution by evaluating an integral.
+
+::: {.example}
+
+**Example 37** (Exponential MGF). Let $X\sim\operatorname{Exponential}(\lambda)$ with pdf $$f_X(x)=\lambda e^{-\lambda x},\qquad x\ge 0.$$ Find $M_X(t)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+For $t<\lambda$, $$\begin{aligned}
+M_X(t)&=\mathbb{E}[e^{tX}]
+=\int_0^{\infty} e^{tx}\lambda e^{-\lambda x}\,dx\\
+&=\lambda\int_0^{\infty}e^{-(\lambda-t)x}\,dx
+=\lambda\cdot \frac{1}{\lambda-t}.
+\end{aligned}$$ Thus $$M_X(t)=\frac{\lambda}{\lambda-t},\qquad t<\lambda.$$
+
+:::
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 38** (Mean and variance of an exponential random variable). Use $M_X(t)=\lambda/(\lambda-t)$ to find $\mathbb{E}[X]$ and $\operatorname{Var}(X)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Differentiate: $$M_X'(t)=\frac{\lambda}{(\lambda-t)^2},
+\qquad
+M_X''(t)=\frac{2\lambda}{(\lambda-t)^3}.$$ Hence $$\mathbb{E}[X]=M_X'(0)=\frac{1}{\lambda},
+\qquad
+\mathbb{E}[X^2]=M_X''(0)=\frac{2}{\lambda^2}.$$ Therefore $$\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2
+=\frac{2}{\lambda^2}-\frac{1}{\lambda^2}
+=\frac{1}{\lambda^2}.$$
+
+:::
+
+### Normal distribution
+
+This subsection derives the normal MGF and uses it to show closure under independent sums.
+
+::: {.example}
+
+**Example 39** (Normal MGF). Let $X\sim\operatorname{Normal}(\mu,\sigma^2)$. Find $M_X(t)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Write $X=\mu+\sigma Z$, where $Z\sim\operatorname{Normal}(0,1)$. First compute the standard normal MGF: $$\begin{aligned}
+M_Z(t)&=\mathbb{E}[e^{tZ}]
+=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} e^{tz}e^{-z^2/2}\,dz\\
+&=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}\exp\left(-\frac12(z^2-2tz)\right)\,dz\\
+&=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty}\exp\left(-\frac12(z-t)^2+\frac{t^2}{2}\right)\,dz\\
+&=e^{t^2/2}.
+\end{aligned}$$ Now apply the affine transformation rule: $$M_X(t)=M_{\mu+\sigma Z}(t)=e^{\mu t}M_Z(\sigma t)
+=e^{\mu t}e^{\sigma^2t^2/2}.$$ Therefore $$M_X(t)=\exp\left(\mu t+\frac{\sigma^2t^2}{2}\right).$$
+
+:::
+
+::: {.example}
+
+**Example 40** (Sum of independent normal random variables). Suppose $X\sim\operatorname{Normal}(\mu_1,\sigma_1^2)$ and $Y\sim\operatorname{Normal}(\mu_2,\sigma_2^2)$ are independent. Find the distribution of $Z=X+Y$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+By the product rule for MGFs, $$\begin{aligned}
+M_Z(t)&=M_X(t)M_Y(t)\\
+&=\exp\left(\mu_1t+\frac{\sigma_1^2t^2}{2}\right)
+\exp\left(\mu_2t+\frac{\sigma_2^2t^2}{2}\right)\\
+&=\exp\left((\mu_1+\mu_2)t+\frac{(\sigma_1^2+\sigma_2^2)t^2}{2}\right).
+\end{aligned}$$ This is the MGF of a normal random variable with mean $\mu_1+\mu_2$ and variance $\sigma_1^2+\sigma_2^2$. Therefore $$X+Y\sim\operatorname{Normal}(\mu_1+\mu_2,\sigma_1^2+\sigma_2^2).$$
+
+:::
+
+## Multivariate Moment Generating Functions
+
+This section extends the MGF idea from one random variable to random vectors.
+
+### Definition for random vectors
+
+This subsection defines the multivariate MGF and explains its role in describing joint distributions.
+
+::: {.definition}
+
+**Definition 41** (Multivariate MGF). Let $X\in\mathbb{R}^d$ be a random vector and let $t\in\mathbb{R}^d$. The multivariate MGF of $X$ is $$M_X(t)=\mathbb{E}\left[e^{t^T X}\right],$$ for values of $t$ where the expectation exists.
+
+:::
+
+The multivariate MGF contains joint moment information. For example, in two dimensions, $$M_{X,Y}(s,t)=\mathbb{E}[e^{sX+tY}],$$ and mixed derivatives generate mixed moments such as $\mathbb{E}[X^aY^b]$.
+
+### Multivariate normal MGF
+
+This subsection records the fundamental MGF formula for the multivariate normal distribution.
+
+::: {.theorem}
+
+**Theorem 42** (Multivariate normal MGF). *If $X\sim\operatorname{Normal}(\mu,\Sigma)$ in $\mathbb{R}^d$, then $$M_X(t)=\exp\left(t^T\mu+\frac12 t^T\Sigma t\right).$$*
+
+:::
+
+::: {.example}
+
+**Example 43** (Linear transformation of a multivariate normal). Let $X\sim\operatorname{Normal}(\mu,\Sigma)$ and define $$Z=AX+b,$$ where $A$ is a matrix and $b$ is a vector. Find the distribution of $Z$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+The MGF of $Z$ is $$\begin{aligned}
+M_Z(t)&=\mathbb{E}[e^{t^T(AX+b)}]
+=e^{t^Tb}\mathbb{E}[e^{(A^Tt)^TX}]\\
+&=e^{t^Tb}M_X(A^Tt)\\
+&=\exp\left(t^Tb+(A^Tt)^T\mu+\frac12(A^Tt)^T\Sigma(A^Tt)\right)\\
+&=\exp\left(t^T(b+A\mu)+\frac12 t^T(A\Sigma A^T)t\right).
+\end{aligned}$$ This is the MGF of a multivariate normal distribution with mean $b+A\mu$ and covariance matrix $A\Sigma A^T$. Therefore $$Z\sim\operatorname{Normal}(b+A\mu,A\Sigma A^T).$$
+
+:::
+
+### Sum of multivariate normal random vectors
+
+This subsection presents the general normal-sum formula, including the covariance between the two vectors.
+
+::: {.example}
+
+**Example 44** (Sum of multivariate normal distributions). Let $$X\sim\operatorname{Normal}(\mu_1,\Sigma_1),\qquad
+Y\sim\operatorname{Normal}(\mu_2,\Sigma_2),$$ and suppose the joint covariance matrix of $(X,Y)$ is $$\Sigma=\begin{pmatrix}
+\Sigma_1 & \Sigma_{12}\\
+\Sigma_{21} & \Sigma_2
+\end{pmatrix},
+\qquad \Sigma_{21}=\operatorname{Cov}(Y,X).$$ Find the distribution of $Z=X+Y$ when the joint distribution is multivariate normal.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Since $Z=X+Y$ is a linear transformation of the jointly normal vector $(X,Y)$, it is normal. Its mean is $$\mathbb{E}[Z]=\mathbb{E}[X]+\mathbb{E}[Y]=\mu_1+
+\mu_2.$$ Its covariance matrix is $$\begin{aligned}
+\operatorname{Cov}(Z)&=\operatorname{Cov}(X+Y)\\
+&=\operatorname{Cov}(X)+\operatorname{Cov}(Y)+\operatorname{Cov}(X,Y)+\operatorname{Cov}(Y,X)\\
+&=\Sigma_1+\Sigma_2+\Sigma_{12}+\Sigma_{21}.
+\end{aligned}$$ If $\Sigma_{12}=\Sigma_{21}^T$, this is often written as $$\Sigma_1+\Sigma_2+\Sigma_{12}+\Sigma_{12}^T.$$ In the scalar case, this becomes $$\operatorname{Var}(X+Y)=\operatorname{Var}(X)+\operatorname{Var}(Y)+2\operatorname{Cov}(X,Y).$$ If $X$ and $Y$ are independent, then $\Sigma_{12}=\Sigma_{21}=0$, so $$X+Y\sim\operatorname{Normal}(\mu_1+\mu_2,\Sigma_1+
+\Sigma_2).$$
+
+:::
+
+## Practice Problems
+
+This section gives additional practice problems that reinforce the main computational skills from the lecture.
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 45** (Expectation and variance). Let $X$ have pmf $$\mathbb{P}(X=-1)=\frac14,
+\qquad
+\mathbb{P}(X=0)=\frac12,
+\qquad
+\mathbb{P}(X=2)=\frac14.$$ Find $\mathbb{E}[X]$, $\mathbb{E}[X^2]$, and $\operatorname{Var}(X)$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+$$\mathbb{E}[X]=(-1)\frac14+0\frac12+2\frac14=-\frac14+\frac12=\frac14.$$ Also, $$\mathbb{E}[X^2]=(-1)^2\frac14+0^2\frac12+2^2\frac14=\frac14+1=\frac54.$$ Therefore $$\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=\frac54-\left(\frac14\right)^2=\frac{20}{16}-\frac{1}{16}=\frac{19}{16}.$$
+
+:::
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 46** (Expectation of a function). Let $X\sim \operatorname{Exponential}(\lambda)$. Compute $\mathbb{E}[e^{-sX}]$ for $s>-\lambda$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+Using the expectation of a function formula, $$\mathbb{E}[e^{-sX}]=\int_0^\infty e^{-sx}\lambda e^{-\lambda x}\,dx
+=\lambda\int_0^\infty e^{-(\lambda+s)x}\,dx
+=\frac{\lambda}{\lambda+s}.$$ This is the Laplace transform of the exponential distribution.
+
+:::
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 47** (MGF and distribution identification). Suppose $X$ has MGF $$M_X(t)=\left(\frac{1}{3}+\frac{2}{3}e^t\right)^5.$$ Identify the distribution of $X$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+The binomial MGF is $$M(t)=(1-p+pe^t)^n.$$ Here $n=5$ and $p=2/3$. Therefore $$X\sim\operatorname{Binomial}\left(5,\frac23\right).$$
+
+:::
+
+::: {.callout-important title="Practice Problem"}
+
+**Practice Problem 48** (Independent sum). Let $X_1,\ldots,X_n$ be independent exponential random variables with rate $\lambda$. Write the MGF of $S_n=X_1+\cdots+X_n$.
+
+:::
+
+::: {.callout-note title="Solution"}
+
+The MGF of each $X_i$ is $$M_{X_i}(t)=\frac{\lambda}{\lambda-t},\qquad t<\lambda.$$ By independence, $$M_{S_n}(t)=\prod_{i=1}^nM_{X_i}(t)=\left(\frac{\lambda}{\lambda-t}\right)^n.$$ This is the MGF of a Gamma/Erlang distribution with shape $n$ and rate $\lambda$.
+
+:::
+
+## Summary
+
+This section summarizes the most important ideas and formulas from the lecture.
+
+::: {.callout-tip title="Core formulas"}
+
+$$\begin{aligned}
+\mathbb{E}[X]&=\sum_x xp_X(x) \quad \text{or}\quad \mathbb{E}[X]=\int xf_X(x)\,dx,\\
+\operatorname{Var}(X)&=\mathbb{E}[(X-\mathbb{E}[X])^2]=\mathbb{E}[X^2]-(\mathbb{E}[X])^2,\\
+\mathbb{E}[g(X)]&=\sum_x g(x)p_X(x) \quad \text{or}\quad \mathbb{E}[g(X)]=\int g(x)f_X(x)\,dx,\\
+M_X(t)&=\mathbb{E}[e^{tX}],\\
+\mathbb{E}[X^m]&=M_X^{(m)}(0),\\
+M_{aX+b}(t)&=e^{bt}M_X(at),\\
+M_{X+Y}(t)&=M_X(t)M_Y(t)\quad \text{if }X,Y\text{ are independent.}
+\end{aligned}$$
+
+:::
+
+::: {.callout-tip title="Common MGFs"}
+
+$$\begin{aligned}
+X\sim\operatorname{Bernoulli}(p):\quad &M_X(t)=1-p+pe^t,\\
+X\sim\operatorname{Binomial}(n,p):\quad &M_X(t)=(1-p+pe^t)^n,\\
+X\sim\operatorname{Poisson}(\lambda):\quad &M_X(t)=\exp\{\lambda(e^t-1)\},\\
+X\sim\operatorname{Exponential}(\lambda):\quad &M_X(t)=\frac{\lambda}{\lambda-t},\quad t<\lambda,\\
+X\sim\operatorname{Normal}(\mu,\sigma^2):\quad &M_X(t)=\exp\left(\mu t+\frac{\sigma^2t^2}{2}\right).
+\end{aligned}$$
+
+:::
+
+## References
+
+These notes are based on the instructor’s Section 4 lecture slides for MATH 5010 and the following recommended references.
+
+- Casella, G. and Berger, R. L., *Statistical Inference*, 2nd edition.
+
+- Wasserman, L., *All of Statistics*.
+
+- Grinstead, C. M. and Snell, J. L., *Introduction to Probability*.
+
+- Ross, S., *Introduction to Probability Models*, 12th edition.

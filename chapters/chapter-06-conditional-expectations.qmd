@@ -1,0 +1,781 @@
+---
+title: "Chapter 6: Conditional Expectations"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Conditional Expectations
+
+This chapter explains how conditional distributions and conditional expectations turn difficult probability, expectation, and variance calculations into easier two-step calculations: condition first, then average.
+
+ 
+
+**Topics.** Conditional distributions; conditioning as a problem-solving
+method; law of total probability; memoryless property; conditional
+expectation; law of total expectation; law of total variance; random
+sums; Bayesian updating; inverse probability weighting; importance
+weighting.
+
+## Overview
+
+This section explains how conditioning turns a difficult probability or
+expectation into an average of easier conditional probabilities or
+conditional expectations.
+
+Conditional probability was introduced earlier as
+$$\mathbb{P}(A\mid B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}.$$ In
+this section, we extend the idea from events to random variables. We
+will use conditional distributions such as $p_{X\mid Y}(x\mid y)$ and
+conditional expectations such as $\mathbb{E}[X\mid Y]$.
+
+::: {.callout-tip title="Main message"}
+Conditioning is a way to break a problem into two steps:
+first solve the problem after some information is fixed, then average
+over the information that was fixed.
+$$\text{unconditional quantity}=\text{average of conditional quantities}.$$
+:::
+
+## Conditional Distributions
+
+This section reviews conditional distributions and shows how they are
+used to compute probabilities by conditioning on another random
+variable.
+
+### Discrete conditional distributions
+
+This subsection begins with the discrete case, where conditional
+distributions are ratios of joint probabilities and marginals.
+
+Let $X$ and $Y$ be discrete random variables. If $p_Y(y)>0$, then
+$$p_{X\mid Y}(x\mid y)
+=\mathbb{P}(X=x\mid Y=y)
+=\frac{p_{X,Y}(x,y)}{p_Y(y)}.$$ Equivalently,
+$$p_{X,Y}(x,y)=p_{X\mid Y}(x\mid y)p_Y(y).$$ Therefore, summing over all
+possible values of $Y$ gives the total probability formula
+$$\mathbb{P}(X=x)=\sum_y \mathbb{P}(X=x\mid Y=y)\mathbb{P}(Y=y).$$
+
+::: {.callout-tip title="Why conditioning helps"}
+It is often easier to compute
+$\mathbb{P}(X=x\mid Y=y)$ after $Y$ is fixed. Then the unconditional
+probability is obtained by summing over all possible values of $Y$.
+:::
+
+::: example
+**Example 1** (Best prize / secretary problem). There are $n$ distinct
+prizes arriving in a random order. Exactly one prize is the best. You
+must accept or reject each prize when it arrives, and you cannot return
+to earlier prizes. Consider the strategy:
+
+> Reject the first $k$ prizes, then choose the first later prize that is better than all previous prizes.
+
+Let $X$ be the position of the best prize. Find the approximate
+probability of selecting the best prize under this strategy and find the
+approximate optimal value of $k$.
+:::
+
+::: {.callout-note title="Solution"}
+The best prize is equally likely to occur in any position, so
+$$\mathbb{P}(X=i)=\frac1n,\qquad i=1,\ldots,n.$$ If $i\le k$, the best
+prize occurs during the rejection period, so the strategy cannot win.
+
+If $i>k$, then the strategy wins exactly when the best prize among the
+first $i-1$ positions occurs among the first $k$ positions. Since the
+best among the first $i-1$ positions is equally likely to be in any of
+those positions,
+$$\mathbb{P}(\text{win}\mid X=i)=\frac{k}{i-1},\qquad i=k+1,
+\ldots,n.$$ Hence $$\mathbb{P}_k(\text{win})
+=\sum_{i=k+1}^n \mathbb{P}(\text{win}\mid X=i)\mathbb{P}(X=i)
+=\sum_{i=k+1}^n \frac{k}{i-1}\frac1n.$$ Thus $$\mathbb{P}_k(\text{win})
+=\frac{k}{n}\sum_{j=k}^{n-1}\frac1j
+\approx \frac{k}{n}\log\left(\frac{n}{k}\right).$$ Let $x=k/n$. Then
+approximately $$f(x)=x\log\left(\frac1x\right)=-x\log x.$$
+Differentiate: $$f'(x)=-\log x-1.$$ Set $f'(x)=0$:
+$$-\log x-1=0 \quad\Longrightarrow\quad x=e^{-1}.$$ So the approximate
+optimal choice is $$\boxed{k\approx \frac{n}{e}},$$ and the
+corresponding maximum probability is approximately
+$$\boxed{\frac1e\approx 0.368.}$$
+:::
+
+### Conditioning on the first step
+
+This subsection shows a common recursive method: condition on the first
+move of a stochastic process.
+
+::: example
+**Example 2** (Gambler's ruin). A gambler starts with $k$ dollars. In
+each round, the gambler wins $1$ dollar with probability $p$ and loses
+$1$ dollar with probability $q=1-p$. The game stops when the gambler
+reaches $N$ dollars or $0$ dollars. Let
+$$P_k=\mathbb{P}(\text{reach }N\text{ before }0\mid\text{start at }k).$$
+Use conditioning on the first bet to derive the recursion for $P_k$.
+:::
+
+::: {.callout-note title="Solution"}
+Let $A$ be the event that the gambler eventually reaches $N$ before
+going broke. Let $X$ be the result of the first bet, where $X=+1$ with
+probability $p$ and $X=-1$ with probability $q$.
+
+Conditioning on the first bet gives $$P_k=\mathbb{P}(A)
+=\mathbb{P}(A\mid X=+1)\mathbb{P}(X=+1)+\mathbb{P}(A\mid X=-1)\mathbb{P}(X=-1).$$
+If the first bet is a win, the gambler moves to $k+1$ dollars. If it is
+a loss, the gambler moves to $k-1$ dollars. Therefore
+$$\boxed{P_k=pP_{k+1}+qP_{k-1}},\qquad k=1,\ldots,N-1,$$ with boundary
+conditions $$P_0=0,\qquad P_N=1.$$ If desired, solving the difference
+equation gives $$P_k=\begin{cases}
+\displaystyle \frac{1-(q/p)^k}{1-(q/p)^N}, & p\ne q,\\[1.2em]
+\displaystyle \frac{k}{N}, & p=q=\frac12.
+\end{cases}$$
+:::
+
+::: exercise
+**Practice Problem 3** (First-step recursion). In the gambler's ruin
+problem, suppose $p=q=1/2$, $N=10$, and the gambler starts with $k=4$
+dollars. What is the probability that the gambler reaches $10$ dollars
+before going broke?
+:::
+
+::: {.callout-note title="Solution"}
+For the fair game $p=q=1/2$, the solution is $$P_k=\frac{k}{N}.$$ Thus
+$$P_4=\frac{4}{10}=0.4.$$ So the probability is $$\boxed{0.4}.$$
+:::
+
+### Continuous conditioning and total probability
+
+This subsection extends the law of total probability to conditioning on
+a continuous random variable.
+
+Let $X$ be a continuous random variable with density $f_X(x)$. For any
+event $A$,
+$$\mathbb{P}(A)=\int_{-\infty}^{\infty}\mathbb{P}(A\mid X=x)f_X(x)\,dx.$$
+A shorthand notation is
+$$\mathbb{P}(A)=\mathbb{E}[\mathbb{P}(A\mid X)],$$ where
+$\mathbb{P}(A\mid X)$ is a random variable that is a function of $X$.
+
+More generally, if $X$ and $Y$ have joint density or joint pmf, then
+$$p_{X\mid Y}(x\mid y)=\frac{p_{X,Y}(x,y)}{p_Y(y)}$$ whenever
+$p_Y(y)>0$, and the marginal density or pmf can be recovered by
+$$p_X(x)=\int p_{X\mid Y}(x\mid y)p_Y(y)\,dy$$ in the continuous case,
+or $$p_X(x)=\sum_y p_{X\mid Y}(x\mid y)p_Y(y)$$ in the discrete case.
+
+::: example
+**Example 4** (Tail probability for a sum of exponentials). Suppose $X$
+and $Y$ are independent exponential random variables with mean $1$, so
+$f_X(x)=e^{-x}$ for $x\ge0$. For $z\ge0$, compute
+$$\mathbb{P}(X+Y\ge z).$$
+:::
+
+::: {.callout-note title="Solution"}
+Condition on $X=x$. Since $X$ and $Y$ are independent,
+$$\mathbb{P}(X+Y\ge z\mid X=x)=\mathbb{P}(Y\ge z-x).$$ For an
+exponential random variable with mean $1$,
+$$\mathbb{P}(Y\ge a)=e^{-a}\quad\text{for }a\ge0.$$ Thus
+$$\mathbb{P}(Y\ge z-x)=
+\begin{cases}
+e^{-(z-x)}, & 0\le x\le z,\\
+1, & x>z.
+\end{cases}$$ Therefore $$\begin{aligned}
+\mathbb{P}(X+Y\ge z)
+&=\int_0^\infty \mathbb{P}(X+Y\ge z\mid X=x)e^{-x}\,dx\\
+&=\int_0^z e^{-(z-x)}e^{-x}\,dx+\int_z^\infty e^{-x}\,dx\\
+&=\int_0^z e^{-z}\,dx+e^{-z}\\
+&=ze^{-z}+e^{-z}.
+\end{aligned}$$ Hence
+$$\boxed{\mathbb{P}(X+Y\ge z)=(z+1)e^{-z}},\qquad z\ge0.$$ This agrees
+with the fact that $X+Y\sim\operatorname{Gamma}(2,1)$ in rate
+parameterization.
+:::
+
+::: example
+**Example 5** (A dependent example). Suppose
+$X\sim\operatorname{Uniform}(0,1)$ and, conditional on $X=x$, the random
+variable $Y$ is uniform on $[0,x]$. Calculate $\mathbb{E}[Y]$.
+:::
+
+::: {.callout-note title="Solution"}
+Conditioning on $X=x$, we have
+$$Y\mid X=x\sim\operatorname{Uniform}(0,x),$$ so
+$$\mathbb{E}[Y\mid X=x]=\frac{x}{2}.$$ Therefore
+$$\mathbb{E}[Y\mid X]=\frac{X}{2}.$$ Using the law of total expectation,
+$$\mathbb{E}[Y]=\mathbb{E}[\mathbb{E}(Y\mid X)]=\mathbb{E}\left[\frac{X}{2}\right]
+=\frac12\mathbb{E}[X]=\frac12\cdot\frac12=\frac14.$$ Thus
+$$\boxed{\mathbb{E}[Y]=\frac14.}$$
+:::
+
+### Memoryless property of the exponential distribution
+
+This subsection studies an important example where conditioning does not
+change the remaining lifetime distribution.
+
+Let $X\sim\operatorname{Exp}(\lambda)$, with density
+$$f_X(t)=\lambda e^{-\lambda t},\qquad t\ge0.$$ Then
+$$\mathbb{P}(X\ge t)=e^{-\lambda t},\qquad t\ge0.$$ For $s,t\ge0$,
+$$\begin{aligned}
+\mathbb{P}(X\ge t+s\mid X>s)
+&=\frac{\mathbb{P}(X\ge t+s, X>s)}{\mathbb{P}(X>s)}\\
+&=\frac{\mathbb{P}(X\ge t+s)}{\mathbb{P}(X>s)}\\
+&=\frac{e^{-\lambda(t+s)}}{e^{-\lambda s}}\\
+&=e^{-\lambda t}.
+\end{aligned}$$ Thus
+$$\boxed{\mathbb{P}(X\ge t+s\mid X>s)=\mathbb{P}(X\ge t).}$$
+
+::: {.callout-tip title="Interpretation"}
+If $X$ is the lifetime of a device and the device has
+survived until time $s$, then the additional waiting time has the same
+distribution as a brand-new lifetime. The exponential distribution has
+no memory.
+:::
+
+::: example
+**Example 6** (Waiting for the next car). Cars pass a point on a
+highway. The times between successive cars are independent exponential
+random variables with mean $m$. Suppose at a random time you stand at
+the point on the highway. What is the mean time until the next car
+passes?
+:::
+
+::: {.callout-note title="Solution"}
+An exponential interarrival time with mean $m$ has rate
+$$\lambda=\frac1m.$$ Because of the memoryless property, the remaining
+waiting time until the next car is again exponential with rate
+$\lambda$. Therefore its mean is $$\frac1\lambda=m.$$ Thus the mean time
+until the next car is $$\boxed{m}.$$
+:::
+
+### Mixed conditional distributions
+
+This subsection considers examples where one variable is discrete and
+the other is continuous.
+
+::: example
+**Example 7** (Poisson--Exponential--Gamma example). Suppose
+$X\in\{0,1,2,\ldots\}$ is discrete and $Y\ge0$ is continuous with joint
+density/mass function
+$$p_{X,Y}(x,y)=\frac{\lambda y^x e^{-(\lambda+1)y}}{x!},
+\qquad x=0,1,2,\ldots,\quad y\ge0.$$ Find the marginal distribution of
+$Y$, the conditional distribution of $X\mid Y=y$, and the conditional
+distribution of $Y\mid X=x$.
+:::
+
+::: {.callout-note title="Solution"}
+First compute the marginal density of $Y$: $$\begin{aligned}
+p_Y(y)
+&=\sum_{x=0}^{\infty}p_{X,Y}(x,y)\\
+&=\sum_{x=0}^{\infty}\frac{\lambda y^x e^{-(\lambda+1)y}}{x!}\\
+&=\lambda e^{-(\lambda+1)y}\sum_{x=0}^{\infty}\frac{y^x}{x!}\\
+&=\lambda e^{-(\lambda+1)y}e^y\\
+&=\lambda e^{-\lambda y},\qquad y\ge0.
+\end{aligned}$$ Thus $$\boxed{Y\sim\operatorname{Exp}(\lambda).}$$
+
+Next, $$\begin{aligned}
+p_{X\mid Y}(x\mid y)
+&=\frac{p_{X,Y}(x,y)}{p_Y(y)}\\
+&=\frac{\lambda y^x e^{-(\lambda+1)y}/x!}{\lambda e^{-\lambda y}}\\
+&=\frac{y^x e^{-y}}{x!}.
+\end{aligned}$$ Therefore
+$$\boxed{X\mid Y=y\sim\operatorname{Poisson}(y).}$$
+
+Finally, to identify $Y\mid X=x$, treat $x$ as fixed and keep only
+factors depending on $y$: $$p_{Y\mid X}(y\mid x)\propto p_{X,Y}(x,y)
+\propto y^x e^{-(\lambda+1)y},\qquad y\ge0.$$ This is a Gamma density
+with shape $x+1$ and rate $\lambda+1$. Hence
+$$\boxed{Y\mid X=x\sim\operatorname{Gamma}(x+1,\lambda+1)}$$ where the
+second parameter is the rate.
+:::
+
+## Conditional Expectations
+
+This section introduces conditional expectation as the expected value
+computed under a conditional distribution.
+
+### Definition
+
+This subsection defines conditional expectation for both discrete and
+continuous random variables.
+
+::: definition
+**Definition 8** (Conditional expectation). Let $X$ and $Y$ be random
+variables.
+
+If $X$ is discrete, then $$\mathbb{E}[X\mid Y=y]
+=\sum_x x\,p_{X\mid Y}(x\mid y).$$ If $X$ is continuous, then
+$$\mathbb{E}[X\mid Y=y]
+=\int_{-\infty}^{\infty}x\,p_{X\mid Y}(x\mid y)\,dx.$$
+:::
+
+For each possible value $y$ of $Y$, the expression
+$\mathbb{E}[X\mid Y=y]$ is a number. Therefore $\mathbb{E}[X\mid Y]$ is
+a random variable that is a function of $Y$.
+
+::: {.callout-tip title="How to read $\mathbb{E}[X\mid Y]$"}
+The conditional expectation
+$\mathbb{E}[X\mid Y]$ is the best prediction of $X$ after observing $Y$,
+when prediction is measured by squared error. In this course, the most
+important point is that it is a random variable determined by $Y$.
+:::
+
+If $X$ and $Y$ are independent, then conditioning on $Y$ does not change
+the distribution of $X$. Hence $$\mathbb{E}[X\mid Y=y]=\mathbb{E}[X],$$
+and therefore $$\mathbb{E}[X\mid Y]=\mathbb{E}[X].$$ Also, if $X$ and
+$Y$ are independent and the expectations exist, then
+$$\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y].$$
+
+### Law of total expectation
+
+This subsection states the most important computational identity for
+conditional expectation.
+
+::: theorem
+**Theorem 9** (Law of total expectation). *If the relevant expectations
+exist, then $$\boxed{\mathbb{E}[\mathbb{E}[X\mid Y]]=\mathbb{E}[X].}$$
+More generally,
+$$\boxed{\mathbb{E}[g(X,Y)]=\mathbb{E}\big[\mathbb{E}[g(X,Y)\mid X]\big]}$$
+for any measurable function $g$ for which the expectations exist.*
+:::
+
+::: proof
+*Proof in the discrete case.* Assume $X$ and $Y$ are discrete. Then
+$$\begin{aligned}
+\mathbb{E}_Y[\mathbb{E}_X(X\mid Y)]
+&=\sum_y \mathbb{E}[X\mid Y=y]\mathbb{P}(Y=y)\\
+&=\sum_y\left(\sum_x x\mathbb{P}(X=x\mid Y=y)\right)\mathbb{P}(Y=y)\\
+&=\sum_x\sum_y x\mathbb{P}(X=x\mid Y=y)\mathbb{P}(Y=y)\\
+&=\sum_x\sum_y x\mathbb{P}(X=x,Y=y)\\
+&=\sum_x x\mathbb{P}(X=x)\\
+&=\mathbb{E}[X].
+\end{aligned}$$ ◻
+:::
+
+::: proof
+*Proof in the continuous case.* Assume $X$ and $Y$ are continuous. Then
+$$\begin{aligned}
+\mathbb{E}_Y[\mathbb{E}_X(X\mid Y)]
+&=\int_y \mathbb{E}[X\mid Y=y]p_Y(y)\,dy\\
+&=\int_y\int_x x p_{X\mid Y}(x\mid y)p_Y(y)\,dx\,dy\\
+&=\int_y\int_x x p_{X,Y}(x,y)\,dx\,dy\\
+&=\int_x x\left(\int_y p_{X,Y}(x,y)\,dy\right)\,dx\\
+&=\int_x x p_X(x)\,dx\\
+&=\mathbb{E}[X].
+\end{aligned}$$ ◻
+:::
+
+::: example
+**Example 10** (Unit disk: uncorrelated but not independent). Let
+$(X,Y)$ be uniformly distributed over the unit disk
+$$D=\{(x,y):x^2+y^2\le1\}.$$ The joint density is
+$$f_{X,Y}(x,y)=\frac1\pi,\qquad (x,y)\in D.$$ Are $X$ and $Y$
+uncorrelated?
+:::
+
+::: {.callout-note title="Solution"}
+From symmetry, $$\mathbb{E}[X]=0,\qquad \mathbb{E}[Y]=0.$$ We need to
+compute
+$$\operatorname{Cov}(X,Y)=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]=\mathbb{E}[XY].$$
+Condition on $Y$. For a fixed $Y=y$, the possible values of $X$ are
+$$-\sqrt{1-y^2}\le X\le \sqrt{1-y^2}.$$ Moreover,
+$$X\mid Y=y\sim \operatorname{Uniform}\left(-\sqrt{1-y^2},\sqrt{1-y^2}\right).$$
+Thus $$\mathbb{E}[X\mid Y=y]=0.$$ Therefore
+$$\mathbb{E}[XY]=\mathbb{E}\big[\mathbb{E}[XY\mid Y]\big]
+=\mathbb{E}\big[Y\mathbb{E}[X\mid Y]\big]
+=\mathbb{E}[Y\cdot0]=0.$$ Hence $$\boxed{\operatorname{Cov}(X,Y)=0.}$$
+So $X$ and $Y$ are uncorrelated. However, they are not independent
+because the conditional support of $X\mid Y=y$ depends on $y$.
+:::
+
+::: example
+**Example 11** (Computing covariance by conditioning). Suppose
+$$X\sim\operatorname{Uniform}(1,2),$$ and conditional on $X=x$,
+$$Y\mid X=x\sim\operatorname{Exp}(x),$$ where $x$ is the rate parameter.
+Find $\operatorname{Cov}(X,Y)$.
+:::
+
+::: {.callout-note title="Solution"}
+We use
+$$\operatorname{Cov}(X,Y)=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y].$$
+First, $$\mathbb{E}[X]=\frac{1+2}{2}=\frac32.$$ Because
+$Y\mid X=x\sim\operatorname{Exp}(x)$ with rate $x$,
+$$\mathbb{E}[Y\mid X=x]=\frac1x.$$ Thus $$\mathbb{E}[Y\mid X]=\frac1X.$$
+Using total expectation,
+$$\mathbb{E}[Y]=\mathbb{E}\left[\frac1X\right]=\int_1^2\frac1x\,dx=\log2.$$
+Next, $$\mathbb{E}[XY]=\mathbb{E}[\mathbb{E}[XY\mid X]]
+=\mathbb{E}[X\mathbb{E}(Y\mid X)]
+=\mathbb{E}\left[X\cdot\frac1X\right]=1.$$ Therefore
+$$\boxed{\operatorname{Cov}(X,Y)=1-\frac32\log2.}$$ This value is
+negative because large $X$ implies a larger exponential rate and
+therefore a smaller conditional mean for $Y$.
+:::
+
+### Random sums of random variables
+
+This subsection uses conditioning to evaluate expectations when the
+number of terms is itself random.
+
+::: example
+**Example 12** (Random sum). Let $N,X_1,X_2,\\ldots$ be independent,
+where $X_i$ are IID with $$\mathbb{E}[X_i]=\mu.$$ Define
+$$Y=\sum_{i=1}^N X_i.$$ For example, $N$ could be the number of
+insurance claims in a month and $X_i$ the size of the $i$-th claim. Find
+$\mathbb{E}[Y]$.
+:::
+
+::: {.callout-note title="Solution"}
+Condition on $N=n$. Then the number of terms is fixed:
+$$Y\mid N=n=\sum_{i=1}^n X_i.$$ Since $N$ is independent of the $X_i$'s,
+$$\mathbb{E}[Y\mid N=n]
+=\mathbb{E}\left[\sum_{i=1}^n X_i\right]
+=\sum_{i=1}^n\mathbb{E}[X_i]
+=n\mu.$$ Therefore $$\mathbb{E}[Y\mid N]=N\mu.$$ Using the law of total
+expectation,
+$$\mathbb{E}[Y]=\mathbb{E}[\mathbb{E}(Y\mid N)]=\mathbb{E}[N\mu]=\mu\mathbb{E}[N].$$
+Thus
+$$\boxed{\mathbb{E}\left[\sum_{i=1}^N X_i\right]=\mathbb{E}[N]\mathbb{E}[X_1].}$$
+This identity is a basic form of Wald's equation.
+:::
+
+::: exercise
+**Practice Problem 13** (Variance of a random sum). In the random sum
+example, assume also that $$\operatorname{Var}(X_i)=\sigma^2,$$ and $N$
+is independent of the $X_i$'s. Use the law of total variance to show
+that
+$$\operatorname{Var}(Y)=\sigma^2\mathbb{E}[N]+\mu^2\operatorname{Var}(N).$$
+:::
+
+::: {.callout-note title="Solution"}
+Condition on $N=n$. Then
+$$\operatorname{Var}(Y\mid N=n)=\operatorname{Var}\left(\sum_{i=1}^n X_i\right)=n\sigma^2,$$
+so $$\operatorname{Var}(Y\mid N)=N\sigma^2.$$ Also,
+$$\mathbb{E}[Y\mid N]=N\mu.$$ By the law of total variance,
+$$\begin{aligned}
+\operatorname{Var}(Y)
+&=\mathbb{E}[\operatorname{Var}(Y\mid N)]+\operatorname{Var}(\mathbb{E}[Y\mid N])\\
+&=\mathbb{E}[N\sigma^2]+\operatorname{Var}(N\mu)\\
+&=\sigma^2\mathbb{E}[N]+\mu^2\operatorname{Var}(N).
+\end{aligned}$$ Thus
+$$\boxed{\operatorname{Var}(Y)=\sigma^2\mathbb{E}[N]+\mu^2\operatorname{Var}(N).}$$
+:::
+
+### Law of total variance
+
+This subsection decomposes total variation into average within-group
+variation and between-group variation.
+
+::: theorem
+**Theorem 14** (Law of total variance). *If the relevant second moments
+exist, then
+$$\boxed{\operatorname{Var}(Y)=\mathbb{E}[\operatorname{Var}(Y\mid X)]+\operatorname{Var}(\mathbb{E}[Y\mid X]).}$$*
+:::
+
+::: proof
+*Proof.* Start from
+$$\operatorname{Var}(Y)=\mathbb{E}[Y^2]-(\mathbb{E}[Y])^2.$$ Using total
+expectation, $$\mathbb{E}[Y^2]=\mathbb{E}[\mathbb{E}(Y^2\mid X)]$$ and
+$$\mathbb{E}[Y]=\mathbb{E}[\mathbb{E}(Y\mid X)].$$ For fixed $X$,
+$$\operatorname{Var}(Y\mid X)=\mathbb{E}(Y^2\mid X)-\big(\mathbb{E}(Y\mid X)\big)^2.$$
+Thus
+$$\mathbb{E}(Y^2\mid X)=\operatorname{Var}(Y\mid X)+\big(\mathbb{E}(Y\mid X)\big)^2.$$
+Taking expectations,
+$$\mathbb{E}[Y^2]=\mathbb{E}[\operatorname{Var}(Y\mid X)]+\mathbb{E}\left[\big(\mathbb{E}(Y\mid X)\big)^2\right].$$
+Therefore $$\begin{aligned}
+\operatorname{Var}(Y)
+&=\mathbb{E}[\operatorname{Var}(Y\mid X)]+\mathbb{E}\left[\big(\mathbb{E}(Y\mid X)\big)^2\right]-\left(\mathbb{E}[\mathbb{E}(Y\mid X)]\right)^2\\
+&=\mathbb{E}[\operatorname{Var}(Y\mid X)]+\operatorname{Var}(\mathbb{E}[Y\mid X]).
+\end{aligned}$$ ◻
+:::
+
+::: {.callout-tip title="Interpretation"}
+The identity
+$$\operatorname{Var}(Y)=\mathbb{E}[\operatorname{Var}(Y\mid X)]+\operatorname{Var}(\mathbb{E}[Y\mid X])$$
+says:
+$$\text{total variation}=\text{average conditional variation}+\text{variation of conditional means}.$$
+:::
+
+### A covariance identity
+
+This subsection records a useful projection identity for covariance.
+
+Let $g(X)$ be a function of $X$ and $h(Y)$ be a function of $Y$. Then
+$$\boxed{\operatorname{Cov}(g(X),h(Y))=\operatorname{Cov}(g(X),\mathbb{E}[h(Y)\mid X]).}$$
+Indeed, $$\begin{aligned}
+\operatorname{Cov}(g(X),h(Y))
+&=\mathbb{E}[g(X)h(Y)]-\mathbb{E}[g(X)]\mathbb{E}[h(Y)]\\
+&=\mathbb{E}\left[\mathbb{E}[g(X)h(Y)\mid X]\right]-\mathbb{E}[g(X)]\mathbb{E}\left[\mathbb{E}[h(Y)\mid X]\right]\\
+&=\mathbb{E}\left[g(X)\mathbb{E}[h(Y)\mid X]\right]-\mathbb{E}[g(X)]\mathbb{E}\left[\mathbb{E}[h(Y)\mid X]\right]\\
+&=\operatorname{Cov}(g(X),\mathbb{E}[h(Y)\mid X]).
+\end{aligned}$$
+
+::: {.callout-tip title="Projection viewpoint"}
+The random variable $\mathbb{E}[h(Y)\mid X]$ may be
+viewed as the part of $h(Y)$ that can be predicted from $X$. Therefore,
+when computing covariance with a function of $X$, we can replace $h(Y)$
+by its conditional expectation given $X$.
+:::
+
+### Binomial--uniform example and Bayesian updating
+
+This subsection connects conditional expectation, total variance, and
+Bayesian inference.
+
+::: example
+**Example 15** (Binomial--uniform). Suppose
+$$X\mid Y\sim\operatorname{Binomial}(n,Y),
+\qquad
+Y\sim\operatorname{Uniform}(0,1).$$ Find $\mathbb{E}[X]$ and
+$\operatorname{Var}(X)$. Then determine the conditional distribution of
+$Y\mid X=x$.
+:::
+
+::: {.callout-note title="Solution"}
+Given $Y$, the conditional mean and variance of $X$ are
+$$\mathbb{E}[X\mid Y]=nY,
+\qquad
+\operatorname{Var}(X\mid Y)=nY(1-Y).$$ By the law of total expectation,
+$$\mathbb{E}[X]=\mathbb{E}[\mathbb{E}(X\mid Y)]=\mathbb{E}[nY]=n\mathbb{E}[Y]=\frac n2.$$
+
+By the law of total variance, $$\begin{aligned}
+\operatorname{Var}(X)
+&=\mathbb{E}[\operatorname{Var}(X\mid Y)]+\operatorname{Var}(\mathbb{E}[X\mid Y])\\
+&=\mathbb{E}[nY(1-Y)]+\operatorname{Var}(nY)\\
+&=n\left(\mathbb{E}[Y]-\mathbb{E}[Y^2]\right)+n^2\operatorname{Var}(Y).
+\end{aligned}$$ For $Y\sim\operatorname{Uniform}(0,1)$,
+$$\mathbb{E}[Y]=\frac12,
+\qquad
+\mathbb{E}[Y^2]=\frac13,
+\qquad
+\operatorname{Var}(Y)=\frac1{12}.$$ Thus
+$$\operatorname{Var}(X)=n\left(\frac12-\frac13\right)+n^2\cdot\frac1{12}
+=\frac n6+\frac{n^2}{12}.$$ Therefore $$\boxed{\mathbb{E}[X]=\frac n2,
+\qquad
+\operatorname{Var}(X)=\frac n6+\frac{n^2}{12}.}$$
+
+Now find $Y\mid X=x$. Since $Y\sim\operatorname{Uniform}(0,1)$, its
+density is constant on $[0,1]$. Therefore $$\begin{aligned}
+p_{Y\mid X}(y\mid x)
+&\propto p_{X\mid Y}(x\mid y)p_Y(y)\\
+&\propto \binom{n}{x}y^x(1-y)^{n-x}\cdot 1\\
+&\propto y^x(1-y)^{n-x},\qquad 0<y<1.
+\end{aligned}$$ This is the kernel of a beta distribution with
+parameters $$\alpha=x+1,
+\qquad
+\beta=n-x+1.$$ Thus
+$$\boxed{Y\mid X=x\sim\operatorname{Beta}(x+1,n-x+1).}$$ This is a
+Bayesian update: the prior $Y\sim\operatorname{Beta}(1,1)$ becomes the
+posterior $Y\mid X=x\sim\operatorname{Beta}(x+1,n-x+1)$ after observing
+$x$ successes in $n$ trials.
+:::
+
+::: exercise
+**Practice Problem 16** (Posterior mean). In the binomial--uniform
+example, compute $\mathbb{E}[Y\mid X=x]$.
+:::
+
+::: {.callout-note title="Solution"}
+If $$Y\mid X=x\sim\operatorname{Beta}(x+1,n-x+1),$$ then the mean of a
+$\operatorname{Beta}(\alpha,\beta)$ random variable is
+$$\frac{\alpha}{\alpha+\beta}.$$ Therefore $$\mathbb{E}[Y\mid X=x]
+=\frac{x+1}{(x+1)+(n-x+1)}
+=\frac{x+1}{n+2}.$$ Thus
+$$\boxed{\mathbb{E}[Y\mid X=x]=\frac{x+1}{n+2}.}$$
+:::
+
+## Applications: Weighting and Missing Data
+
+This section shows how conditional expectation explains important
+weighting methods in statistics and data analysis.
+
+### Inverse probability weighting for missing data
+
+This subsection studies a missing-data problem where income is sometimes
+unobserved.
+
+::: example
+**Example 17** (Missing data and IPW). Consider a survey with two
+variables: $$X=\text{age of a participant},
+\qquad
+Y=\text{income of a participant}.$$ We want $$\mu=\mathbb{E}[Y].$$
+However, $Y$ may be missing because some people refuse to provide income
+information. Let $R$ be the response indicator:
+$$R=1 \quad\text{if }Y\text{ is observed},
+\qquad
+R=0 \quad\text{if }Y\text{ is missing}.$$ Assume $$R\perp Y\mid X,$$
+which means the response probability depends only on $X$:
+$$\mathbb{P}(R=1\mid X,Y)=\mathbb{P}(R=1\mid X)=\pi(X).$$ Assume
+$\pi(X)$ is known. Show that $$W=\frac{RY}{\pi(X)}$$ satisfies
+$$\mathbb{E}[W]=\mathbb{E}[Y].$$
+:::
+
+::: {.callout-note title="Solution"}
+We compute using conditional expectation. First,
+$$\mathbb{E}[W]=\mathbb{E}\left[\frac{RY}{\pi(X)}\right]
+=\mathbb{E}\left[\mathbb{E}\left(\frac{RY}{\pi(X)}\mid X\right)\right].$$
+Because $1/\pi(X)$ is determined by $X$,
+$$\mathbb{E}\left(\frac{RY}{\pi(X)}\mid X\right)
+=\frac1{\pi(X)}\mathbb{E}[RY\mid X].$$ Using the conditional
+independence assumption $R\perp Y\mid X$,
+$$\mathbb{E}[RY\mid X]=\mathbb{E}[R\mid X]\mathbb{E}[Y\mid X].$$ But
+$$\mathbb{E}[R\mid X]=\mathbb{P}(R=1\mid X)=\pi(X).$$ Hence
+$$\mathbb{E}\left(\frac{RY}{\pi(X)}\mid X\right)
+=\frac1{\pi(X)}\pi(X)\mathbb{E}[Y\mid X]
+=\mathbb{E}[Y\mid X].$$ Therefore
+$$\mathbb{E}[W]=\mathbb{E}[\mathbb{E}(Y\mid X)]=\mathbb{E}[Y].$$ Thus
+$$\boxed{\mathbb{E}\left[\frac{RY}{\pi(X)}\right]=\mathbb{E}[Y].}$$
+:::
+
+In practice, if we observe IID data, we estimate $\mu=\mathbb{E}[Y]$ by
+the inverse probability weighting estimator
+$$\widehat\mu_{\operatorname{IPW}}
+=\frac1n\sum_{i=1}^n \frac{R_iY_i}{\pi(X_i)}.$$ This estimator upweights
+observed responses that had a smaller probability of being observed.
+
+### Survey sampling and importance weighting
+
+This subsection explains importance weighting when the sample
+distribution differs from the population distribution.
+
+::: example
+**Example 18** (Survey sampling). A city has three districts $A$, $B$,
+and $C$. The population proportions are
+$$\mathbb{P}_{\text{pop}}(X=A)=0.6,
+\qquad
+\mathbb{P}_{\text{pop}}(X=B)=0.3,
+\qquad
+\mathbb{P}_{\text{pop}}(X=C)=0.1.$$ Let $Y$ be income. The target
+average income is
+$$\mu=0.6\mathbb{E}[Y\mid X=A]+0.3\mathbb{E}[Y\mid X=B]+0.1\mathbb{E}[Y\mid X=C].$$
+However, the survey samples the same number of individuals from each
+district, so in the sample
+$$\mathbb{P}_{\text{sample}}(X=A)=\mathbb{P}_{\text{sample}}(X=B)=\mathbb{P}_{\text{sample}}(X=C)=\frac13.$$
+Construct a quantity $Z=g(X,Y)$ such that
+$$\mathbb{E}_{\text{sample}}[Z]=\mu.$$
+:::
+
+::: {.callout-note title="Solution"}
+We weight each observation by
+$$\frac{\text{population probability}}{\text{sample probability}}.$$
+Thus define $$\begin{aligned}
+Z
+&=\frac{0.6}{1/3}\mathbbm{1}(X=A)Y
++\frac{0.3}{1/3}\mathbbm{1}(X=B)Y
++\frac{0.1}{1/3}\mathbbm{1}(X=C)Y\\
+&=1.8\mathbbm{1}(X=A)Y+0.9\mathbbm{1}(X=B)Y+0.3\mathbbm{1}(X=C)Y.
+\end{aligned}$$ Then $$\begin{aligned}
+\mathbb{E}_{\text{sample}}[Z]
+&=1.8\mathbb{E}[\mathbbm{1}(X=A)Y]+0.9\mathbb{E}[\mathbbm{1}(X=B)Y]+0.3\mathbb{E}[\mathbbm{1}(X=C)Y]\\
+&=1.8\mathbb{P}_{\text{sample}}(X=A)\mathbb{E}[Y\mid X=A]\\
+&\quad+0.9\mathbb{P}_{\text{sample}}(X=B)\mathbb{E}[Y\mid X=B]\\
+&\quad+0.3\mathbb{P}_{\text{sample}}(X=C)\mathbb{E}[Y\mid X=C]\\
+&=1.8\cdot\frac13\mathbb{E}[Y\mid X=A]+0.9\cdot\frac13\mathbb{E}[Y\mid X=B]+0.3\cdot\frac13\mathbb{E}[Y\mid X=C]\\
+&=0.6\mathbb{E}[Y\mid X=A]+0.3\mathbb{E}[Y\mid X=B]+0.1\mathbb{E}[Y\mid X=C]\\
+&=\mu.
+\end{aligned}$$ Thus
+$$\boxed{Z=1.8\mathbbm{1}(X=A)Y+0.9\mathbbm{1}(X=B)Y+0.3\mathbbm{1}(X=C)Y}$$
+has the desired property.
+:::
+
+::: {.callout-tip title="Statistical meaning"}
+When the sampling design does not match the target
+population, conditional expectation tells us how to reweight the sample
+so that the weighted average targets the correct population quantity.
+:::
+
+## Summary
+
+This section summarizes the main formulas that should be remembered from
+conditional distributions and conditional expectations.
+
+  **Concept**                **Formula / message**
+  -------------------------- --------------------------------------------------------------------------------------------------------------------------------------------
+  Conditional pmf/pdf        $\displaystyle p_{X\mid Y}(x\mid y)=\frac{p_{X,Y}(x,y)}{p_Y(y)}$
+  Law of total probability   $\displaystyle p_X(x)=\sum_y p_{X\mid Y}(x\mid y)p_Y(y)$ or $\displaystyle p_X(x)=\int p_{X\mid Y}(x\mid y)p_Y(y)\,dy$
+  Conditional expectation    $\displaystyle \mathbb{E}[X\mid Y=y]=\sum_x x p_{X\mid Y}(x\mid y)$ or $\displaystyle \int x p_{X\mid Y}(x\mid y)\,dx$
+  Law of total expectation   $\displaystyle \mathbb{E}[\mathbb{E}[X\mid Y]]=\mathbb{E}[X]$
+  Law of total variance      $\displaystyle \operatorname{Var}(Y)=\mathbb{E}[\operatorname{Var}(Y\mid X)]+\operatorname{Var}(\mathbb{E}[Y\mid X])$
+  Random sum                 If $Y=\sum_{i=1}^N X_i$, with $N$ independent of IID $X_i$ and $\mathbb{E}[X_i]=\mu$, then $\displaystyle \mathbb{E}[Y]=\mu\mathbb{E}[N]$.
+  Memoryless exponential     If $X\sim\operatorname{Exp}(\lambda)$, then $\displaystyle \mathbb{P}(X\ge t+s\mid X>s)=\mathbb{P}(X\ge t)$.
+  IPW                        If $R\perp Y\mid X$ and $\mathbb{P}(R=1\mid X)=\pi(X)$, then $\displaystyle \mathbb{E}\left[\frac{RY}{\pi(X)}\right]=\mathbb{E}[Y]$.
+
+## Additional Practice Problems
+
+This final section gives extra practice problems with full solutions.
+
+::: exercise
+**Practice Problem 19** (Conditional expectation from a table). Suppose
+$X,Y\in\{0,1\}$ have joint pmf $$\begin{array}{c|cc}
+ & Y=0 & Y=1\\
+\hline
+X=0 & 0.2 & 0.3\\
+X=1 & 0.1 & 0.4
+\end{array}$$ Find $\mathbb{E}[X\mid Y=1]$ and $\mathbb{E}[X]$.
+:::
+
+::: {.callout-note title="Solution"}
+First, $$\mathbb{P}(Y=1)=0.3+0.4=0.7.$$ Thus
+$$\mathbb{P}(X=1\mid Y=1)=\frac{\mathbb{P}(X=1,Y=1)}{\mathbb{P}(Y=1)}=\frac{0.4}{0.7}=\frac47.$$
+Since $X$ is Bernoulli conditional on $Y=1$,
+$$\boxed{\mathbb{E}[X\mid Y=1]=\frac47.}$$ Also
+$$\mathbb{P}(X=1)=0.1+0.4=0.5,$$ so $$\boxed{\mathbb{E}[X]=0.5.}$$
+:::
+
+::: exercise
+**Practice Problem 20** (Total expectation with a Poisson mixture).
+Suppose $$X\mid\Lambda=\lambda\sim\operatorname{Poisson}(\lambda)$$ and
+$\mathbb{E}[\Lambda]$ exists. Find $\mathbb{E}[X]$.
+:::
+
+::: {.callout-note title="Solution"}
+For a Poisson random variable with rate $\lambda$,
+$$\mathbb{E}[X\mid\Lambda=\lambda]=\lambda.$$ Thus
+$$\mathbb{E}[X\mid\Lambda]=\Lambda.$$ By total expectation,
+$$\mathbb{E}[X]=\mathbb{E}[\mathbb{E}(X\mid\Lambda)]=\mathbb{E}[\Lambda].$$
+So $$\boxed{\mathbb{E}[X]=\mathbb{E}[\Lambda].}$$
+:::
+
+::: exercise
+**Practice Problem 21** (Total variance with a Poisson mixture). In the
+previous problem, find $\operatorname{Var}(X)$ in terms of
+$\mathbb{E}[\Lambda]$ and $\operatorname{Var}(\Lambda)$.
+:::
+
+::: {.callout-note title="Solution"}
+For $X\mid\Lambda=\lambda\sim\operatorname{Poisson}(\lambda)$,
+$$\mathbb{E}[X\mid\Lambda]=\Lambda,
+\qquad
+\operatorname{Var}(X\mid\Lambda)=\Lambda.$$ Therefore, by total
+variance, $$\begin{aligned}
+\operatorname{Var}(X)
+&=\mathbb{E}[\operatorname{Var}(X\mid\Lambda)]+\operatorname{Var}(\mathbb{E}[X\mid\Lambda])\\
+&=\mathbb{E}[\Lambda]+\operatorname{Var}(\Lambda).
+\end{aligned}$$ Thus
+$$\boxed{\operatorname{Var}(X)=\mathbb{E}[\Lambda]+\operatorname{Var}(\Lambda).}$$
+:::
+
+::: exercise
+**Practice Problem 22** (Memoryless calculation). Let
+$X\sim\operatorname{Exp}(2)$. Compute $$\mathbb{P}(X>7\mid X>3).$$
+:::
+
+::: {.callout-note title="Solution"}
+By the memoryless property, $$\mathbb{P}(X>7\mid X>3)=\mathbb{P}(X>4).$$
+Since $X\sim\operatorname{Exp}(2)$,
+$$\mathbb{P}(X>4)=e^{-2\cdot 4}=e^{-8}.$$ Thus
+$$\boxed{\mathbb{P}(X>7\mid X>3)=e^{-8}.}$$
+:::
+
+## References
+
+-   Casella, George and Berger, Roger L. *Statistical Inference*, 2nd
+    edition.
+
+-   Wasserman, Larry. *All of Statistics*.
+
+-   Grinstead, C. M. and Snell, J. L. *Introduction to Probability*.
+    American Mathematical Society, 2012.
+
+-   Ross, Sheldon. *Introduction to Probability Models*, 12th edition.

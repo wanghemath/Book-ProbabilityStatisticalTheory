@@ -1,0 +1,1137 @@
+---
+title: "Chapter 10: Monte Carlo Sampling"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Monte Carlo Sampling
+
+This chapter introduces Monte Carlo methods as a practical bridge between probability theory, statistical inference, numerical integration, simulation, Bayesian computation, and optimization. The main principle is to rewrite a difficult quantity as a probability or expectation, simulate random samples, and approximate the target with a sample average.
+
+::: {.callout-note title="Topics"}
+ Introduction and applications; simulation; Monte Carlo
+integration; Law of Large Numbers foundation; standard random-number
+generation; inverse-transform sampling; Box--Muller normal sampling;
+rejection sampling; importance sampling; sampling-importance-resampling;
+advantages and limitations.
+:::
+
+# Overview
+
+ 
+
+This section introduces Monte Carlo methods as a systematic way to use
+randomness to approximate quantities that are difficult to compute
+exactly.
+
+Monte Carlo methods are algorithms that approximate numerical answers by
+repeated random sampling. The key idea is simple: if a quantity can be
+written as an expectation or probability, then it can often be
+approximated by an average over simulated random samples.
+
+::: {.callout-tip title="Key idea"}
+Main message Monte Carlo sampling replaces a difficult probability,
+expectation, integral, sum, or optimization problem by a random
+experiment that can be repeated many times:
+$$\text{target quantity} \approx \text{sample average from simulated draws}.$$
+The accuracy improves as the number of samples increases, by the Law of
+Large Numbers.
+:::
+
+This section emphasizes four central ideas:
+
+1.  using simulation to estimate averages and probabilities;
+
+2.  using Monte Carlo integration to approximate integrals;
+
+3.  generating random variables from desired distributions;
+
+4.  using rejection sampling and importance sampling when direct
+    sampling is hard.
+
+# Background and History
+
+This section places Monte Carlo sampling in its historical and
+conceptual context.
+
+## Historical background
+
+Monte Carlo methods are named after Monte Carlo, the famous casino
+district in Monaco. The name reflects the central role of chance in
+these methods, much like chance drives games of roulette.
+
+Historically, several ideas contributed to Monte Carlo methods:
+
+-   **Buffon's needle problem** was studied by Georges-Louis Leclerc,
+    Comte de Buffon, in the eighteenth century and gave an early example
+    of using random experiments to estimate $\pi$.
+
+-   **Markov chains** were introduced by Andrey Markov to describe
+    systems whose future evolution depends on the present state rather
+    than the full past.
+
+-   **Ulam and von Neumann** used Monte Carlo methods in the 1940s
+    during the Manhattan Project, for example in neutron diffusion
+    simulations.
+
+-   **Markov chain Monte Carlo** later developed through algorithms such
+    as Metropolis--Hastings, Gibbs sampling, and Hamiltonian Monte
+    Carlo.
+
+::: {.callout-tip title="Key idea"}
+Historical timeline
+
+::: center
+:::
+:::
+
+## Markov models and Monte Carlo sampling
+
+A Markov model describes a system that evolves over time according to a
+memoryless rule.
+
+::: {.callout-note title="Definition"}
+**Definition 1** (Markov chain). A Markov chain is a sequence of random
+states in which the probability of the next state depends only on the
+current state, not on the full history.
+:::
+
+Monte Carlo sampling is broader than Markov chains. It refers to methods
+that sample from probability distributions in order to estimate desired
+quantities. Markov chain Monte Carlo, or MCMC, is used when direct
+independent sampling is difficult, but constructing a Markov chain with
+the desired stationary distribution is possible.
+
+::: {.callout-important title="Remark"}
+*Remark 2*. Monte Carlo sampling has limitations when the target
+distribution is high-dimensional, sharply concentrated, multimodal, or
+known only up to a normalizing constant. These limitations motivate
+rejection sampling, importance sampling, and MCMC.
+:::
+
+# How Monte Carlo Works
+
+This section explains the basic Monte Carlo principle: repeated random
+sampling produces numerical approximations.
+
+## The basic Monte Carlo idea
+
+Monte Carlo methods use random sampling and statistical modeling to
+estimate mathematical functions or mimic complex systems.
+
+A typical Monte Carlo procedure has the following form:
+
+1.  Choose a probability model for the uncertain quantities.
+
+2.  Generate random samples from that probability model.
+
+3.  Evaluate the quantity of interest for each sample.
+
+4.  Average the results.
+
+5.  Use more samples to improve accuracy.
+
+::: {.callout-tip title="Key idea"}
+Monte Carlo principle If $X_1,\ldots,X_N\overset{\text{iid}}{\sim}p(x)$
+and $g$ is a function, then $$\mathbb{E}[g(X)] = \int g(x)p(x)\,\,dx$$
+can be approximated by
+$$\widehat{I}_N = \frac{1}{N}\sum_{i=1}^N g(X_i).$$ By the Law of Large
+Numbers, $$\widehat{I}_N \xrightarrow{P} \mathbb{E}[g(X)].$$
+:::
+
+## Applications
+
+Monte Carlo methods appear in many areas because many scientific and
+statistical questions can be written as expectations, probabilities, or
+high-dimensional integrals.
+
+-   **Simulation.** We learn about a random object by generating and
+    observing many realizations of it. Examples include risk assessment
+    and the spread of disease.
+
+-   **Monte Carlo integration.** We estimate an integral by writing it
+    as an expectation of a random variable.
+
+-   **Statistical sampling.** MCMC and related methods are used in
+    Bayesian inference, posterior computation, model fitting, and
+    parameter estimation.
+
+-   **Optimization.** Random search and simulated annealing use random
+    sampling to explore complicated objective functions.
+
+-   **Physical simulation.** Monte Carlo methods are fundamental in
+    nuclear physics, statistical mechanics, computer graphics, and
+    reinforcement learning.
+
+# Foundation: Law of Large Numbers
+
+This section reviews the probabilistic foundation that makes Monte Carlo
+possible.
+
+## Motivating example: average height
+
+Suppose we want to know the average height of students in a class. If
+the class is small, we can measure everyone and compute the ordinary
+average.
+
+Now suppose we want to estimate the average height of all people in
+Boston. Let $\mathcal{B}$ denote the population and let $f(x)$ be the
+height of person $x$. The population average is
+$$\mathbb{E}_{x\in\mathcal{B}}[f(x)] = \frac{1}{N}\sum_{x\in\mathcal{B}} f(x),$$
+which may be infeasible to compute exactly. Instead, we randomly survey
+$S$ people $x^{(1)},\ldots,x^{(S)}$ and use
+$$\frac{1}{S}\sum_{s=1}^S f(x^{(s)}).$$
+
+::: {.callout-tip title="Key idea"}
+Simulation summary Use a sample mean to approximate a true mean.
+:::
+
+## Weak Law of Large Numbers
+
+The Law of Large Numbers explains why sample averages approximate
+expectations.
+
+::: {.callout-note title="Theorem"}
+**Theorem 3** (Weak Law of Large Numbers). *Let $X_1,X_2,\ldots$ be IID
+random variables with common finite mean $\mu$ and variance $\sigma^2$.
+Define the sample mean $$\overline{X}_n = \frac{1}{n}(X_1+\cdots+X_n).$$
+Then $$\overline{X}_n \xrightarrow{P} \mu.$$ Equivalently, for every
+$\epsilon>0$,
+$$\lim_{n\to\infty}\mathbb{P}\big(|\overline{X}_n-\mu|\ge \epsilon\big)=0.$$*
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The proof uses Chebyshev's inequality. Since the $X_i$ are independent,
+$$\mathbb{E}[\overline{X}_n]=\mu,\qquad \operatorname{Var}(\overline{X}_n)=\frac{\sigma^2}{n}.$$
+Therefore, $$\mathbb{P}(|\overline{X}_n-\mu|\ge \epsilon)
+\le \frac{\operatorname{Var}(\overline{X}_n)}{\epsilon^2}
+=\frac{\sigma^2}{n\epsilon^2}\to 0.$$ This proves convergence in
+probability.
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 4* (Monte Carlo convergence rate). For many Monte Carlo
+averages, the standard error is proportional to $$\frac{1}{\sqrt{N}},$$
+where $N$ is the number of samples. This convergence is reliable but may
+be slow.
+:::
+
+# Application I: Simulation and Estimating $\pi$
+
+This section shows how a probability can be estimated by simulating
+random points.
+
+## Uniform raindrops in a square
+
+Suppose raindrops fall uniformly at random over a square $[-1,1]^2$.
+Inside the square is the unit circle $$x^2+y^2\le 1.$$ The square has
+area $4$, and the circle has area $\pi$. Therefore, if $p$ is the
+probability that a random point lands in the circle, then
+$$p=\frac{\text{area of circle}}{\text{area of square}}=\frac{\pi}{4}.$$
+Thus $$\pi = 4p.$$
+
+If we generate random points $(X_i,Y_i)$ uniformly from $[-1,1]^2$, then
+$$\widehat{p}_N = \frac{1}{N}\sum_{i=1}^N \mathbf{1}\{X_i^2+Y_i^2\le 1\}$$
+estimates $p$, so $$\widehat{\pi}_N = 4\widehat{p}_N
+=4\frac{\#\{\text{points inside circle}\}}{\#\{\text{points inside square}\}}.$$
+
+::: {.callout-tip title="Example"}
+**Example 5** (Monte Carlo estimate of $\pi$). Use uniformly sampled
+points in $[-1,1]^2$ to estimate $\pi$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $$I_i=\mathbf{1}\{X_i^2+Y_i^2\le 1\}.$$ Then
+$I_i\sim\operatorname{Bernoulli}(p)$ with $p=\pi/4$. The sample mean
+$$\overline{I}_N=\frac{1}{N}\sum_{i=1}^N I_i$$ converges in probability
+to $p$. Therefore $$4\overline{I}_N \xrightarrow{P} 4p = \pi.$$ For
+example, using more samples should move the estimate closer to $\pi$ on
+average. Typical simulations may give values such as $3.2$ for $500$
+samples, $3.1312$ for $10{,}000$ samples, and $3.142208$ for $10^6$
+samples.
+:::
+
+::: center
+:::
+
+## Python simulation
+
+The following Python code estimates $\pi$ by random sampling.
+
+``` {.python language="Python" caption="Python Monte Carlo estimate of pi"}
+import random
+
+def estimate_pi(num_samples):
+    inside_circle = 0
+
+    for _ in range(num_samples):
+        x = random.uniform(-1, 1)
+        y = random.uniform(-1, 1)
+
+        if x**2 + y**2 <= 1:
+            inside_circle += 1
+
+    return 4 * (inside_circle / num_samples)
+
+num_samples = 1_000_000
+pi_estimate = estimate_pi(num_samples)
+print("Estimated value of pi:", pi_estimate)
+```
+
+## MATLAB simulation
+
+The same idea can be implemented in MATLAB.
+
+``` {.matlab language="Matlab" caption="MATLAB Monte Carlo estimate of pi"}
+function estimated_pi = estimate_pi(num_samples)
+    inside_circle = 0;
+    for i = 1:num_samples
+        x = 2*rand() - 1;
+        y = 2*rand() - 1;
+        distance = x^2 + y^2;
+        if distance <= 1
+            inside_circle = inside_circle + 1;
+        end
+    end
+    estimated_pi = 4 * inside_circle / num_samples;
+end
+
+% Example usage
+num_samples = 1000000;
+pi_estimate = estimate_pi(num_samples);
+disp(['Estimated value of pi: ', num2str(pi_estimate)]);
+```
+
+::: {.callout-warning title="Warning"}
+Common coding detail If the square is $[-1,1]^2$, use
+$x=2\operatorname{rand}()-1$ and $y=2\operatorname{rand}()-1$. If
+instead $x,y\sim\operatorname{Uniform}(0,1)$, then the simulation
+estimates a quarter circle rather than the full square setup.
+:::
+
+# Buffon's Needle Problem
+
+This section gives a classical Monte Carlo method for estimating $\pi$
+using random line crossings.
+
+## Geometric setup
+
+In Buffon's needle problem, parallel lines are separated by distance
+$D$. A needle of length $L$ is dropped at random, with $L\le D$. Let $P$
+be the probability that the needle crosses a line.
+
+If $\theta$ is the angle between the needle and the lines, and if $y$ is
+the distance from the needle center to the nearest line, then the needle
+crosses a line if the vertical projection of half the needle is at least
+$y$: $$y \le \frac{L}{2}\sin\theta.$$ The classical formula is
+$$P=\frac{2L}{\pi D}.$$ Therefore, $$\pi = \frac{2L}{DP}.$$ If $k$ out
+of $n$ dropped needles cross a line, then $P\approx k/n$ and
+$$\widehat{\pi}=\frac{2Ln}{Dk}.$$
+
+::: {.callout-tip title="Example"}
+**Example 6** (Buffon's needle estimate). Suppose $L=1$, $D=2$, and $n$
+needles are dropped. If $k$ needles cross a line, estimate $\pi$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Here $$P=\frac{2L}{\pi D}=\frac{1}{\pi}.$$ Since $P\approx k/n$, we
+obtain $$\frac{k}{n}\approx \frac{1}{\pi},
+\qquad\text{so}\qquad
+\widehat{\pi}=\frac{n}{k}.$$ This estimator is intuitive, but
+convergence is slow. Around $100{,}000$ trials may be needed for only a
+few correct digits.
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 7*. Buffon's needle is historically important because it makes
+the connection between geometry, probability, and numerical estimation
+very transparent. It is not computationally efficient compared with
+modern numerical methods.
+:::
+
+# Application II: Monte Carlo Integration
+
+This section explains how to approximate integrals by rewriting them as
+expectations.
+
+## Expectation as integration
+
+Let $X$ be a continuous random variable with density $p(x)$. Then
+$$\mathbb{E}[g(X)] = \int_{-\infty}^{\infty} g(x)p(x)\,\,dx.$$ If
+$X_1,\ldots,X_N\overset{\text{iid}}{\sim}p(x)$, then
+$$\int_{-\infty}^{\infty} g(x)p(x)\,\,dx
+\approx \frac{1}{N}\sum_{i=1}^N g(X_i).$$
+
+::: {.callout-tip title="Key idea"}
+Monte Carlo integration A difficult integral becomes a sample average
+once it is written as an expectation.
+:::
+
+## Example: an integral without a simple closed form
+
+Consider $$I=\int_0^1 e^{-x^3}\,\,dx.$$ Let
+$U\sim\operatorname{Uniform}(0,1)$. Since the density of $U$ is $1$ on
+$[0,1]$, $$I=\mathbb{E}\left[e^{-U^3}\right].$$ Generate
+$U_1,\ldots,U_N\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1)$
+and define $$W_i=e^{-U_i^3}.$$ Then
+$$\widehat{I}_N=\frac{1}{N}\sum_{i=1}^N e^{-U_i^3}$$ estimates $I$.
+
+::: {.callout-tip title="Example"}
+**Example 8** (Monte Carlo integration). Design a Monte Carlo estimator
+for $$\int_0^1 e^{-x^3}\,\,dx.$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let
+$U_1,\ldots,U_N\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1)$.
+Use $$\widehat{I}_N=\frac{1}{N}\sum_{i=1}^N e^{-U_i^3}.$$ By the Law of
+Large Numbers, $$\widehat{I}_N \xrightarrow{P} \mathbb{E}[e^{-U^3}]
+=\int_0^1 e^{-x^3}\,\,dx.$$
+:::
+
+## General Monte Carlo integration
+
+More generally, suppose $$I=\int f(x)p(x)\,\,dx,$$ where $p(x)$ is a
+probability density. If $X_i\overset{\text{iid}}{\sim}p$, then
+$$\widehat{I}_N=\frac{1}{N}\sum_{i=1}^N f(X_i)$$ is the basic Monte
+Carlo estimator.
+
+::: {.callout-important title="Remark"}
+*Remark 9*. When we change the sampling distribution $p$, the function
+being averaged changes. This observation leads directly to importance
+sampling.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 10** (Uniform Monte Carlo integration). Use Monte
+Carlo to estimate $$\int_a^b g(x)\,\,dx.$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $X\sim\operatorname{Uniform}(a,b)$. Then $p(x)=1/(b-a)$ on $[a,b]$,
+and $$\mathbb{E}[g(X)] = \int_a^b g(x)\frac{1}{b-a}\,\,dx.$$ Thus
+$$\int_a^b g(x)\,\,dx = (b-a)\mathbb{E}[g(X)].$$ Generate
+$X_1,\ldots,X_N\overset{\text{iid}}{\sim}\operatorname{Uniform}(a,b)$
+and use $$\widehat{I}_N=(b-a)\frac{1}{N}\sum_{i=1}^N g(X_i).$$
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 11** (Practice integral). Use the Monte Carlo method
+to estimate $$I=\int_{-1}^{2} \cos^2(x)(x^3+1)\,\,dx.$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $X\sim\operatorname{Uniform}(-1,2)$. Then $b-a=3$, and
+$$I=3\mathbb{E}\left[\cos^2(X)(X^3+1)\right].$$ Generate
+$X_1,\ldots,X_N\overset{\text{iid}}{\sim}\operatorname{Uniform}(-1,2)$
+and compute
+$$\widehat{I}_N=\frac{3}{N}\sum_{i=1}^N \cos^2(X_i)(X_i^3+1).$$ For
+comparison, a symbolic calculation gives
+$$I=\frac{3\sin 4}{2}+\frac{21\cos 4}{16}-\frac{3\cos 2}{16}+\frac{3\sin 2}{8}+\frac{27}{8}
+\approx 1.8009.$$
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 12** (Practice integral). Use Monte Carlo to estimate
+$$I=\int_0^1 \frac{e^x-1}{e-1}\,\,dx.$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $U\sim\operatorname{Uniform}(0,1)$. Then
+$$I=\mathbb{E}\left[\frac{e^U-1}{e-1}\right].$$ The Monte Carlo
+estimator is
+$$\widehat{I}_N=\frac{1}{N}\sum_{i=1}^N \frac{e^{U_i}-1}{e-1},
+\qquad U_i\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1).$$ The
+exact value is $$I=\frac{1}{e-1}\int_0^1(e^x-1)\,\,dx
+=\frac{e-2}{e-1}.$$
+:::
+
+# Application III: Bayesian Inference and Learning
+
+This section shows why Monte Carlo methods are central in Bayesian
+statistics.
+
+Let $X\in\mathcal{X}$ be an unknown variable and let $Y$ be observed
+data. Bayesian inference often requires integrals that are analytically
+intractable.
+
+## Normalization
+
+Bayes' theorem gives $$p(X\mid Y)=\frac{p(Y\mid X)p(X)}{p(Y)}.$$ The
+normalizing constant is
+$$p(Y)=\int_{\mathcal{X}}p(Y\mid X')p(X')\,\,dX'.$$ This integral may be
+difficult in high dimensions.
+
+If $x^{(1)},\ldots,x^{(S)}$ are sampled from the prior $p(X)$, then
+$$p(Y)=\mathbb{E}_{X\sim p(X)}[p(Y\mid X)]
+\approx \frac{1}{S}\sum_{s=1}^S p(Y\mid x^{(s)}).$$
+
+## Marginalization
+
+If a model contains latent variables $Z$, the marginal posterior may
+require $$p(X\mid Y)=\int p(X,Z\mid Y)\,\,dZ.$$ Monte Carlo methods
+approximate this integral using samples from a suitable distribution.
+
+## Posterior expectations
+
+Many Bayesian summaries are posterior expectations:
+$$\mathbb{E}_{p(X\mid Y)}[f(X)]
+=\int_{\mathcal{X}} f(X)p(X\mid Y)\,\,dX.$$ If $X^{(1)},\ldots,X^{(S)}$
+are samples from $p(X\mid Y)$, then
+$$\mathbb{E}_{p(X\mid Y)}[f(X)]\approx \frac{1}{S}\sum_{s=1}^S f(X^{(s)}).$$
+
+::: {.callout-important title="Remark"}
+*Remark 13*. In Bayesian inference, Monte Carlo is often needed because
+the posterior distribution is known only up to a normalizing constant.
+:::
+
+# Application IV: Optimization
+
+This section shows how random sampling can be used to search for good
+solutions of optimization problems.
+
+## Random search
+
+Optimization problems ask us to minimize or maximize an objective
+function, often in many dimensions. Random search is a simple Monte
+Carlo optimization method.
+
+``` {.python language="Python" caption="Random search for a one-dimensional objective"}
+import numpy as np
+
+def objective_function(x):
+    return x**2
+
+def random_search(objective_function, bounds, max_iter=1000):
+    best_solution = None
+    best_score = float('inf')
+
+    for _ in range(max_iter):
+        solution = np.random.uniform(bounds[0], bounds[1])
+        score = objective_function(solution)
+
+        if score < best_score:
+            best_solution = solution
+            best_score = score
+
+    return best_solution, best_score
+
+bounds = (-10, 10)
+best_solution, best_score = random_search(objective_function, bounds)
+print("Best solution:", best_solution)
+print("Best score:", best_score)
+```
+
+::: {.callout-tip title="Example"}
+**Example 14** (Random search). Explain why random search can be useful
+even though it seems inefficient.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Random search does not follow a deterministic gradient direction.
+Instead, it samples many candidate points from the search space. This
+can be useful when the objective function is non-convex, discontinuous,
+noisy, or has many local minima. It is also easy to implement and can
+work surprisingly well in high-dimensional hyperparameter search when
+only a small number of dimensions are truly important.
+:::
+
+## Simulated annealing
+
+Simulated annealing is a Monte Carlo method for global optimization. It
+is designed for complicated, multimodal, or non-convex objective
+functions.
+
+The method proposes random neighboring states. A better state is
+accepted automatically, while a worse state may still be accepted with
+probability depending on a temperature parameter. The temperature is
+gradually decreased.
+
+``` {.python language="Python" caption="Simulated annealing skeleton"}
+import numpy as np
+
+def objective_function(x):
+    return np.sin(x) + np.sin(2*x)
+
+def simulated_annealing(objective_function, bounds,
+                        initial_temperature=100,
+                        cooling_rate=0.95,
+                        num_iterations=1000):
+    current_solution = np.random.uniform(bounds[0], bounds[1])
+    current_score = objective_function(current_solution)
+    best_solution = current_solution
+    best_score = current_score
+    temperature = initial_temperature
+    solution_history = [(current_solution, current_score)]
+
+    for _ in range(num_iterations):
+        neighbor_solution = current_solution + np.random.uniform(-0.1, 0.1)
+        neighbor_score = objective_function(neighbor_solution)
+
+        if (neighbor_score < current_score or
+            np.random.rand() < np.exp((current_score - neighbor_score) / temperature)):
+            current_solution = neighbor_solution
+            current_score = neighbor_score
+
+        if current_score < best_score:
+            best_solution = current_solution
+            best_score = current_score
+
+        temperature *= cooling_rate
+        solution_history.append((current_solution, current_score))
+
+    return best_solution, best_score, solution_history
+```
+
+# Common Distributions Used in Monte Carlo
+
+This section reviews probability distributions frequently used in Monte
+Carlo modeling.
+
+Common probability distributions include:
+
+-   **Uniform distribution:** models equally likely values over an
+    interval.
+
+-   **Normal distribution:** models symmetric noise and appears
+    naturally through the Central Limit Theorem.
+
+-   **Exponential distribution:** models waiting times between
+    independent events.
+
+-   **Poisson distribution:** models event counts over time or space.
+
+-   **Discrete distributions:** model categorical outcomes or finite
+    sample spaces.
+
+-   **Lognormal distribution:** models positive variables whose
+    logarithm is normal.
+
+-   **Triangular distribution:** a continuous distribution on $[a,b]$
+    with mode $c$, where $a<b$ and $a\le c\le b$.
+
+::: {.callout-note title="Definition"}
+**Definition 15** (Triangular distribution). A triangular distribution
+with lower limit $a$, upper limit $b$, and mode $c$ has density $$f(x)=
+\begin{cases}
+\dfrac{2(x-a)}{(b-a)(c-a)}, & a\le x\le c,\\[6pt]
+\dfrac{2(b-x)}{(b-a)(b-c)}, & c<x\le b,\\[6pt]
+0, & \text{otherwise}.
+\end{cases}$$
+:::
+
+::: center
+:::
+
+# Random Number Generation
+
+This section discusses the starting point of Monte Carlo: generating
+random numbers.
+
+## Uniform random variables
+
+Most random number generation begins with samples from a uniform
+distribution on $[0,1]$. The general workflow is:
+
+1.  Generate IID uniform random numbers
+    $U_1,U_2,\ldots\sim\operatorname{Uniform}(0,1)$.
+
+2.  Transform those uniform random numbers into samples from another
+    desired distribution.
+
+If a target density $f$ has CDF $$F(x)=\int_{-\infty}^x f(t)\,\,dt,$$
+then the inverse-transform method uses $F^{-1}$ to transform uniform
+draws into samples from $F$.
+
+## Pseudorandom number generators
+
+In practice, computers generate pseudorandom numbers. A basic example is
+a linear congruential generator.
+
+::: {.callout-note title="Definition"}
+**Definition 16** (Linear congruential generator). Choose a starting
+seed $X_0$ and constants $a,c,m$. Generate $$X_{n+1}=(aX_n+c)\mod m.$$
+Then $$U_n=\frac{X_n}{m}$$ can be treated as an approximate uniform
+number in $[0,1]$.
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 17*. The mathematical details of pseudorandom number generation
+are outside the scope of this course, but the quality of the random
+number generator can affect Monte Carlo accuracy.
+:::
+
+# Standard Distributions: Inverse-Transform Method
+
+This section develops the inverse-transform method for sampling from
+nonuniform distributions.
+
+## General inverse-transform method
+
+Suppose $Z\sim\operatorname{Uniform}(0,1)$ and suppose the target random
+variable $Y$ has CDF $h(y)$. Define $$Y=h^{-1}(Z).$$ Then $Y$ has CDF
+$h$.
+
+::: {.callout-note title="Theorem"}
+**Theorem 18** (Inverse-transform sampling). *Let
+$U\sim\operatorname{Uniform}(0,1)$ and let $F$ be a continuous, strictly
+increasing CDF. Define $$Y=F^{-1}(U).$$ Then $Y$ has CDF $F$.*
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For any $y$, $$\mathbb{P}(Y\le y)=\mathbb{P}(F^{-1}(U)\le y).$$ Since
+$F$ is increasing, this event is equivalent to $U\le F(y)$. Therefore,
+$$\mathbb{P}(Y\le y)=\mathbb{P}(U\le F(y))=F(y),$$ because $U$ is
+uniform on $[0,1]$.
+:::
+
+## Example: exponential distribution
+
+Let $Y\sim\operatorname{Exp}(\lambda)$ with density
+$$p(y)=\lambda e^{-\lambda y},\qquad y\ge 0.$$ Its CDF is
+$$h(y)=1-e^{-\lambda y}.$$ Set $z=h(y)$. Then $$z=1-e^{-\lambda y}
+\quad\Longrightarrow\quad
+1-z=e^{-\lambda y}
+\quad\Longrightarrow\quad
+ y=-\frac{1}{\lambda}\log(1-z).$$ Thus, if
+$Z\sim\operatorname{Uniform}(0,1)$, then
+$$Y=-\frac{1}{\lambda}\log(1-Z)\sim\operatorname{Exp}(\lambda).$$ Since
+$1-Z\sim\operatorname{Uniform}(0,1)$, one often writes
+$$Y=-\frac{1}{\lambda}\log U.$$
+
+::: {.callout-tip title="Example"}
+**Example 19** (Exponential inverse transform). Generate samples from
+$\operatorname{Exp}(2)$ using uniform random variables.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $U\sim\operatorname{Uniform}(0,1)$. Since $\lambda=2$,
+$$Y=-\frac{1}{2}\log(1-U)$$ has the exponential distribution with rate
+$2$.
+:::
+
+## Example: Cauchy distribution
+
+The Cauchy distribution with location $x_0$ and scale $\gamma$ has
+density
+$$p(x;x_0,\gamma)=\frac{1}{\pi\gamma}\frac{1}{1+\left(\frac{x-x_0}{\gamma}\right)^2}.$$
+Its CDF is
+$$F(x;x_0,\gamma)=\frac{1}{\pi}\tan^{-1}\left(\frac{x-x_0}{\gamma}\right)+\frac{1}{2}.$$
+Solving $z=F(x)$ gives the inverse CDF
+$$x=F^{-1}(z)=x_0+\gamma\tan\left(\pi\left(z-\frac{1}{2}\right)\right).$$
+Therefore, if $Z\sim\operatorname{Uniform}(0,1)$, then
+$$X=x_0+\gamma\tan\left(\pi\left(Z-\frac{1}{2}\right)\right)$$ follows a
+$\operatorname{Cauchy}(x_0,\gamma)$ distribution.
+
+::: {.callout-tip title="Example"}
+**Example 20** (Cauchy inverse transform). Generate samples from the
+standard Cauchy distribution.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For the standard Cauchy distribution, $x_0=0$ and $\gamma=1$. If
+$U\sim\operatorname{Uniform}(0,1)$, then
+$$X=\tan\left(\pi\left(U-\frac12\right)\right)$$ has the standard Cauchy
+distribution.
+:::
+
+``` {.python language="Python" caption="Inverse CDF for the Cauchy distribution"}
+import numpy as np
+import matplotlib.pyplot as plt
+
+def cauchy_inverse_cdf(p, x0=0, gamma=1):
+    return x0 + gamma * np.tan(np.pi * (p - 0.5))
+
+p_values = np.linspace(0.001, 0.999, 1000)
+x_values = cauchy_inverse_cdf(p_values)
+
+plt.figure(figsize=(8, 5))
+plt.plot(p_values, x_values, label=r"$x=x_0+\gamma\tan(\pi(p-0.5))$")
+plt.axhline(0, linestyle='--', linewidth=0.8)
+plt.axvline(0.5, linestyle='--', linewidth=0.8)
+plt.xlabel("Probability p")
+plt.ylabel("Quantile x")
+plt.title("Inverse CDF of the Cauchy Distribution")
+plt.legend()
+plt.grid()
+plt.show()
+```
+
+# Multiple Variables and the Box--Muller Method
+
+This section extends random variable transformations to multiple
+variables.
+
+## Jacobian transformation
+
+Suppose $u_1,
+\ldots,u_M\sim\operatorname{Uniform}(0,1)$ and we define a
+transformation from $u$ variables to $y$ variables. The density
+transformation is controlled by the Jacobian:
+$$p(y_1,\ldots,y_M)=p(u_1,\ldots,u_M)
+\left|\frac{\partial(u_1,\ldots,u_M)}{\partial(y_1,\ldots,y_M)}\right|.$$
+
+## Polar transformation of two normal variables
+
+Let $Z_1,Z_2$ be independent standard normal variables. Their joint
+density is
+$$f(z_1,z_2)=\frac{1}{2\pi}\exp\left(-\frac{z_1^2+z_2^2}{2}\right).$$
+Transform to polar coordinates: $$Z_1=R\cos\Theta,
+\qquad
+Z_2=R\sin\Theta.$$ Since $R^2=Z_1^2+Z_2^2$ and the Jacobian is $R$, the
+joint density of $(R,\Theta)$ is
+$$f_{R,\Theta}(r,\theta)=\frac{1}{2\pi}e^{-r^2/2}r,
+\qquad r>0,\\ 0\le \theta<2\pi.$$ Therefore,
+$$\Theta\sim\operatorname{Uniform}(0,2\pi),$$ and
+$$f_R(r)=re^{-r^2/2},\qquad r>0.$$ The CDF of $R$ is
+$$F_R(r)=1-e^{-r^2/2}.$$ Thus, if
+$U_1,U_2\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1)$,
+$$R=\sqrt{-2\log U_1},
+\qquad
+\Theta=2\pi U_2.$$
+
+## Box--Muller method
+
+The Box--Muller method converts two independent uniform random variables
+into two independent standard normal random variables.
+
+::: {.callout-note title="Theorem"}
+**Theorem 21** (Box--Muller method). *Let
+$U_1,U_2\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,1)$. Define
+$$Z_1=\sqrt{-2\log U_1}\cos(2\pi U_2),$$
+$$Z_2=\sqrt{-2\log U_1}\sin(2\pi U_2).$$ Then $Z_1$ and $Z_2$ are
+independent standard normal random variables.*
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The construction uses polar coordinates. The angle $\Theta=2\pi U_2$ is
+uniform on $[0,2\pi]$. The radius $R=\sqrt{-2\log U_1}$ has CDF
+$$\mathbb{P}(R\le r)=\mathbb{P}\left(\sqrt{-2\log U_1}\le r\right)
+=\mathbb{P}(U_1\ge e^{-r^2/2})=1-e^{-r^2/2}.$$ This is exactly the
+Rayleigh distribution needed for the radius of a two-dimensional
+standard normal vector. Therefore $(Z_1,Z_2)$ has joint density
+$$\frac{1}{2\pi}e^{-(z_1^2+z_2^2)/2},$$ which factors into two standard
+normal densities.
+:::
+
+# Rejection Sampling
+
+This section introduces rejection sampling, a method for sampling from a
+complex target distribution using a simpler proposal distribution.
+
+## Setup
+
+Suppose we want to sample from a target density $p(z)$, but direct
+sampling is difficult. Choose a proposal density $q(z)$ from which it is
+easy to sample. Assume there exists a constant $k<\infty$ such that
+$$p(z)\le kq(z)
+\qquad\text{for all }z.$$ The function $kq(z)$ forms an envelope above
+$p(z)$.
+
+::: {.callout-note title="Definition"}
+**Definition 22** (Proposal distribution). In rejection sampling, $q(z)$
+is called the proposal distribution because it proposes candidate
+samples.
+:::
+
+## Algorithm
+
+ 
+
+::: {.callout-tip title="Key idea"}
+Rejection sampling algorithm Repeat the following steps:
+
+1.  Sample $Z\sim q(z)$.
+
+2.  Sample $U\sim\operatorname{Uniform}(0,1)$ independently.
+
+3.  Accept $Z$ if $$U\le \frac{p(Z)}{kq(Z)}.$$ Otherwise reject $Z$ and
+    try again.
+
+The accepted samples have density $p(z)$.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 23** (Acceptance probability). Show that the overall
+probability of acceptance is $1/k$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Conditioning on the proposed value $Z=z$,
+$$\mathbb{P}(\text{accept}\mid Z=z)=\frac{p(z)}{kq(z)}.$$ Therefore
+$$\mathbb{P}(\text{accept})
+=\int \mathbb{P}(\text{accept}\mid Z=z)q(z)\,\,dz
+=\int \frac{p(z)}{kq(z)}q(z)\,\,dz
+=\frac{1}{k}\int p(z)\,\,dz
+=\frac{1}{k}.$$
+:::
+
+## Limitations
+
+Rejection sampling is simple and exact in principle, but it may be
+inefficient.
+
+-   It may be hard to find a finite and useful $k$ such that
+    $p(z)\le kq(z)$ everywhere.
+
+-   If $k$ is too large, the acceptance probability $1/k$ is too small.
+
+-   In high-dimensional spaces, most proposed points may be rejected,
+    making the method exponentially slow.
+
+# Importance Sampling
+
+This section introduces importance sampling, a method for estimating
+expectations by sampling from a convenient proposal distribution.
+
+## Basic importance sampling identity
+
+Suppose we want $$\mathbb{E}_p[f(Z)] = \int f(z)p(z)\,\,dz,$$ but
+sampling from $p$ is difficult. Choose a proposal density $q$ such that
+$q(z)>0$ whenever $p(z)f(z)\ne 0$. Then $$\mathbb{E}_p[f(Z)]
+=\int f(z)\frac{p(z)}{q(z)}q(z)\,\,dz.$$ If
+$Z^{(1)},\ldots,Z^{(L)}\overset{\text{iid}}{\sim}q$, then
+$$\widehat{I}_L
+=\frac{1}{L}\sum_{\ell=1}^L
+\frac{p(Z^{(\ell)})}{q(Z^{(\ell)})}f(Z^{(\ell)})$$ estimates
+$\mathbb{E}_p[f(Z)]$.
+
+::: {.callout-note title="Definition"}
+**Definition 24** (Importance weights). The ratios
+$$r_\ell=\frac{p(Z^{(\ell)})}{q(Z^{(\ell)})}$$ are called importance
+weights. They correct the bias introduced by sampling from $q$ instead
+of $p$.
+:::
+
+::: {.callout-important title="Remark"}
+*Remark 25*. Unlike rejection sampling, importance sampling keeps all
+generated samples. However, the estimator can have high variance if the
+weights are unstable.
+:::
+
+## Self-normalized importance sampling
+
+Often, especially in Bayesian statistics, the target density is known
+only up to a normalizing constant:
+$$p(z)=\frac{\widetilde{p}(z)}{Z_p}.$$ Similarly, we may write
+$$q(z)=\frac{\widetilde{q}(z)}{Z_q}.$$ Then $$\mathbb{E}_p[f]
+=\frac{Z_q}{Z_p}\int f(z)\frac{\widetilde{p}(z)}{\widetilde{q}(z)}q(z)\,\,dz.$$
+The ratio of normalizing constants can be estimated by $$\frac{Z_p}{Z_q}
+=\int \frac{\widetilde{p}(z)}{\widetilde{q}(z)}q(z)\,\,dz
+\approx \frac{1}{L}\sum_{\ell=1}^L \widetilde{r}_\ell,$$ where
+$$\widetilde{r}_\ell=\frac{\widetilde{p}(Z^{(\ell)})}{\widetilde{q}(Z^{(\ell)})}.$$
+Thus the self-normalized estimator is $$\widehat{I}_{SN}
+=\sum_{\ell=1}^L w_\ell f(Z^{(\ell)}),$$ where
+$$w_\ell=\frac{\widetilde{r}_\ell}{\sum_{m=1}^L \widetilde{r}_m}
+=\frac{\widetilde{p}(Z^{(\ell)})/\widetilde{q}(Z^{(\ell)})}{\sum_{m=1}^L \widetilde{p}(Z^{(m)})/\widetilde{q}(Z^{(m)})}.$$
+
+::: {.callout-tip title="Example"}
+**Example 26** (Importance sampling for rare events). Suppose $p$ puts
+very small probability in a region that contributes a lot to the
+expectation. Explain why a proposal $q$ can help.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+If direct samples from $p$ rarely visit the important region, the
+ordinary Monte Carlo average will have high variance. A proposal $q$ can
+intentionally sample more often from the important region. The weight
+$p(z)/q(z)$ then corrects the estimator so it still targets the original
+expectation under $p$.
+:::
+
+# Sampling-Importance-Resampling
+
+This section explains how importance weights can be used to
+approximately draw samples from a target distribution.
+
+Rejection sampling requires a constant $k$ satisfying $p(z)\le kq(z)$,
+which may be hard to find. Sampling-importance-resampling avoids this
+envelope constant.
+
+::: {.callout-tip title="Key idea"}
+Sampling-importance-resampling (SIR)
+
+1.  Draw proposal samples $z^{(1)},\ldots,z^{(L)}\sim q(z)$.
+
+2.  Compute weights $$w_\ell\propto \frac{p(z^{(\ell)})}{q(z^{(\ell)})},
+    \qquad \sum_{\ell=1}^L w_\ell=1.$$
+
+3.  Resample from the discrete set $\{z^{(1)},\ldots,z^{(L)}\}$ with
+    probabilities $w_1,\ldots,w_L$.
+:::
+
+The second-stage resampled values are approximate samples from the
+target distribution $p$.
+
+::: {.callout-important title="Remark"}
+*Remark 27*. SIR is conceptually useful because it transforms weighted
+samples into unweighted samples, but it can suffer from weight
+degeneracy if a small number of weights dominate.
+:::
+
+# Summary, Advantages, and Limitations
+
+This section summarizes the main Monte Carlo methods and their practical
+strengths and weaknesses.
+
+## Summary of methods
+
+::: center
+  **Method**                       **Main idea**
+  -------------------------------- ---------------------------------------------------------------------------------
+  Monte Carlo simulation           Approximate probabilities or expectations by repeated random experiments.
+  Monte Carlo integration          Rewrite an integral as an expectation and approximate it by a sample average.
+  Inverse-transform sampling       Generate samples by applying an inverse CDF to uniform random variables.
+  Box--Muller method               Generate two independent normal random variables from two independent uniforms.
+  Rejection sampling               Sample from a proposal and accept/reject candidates to obtain target samples.
+  Importance sampling              Sample from a proposal and correct using weights.
+  Sampling-importance-resampling   Use importance weights to resample approximate draws from the target.
+:::
+
+## Advantages
+
+Monte Carlo methods are widely used because they are often easy to
+implement and broadly applicable.
+
+-   They can solve complex problems using simple random sampling.
+
+-   They turn difficult integrals into averages.
+
+-   Randomness becomes a tool rather than an obstacle.
+
+-   They scale conceptually to high-dimensional statistical models.
+
+## Limitations
+
+Monte Carlo methods also have important limitations.
+
+-   They may require substantial computational power.
+
+-   Accuracy depends on the number of samples and the variance of the
+    estimator.
+
+-   Results can be sensitive to the chosen sampling distribution.
+
+-   Basic Monte Carlo can perform poorly for high-dimensional
+    integration or rare-event problems.
+
+-   Rejection sampling may be inefficient when acceptance rates are
+    small.
+
+-   Importance sampling may be unstable when weights have high variance.
+
+::: {.callout-warning title="Warning"}
+Alan Sokal's warning "Monte Carlo is an extremely bad method; it should
+be used only when all alternative methods are worse."
+
+This quote emphasizes that Monte Carlo is powerful, but not magic. It is
+most useful when exact calculation, deterministic integration, or direct
+optimization is impractical.
+:::
+
+# Additional Practice Problems
+
+This section gives additional exercises to reinforce the main ideas of
+Monte Carlo sampling.
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 28** (Variance of the Monte Carlo estimator). Let
+$X_1,\ldots,X_N\overset{\text{iid}}{\sim}p$ and define
+$$\widehat{I}_N=\frac{1}{N}\sum_{i=1}^N f(X_i).$$ Assume
+$\operatorname{Var}(f(X))<\infty$. Find $\mathbb{E}[\widehat{I}_N]$ and
+$\operatorname{Var}(\widehat{I}_N)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+By linearity of expectation,
+$$\mathbb{E}[\widehat{I}_N]=\frac{1}{N}\sum_{i=1}^N \mathbb{E}[f(X_i)]=\mathbb{E}[f(X)].$$
+Thus the estimator is unbiased for $I=\mathbb{E}[f(X)]$.
+
+Because the samples are independent,
+$$\operatorname{Var}(\widehat{I}_N)=\frac{1}{N^2}\sum_{i=1}^N \operatorname{Var}(f(X_i))
+=\frac{\operatorname{Var}(f(X))}{N}.$$ Therefore the standard deviation
+of the estimator decreases at rate $1/\sqrt{N}$.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 29** (Inverse transform for a power distribution).
+Suppose $Y$ has CDF $F(y)=y^\alpha$ for $0\le y\le 1$, where $\alpha>0$.
+Use inverse-transform sampling to generate $Y$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $U\sim\operatorname{Uniform}(0,1)$. Solve $$U=F(y)=y^\alpha.$$ Then
+$$y=U^{1/\alpha}.$$ Therefore $$Y=U^{1/\alpha}$$ has CDF $F(y)=y^\alpha$
+on $[0,1]$.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 30** (Importance sampling identity). Let $p$ and $q$
+be densities with $p(z)>0$ only where $q(z)>0$. Show that
+$$\int f(z)p(z)\,\,dz
+=\mathbb{E}_q\left[f(Z)\frac{p(Z)}{q(Z)}\right].$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+By definition of expectation under $q$,
+$$\mathbb{E}_q\left[f(Z)\frac{p(Z)}{q(Z)}\right]
+=\int f(z)\frac{p(z)}{q(z)}q(z)\,\,dz
+=\int f(z)p(z)\,\,dz.$$ This is the basic identity behind importance
+sampling.
+:::
+
+::: {.callout-warning title="Practice Problem"}
+**Practice Problem 31** (Acceptance rate). In rejection sampling,
+suppose $p(z)\le kq(z)$ and $k=5$. What is the expected acceptance
+probability? Approximately how many proposal samples are needed to
+obtain $1000$ accepted samples?
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The acceptance probability is
+$$\mathbb{P}(\text{accept})=\frac{1}{k}=\frac{1}{5}=0.2.$$ To obtain
+about $1000$ accepted samples, we need approximately
+$$\frac{1000}{0.2}=5000$$ proposal samples.
+:::
+
+# References  
+
+-   Christopher M. Bishop, *Pattern Recognition and Machine Learning*,
+    Springer, 2006.
+
+-   Casella, George, and Roger L. Berger, *Statistical Inference*, 2nd
+    edition.
+
+-   Larry Wasserman, *All of Statistics*.
+
+-   C. M. Grinstead and J. L. Snell, *Introduction to Probability*,
+    American Mathematical Society, 2012.
+
+-   Sheldon Ross, *Introduction to Probability Models*, 12th edition.
+
+-   Art Owen, *Monte Carlo Theory, Methods and Examples*, available
+    online.
+
+-   Dirk Kroese and collaborators, Monte Carlo resources and lecture
+    notes.
+
+-   Chi Feng's MCMC interactive visualization:
+    <https://github.com/chi-feng/mcmc-demo>
+
+-   Andrieu, de Freitas, Doucet, and Jordan, *An Introduction to MCMC
+    for Machine Learning*.
+
+-   Neal, R. (1995), *Suppressing Random Walks in Markov Chain Monte
+    Carlo Using Overrelaxation*.
+
+-   Tang, Y. (2022), *A Note on Monte Carlo Integration in
+    High-Dimensions*.

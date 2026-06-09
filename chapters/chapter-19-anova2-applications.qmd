@@ -1,0 +1,565 @@
+---
+title: "Chapter 19: Analysis of Variance II — Applications and Randomized Block Designs"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Analysis of Variance II: Applications and Randomized Block Designs
+
+This chapter continues ANOVA by emphasizing **applications, interpretation, experimental design, and randomized block designs**. We review the one-way ANOVA table, work through complete numerical examples, discuss why multiple pairwise tests can inflate Type I error, and introduce blocking as a way to remove nuisance variation from the error term.
+
+ 
+
+::: {.callout-note title="Topics"}
+One-way ANOVA review; complete ANOVA computations; ANOVA interpretation; multiple testing; follow-up comparisons; principles of experimental design; control, randomization, replication, and blocking; randomized block design model; RBD sums of squares; RBD ANOVA table; treatment and block effects.
+:::
+
+# Overview
+
+This section shows how ANOVA is used in real data analysis and how experimental design affects the interpretation of ANOVA results.
+
+The main topics are:
+
+1.  review and summary of one-way ANOVA;
+
+2.  complete numerical ANOVA computations;
+
+3.  applications and interpretation;
+
+4.  principles of experimental design;
+
+5.  randomized block designs.
+
+# Review and Summary of One-Way ANOVA
+
+This section reviews the one-way ANOVA model and the classical ANOVA table before moving to applications.
+
+## Background
+
+One-way ANOVA is used when we want to compare the means of several populations or treatment groups.
+
+ANOVA is appropriate in two common settings:
+
+1.  $k$ independent random samples are drawn from $k$ populations;
+
+2.  $k$ different treatments are applied to a homogeneous group of experimental units, which is subdivided into $k$ subgroups.
+
+The scientific question is: $$\text{Do the treatment groups have the same population mean, or does at least one treatment differ?}$$
+
+## One-Way ANOVA Model
+
+The one-way ANOVA model represents each observation as a group mean plus random error.
+
+Let $X_{ij}$ be the $j$th observation in group $i$, where $$i=1,\ldots,k, \qquad j=1,\ldots,n_i.$$ The model is $$X_{ij}=\mu_i+\epsilon_{ij},$$ where $\mu_i$ is the mean of group $i$ and $\epsilon_{ij}$ is the random error.
+
+::: {.callout-note title="Definition"}
+**Definition 1** (One-way ANOVA assumptions). The classical one-way ANOVA model assumes:
+
+1.  the samples are independently selected from the $k$ populations;
+
+2.  the $k$ populations are approximately normal;
+
+3.  all $k$ population variances are equal;
+
+4.  equivalently, $$\epsilon_{ij}\overset{\text{iid}}{\sim} \operatorname{Normal}(0,\sigma^2).$$
+:::
+
+## Classical ANOVA Hypothesis
+
+The classical ANOVA test asks whether all treatment means are equal.
+
+The hypotheses are $$H_0: \mu_1=\mu_2=\cdots=\mu_k$$ versus $$H_1: \mu_i\neq \mu_j \quad \text{for some } i,j.$$
+
+Rejecting $H_0$ means that at least one group mean differs from another. It does not immediately tell us which means differ. Follow-up comparisons, contrasts, or multiple-comparison procedures are needed for that question.
+
+## Dot Notation and Means
+
+Dot notation provides a compact way to write group totals, group means, and the grand mean.
+
+Let $$T_{i\cdot}=\sum_{j=1}^{n_i}Y_{ij}$$ be the total for group $i$. Then the group mean is $$\overline{Y}_{i\cdot}=\frac{T_{i\cdot}}{n_i}=\frac{1}{n_i}\sum_{j=1}^{n_i}Y_{ij}.$$ The total sample size is $$N=\sum_{i=1}^k n_i.$$ The grand total is $$T_{\cdot\cdot}=\sum_{i=1}^{k}\sum_{j=1}^{n_i}Y_{ij}=\sum_{i=1}^k T_{i\cdot},$$ and the grand mean is $$\overline{Y}_{\cdot\cdot}=\frac{1}{N}\sum_{i=1}^{k}\sum_{j=1}^{n_i}Y_{ij}
+    =\frac{1}{N}\sum_{i=1}^{k}T_{i\cdot}
+    =\frac{1}{N}\sum_{i=1}^{k}n_i\overline{Y}_{i\cdot}.$$
+
+## Partitioning Sums of Squares
+
+The key idea of ANOVA is to split total variation into between-group variation and within-group variation.
+
+::: {.callout-note title="Definition"}
+**Definition 2** (Sums of squares). The total sum of squares is $$\mathrm{SST}_{\mathrm{total}}=\sum_{i=1}^k\sum_{j=1}^{n_i}(Y_{ij}-\overline{Y}_{\cdot\cdot})^2.$$ The between-group sum of squares is $$\mathrm{SSB}_{\mathrm{between}}=\sum_{i=1}^k n_i(\overline{Y}_{i\cdot}-\overline{Y}_{\cdot\cdot})^2.$$ The within-group or error sum of squares is $$\mathrm{SSE}_{\mathrm{error}}=\sum_{i=1}^k\sum_{j=1}^{n_i}(Y_{ij}-\overline{Y}_{i\cdot})^2.$$ The fundamental decomposition is $$\mathrm{SST}_{\mathrm{total}}=\mathrm{SSB}_{\mathrm{between}}+\mathrm{SSE}_{\mathrm{error}}.$$
+:::
+
+::: {.callout-tip title="Key idea"}
+Interpretation of the decomposition The between-group sum of squares measures how far the group means are from the grand mean. The within-group sum of squares measures random variation around each group mean. If the between-group variation is large compared with the within-group variation, this provides evidence that the treatment means are not all equal.
+:::
+
+## Mean Squares and the F Statistic
+
+The F statistic compares average between-group variation to average within-group variation.
+
+Define the mean treatment sum of squares and mean error sum of squares by $$\mathrm{MSB}=\frac{\mathrm{SSB}}{k-1}, \qquad \mathrm{MSE}=\frac{\mathrm{SSE}}{N-k}.$$ Under the ANOVA assumptions, $$\frac{\mathrm{SSE}}{\sigma^2}\sim \chi^2_{N-k}.$$ If $H_0: \mu_1=\cdots=\mu_k$ is true, then $$\frac{\mathrm{SSB}}{\sigma^2}\sim \chi^2_{k-1}.$$ Therefore, under $H_0$, $$F=\frac{\mathrm{MSB}}{\mathrm{MSE}}
+    =\frac{\mathrm{SSB}/(k-1)}{\mathrm{SSE}/(N-k)}
+    \sim F_{k-1,N-k}.$$ Large values of $F$ provide evidence against $H_0$.
+
+## The One-Way ANOVA Table
+
+The ANOVA table organizes the decomposition of variation and the F-test.
+
+::: center
+  Source of Variation    Sum of Squares    df                Mean Square                              F Statistic
+  --------------------- ---------------- ------- ----------------------------------- ----------------------------------------------
+  Between groups         $\mathrm{SSB}$   $k-1$   $\mathrm{MSB}=\mathrm{SSB}/(k-1)$   $F_{\mathrm{obs}}=\mathrm{MSB}/\mathrm{MSE}$
+  Within groups          $\mathrm{SSE}$   $N-k$   $\mathrm{MSE}=\mathrm{SSE}/(N-k)$  
+  Total                  $\mathrm{SST}$   $N-1$                                      
+:::
+
+The p-value is $$p\text{-value}=\mathbb{P}\left(F_{k-1,N-k}>F_{\mathrm{obs}}\right).$$
+
+# Example: Comparing Three Golf Ball Brands
+
+This section gives a complete one-way ANOVA computation for comparing three treatment means.
+
+::: {.callout-tip title="Example"}
+**Example 3** (Golf ball distance by brand). A test was conducted to compare the mean distance, in yards, traveled by three brands of golf balls hit by a robotic golfer.
+
+::: center
+   Brand A   Brand B   Brand C
+  --------- --------- ---------
+    251.2     263.2     269.7
+    245.1     262.9     263.2
+    248.0     265.0     277.5
+    251.1     254.5     267.4
+    260.5     264.3     270.5
+:::
+
+Test whether the mean distances for the three brands are equal.
+:::
+
+::: {.callout-caution title="Solution"}
+There are $k=3$ groups with $n_1=n_2=n_3=5$, so $N=15$. The sample summaries are: $$\begin{array}{c|ccc}
+\text{Brand} & \bar{x}_i & s_i^2 & n_i \\
+\hline
+A & 251.18 & 33.487 & 5 \\
+B & 261.985 & 18.197 & 5 \\
+C & 269.66 & 27.253 & 5
+\end{array}$$ The grand mean is $$\bar{x}_{\cdot\cdot}
+    =\frac{5(251.18)+5(261.985)+5(269.66)}{15}
+    \approx 260.94.$$ The between-group sum of squares is $$\begin{aligned}
+\mathrm{SSB}
+&=\sum_{i=1}^3 n_i(\bar{x}_i-\bar{x}_{\cdot\cdot})^2 \\
+&=5(251.18-260.94)^2+5(261.985-260.94)^2+5(269.66-260.94)^2 \\
+&\approx 861.89.
+\end{aligned}$$ The within-group sum of squares is $$\mathrm{SSE}=\sum_{i=1}^3(n_i-1)s_i^2
+    =4(33.487+18.197+27.253)
+    \approx 315.75.$$ The total sum of squares is $$\mathrm{SST}=\mathrm{SSB}+\mathrm{SSE}\approx 861.89+315.75=1177.64.$$ The ANOVA table is: $$\begin{array}{lccccc}
+\hline
+\text{Source} & \text{SS} & \text{df} & \text{MS} & F & p\text{-value} \\
+\hline
+\text{Treatment} & 861.89 & 2 & 430.945 & 16.37 & \approx 0.00037 \\
+\text{Error} & 315.75 & 12 & 26.312 & & \\
+\text{Total} & 1177.64 & 14 & & & \\
+\hline
+\end{array}$$ Thus $$F_{\mathrm{obs}}=\frac{430.945}{26.312}\approx 16.37.$$ Since $p\approx 0.00037<0.01$, we reject $H_0$ at the $1\%$ significance level. There is strong evidence that at least one brand has a different mean travel distance.
+:::
+
+::: {.callout-tip title="Key idea"}
+How to read the golf-ball result The ANOVA test does not say that all three brands differ from one another. It says that the three means are not all equal. A follow-up comparison, such as pairwise contrasts or a multiple-comparison method, is needed to identify which brand means differ.
+:::
+
+# Example: Smoking and Heart Rate
+
+This section gives another full ANOVA computation, emphasizing how sums of squares are computed from treatment totals.
+
+::: {.callout-tip title="Example"}
+**Example 4** (Smoking and heart rate). A study compares heart rate after exercise for four smoking categories. The data are:
+
+::: center
+     Subject     Nonsmoker   Light Smoker   Moderate Smoker   Heavy Smoker
+  ------------- ----------- -------------- ----------------- --------------
+        1           69            55              66               91
+        2           52            60              81               72
+        3           71            78              70               81
+        4           58            58              77               67
+        5           59            62              57               95
+        6           65            66              79               84
+      $T_j$         374          379              430             490
+   $\bar{Y}_j$     62.3          63.2            71.7             81.7
+:::
+
+Test $$H_0: \mu_1=\mu_2=\mu_3=\mu_4$$ against the alternative that at least one group mean differs, using $\alpha=0.05$.
+:::
+
+::: {.callout-caution title="Solution"}
+There are $k=4$ groups and $n_j=6$ observations in each group, so $N=24$. The grand mean is $$\bar{Y}_{\cdot\cdot}=\frac{374+379+430+490}{24}=69.7.$$ The treatment sum of squares is $$\begin{aligned}
+\mathrm{SSTR}
+&=\sum_{j=1}^{4}n_j(\bar{Y}_j-\bar{Y}_{\cdot\cdot})^2 \\
+&=6\left[(62.3-69.7)^2+(63.2-69.7)^2+(71.7-69.7)^2+(81.7-69.7)^2\right] \\
+&\approx 1464.125.
+\end{aligned}$$ The error sum of squares is computed by summing squared deviations within each group: $$\mathrm{SSE}=\sum_{j=1}^{4}\sum_{i=1}^{6}(Y_{ij}-\bar{Y}_j)^2\approx 1594.833.$$ The degrees of freedom are $$\mathrm{df}_{\mathrm{treat}}=k-1=3,
+    \qquad
+    \mathrm{df}_{\mathrm{error}}=N-k=20.$$ The mean squares are $$\mathrm{MST}=\frac{1464.125}{3}=488.04,
+    \qquad
+    \mathrm{MSE}=\frac{1594.833}{20}=79.74.$$ Thus $$F_{\mathrm{obs}}=\frac{\mathrm{MST}}{\mathrm{MSE}}
+    =\frac{488.04}{79.74}\approx 6.12.$$ The critical value for $\alpha=0.05$ with $(3,20)$ degrees of freedom is approximately $$F_{0.05;3,20}\approx 3.10.$$ Since $$6.12>3.10,$$ we reject $H_0$. The p-value is approximately $0.004$, which gives the same conclusion.
+
+The ANOVA table is: $$\begin{array}{lccccc}
+\hline
+\text{Source} & \mathrm{df}& \text{SS} & \text{MS} & F & p \\
+\hline
+\text{Treatment} & 3 & 1464.125 & 488.04 & 6.12 & 0.004 \\
+\text{Error} & 20 & 1594.833 & 79.74 & & \\
+\text{Total} & 23 & 3058.958 & & & \\
+\hline
+\end{array}$$ There is statistically significant evidence that smoking level affects mean heart rate after exercise. At least one group's mean heart rate differs from the others.
+:::
+
+# Applications and Interpretation
+
+This section explains what ANOVA conclusions mean in applied work.
+
+## What ANOVA tells us
+
+ANOVA is a global test for equality of means.
+
+A significant ANOVA F-test tells us that the data provide evidence against $$H_0: \mu_1=\cdots=\mu_k.$$ It does not automatically identify which group is different. For example, if $k=4$ and the test is significant, then many patterns are possible:
+
+-   one group differs from the other three;
+
+-   two groups differ from the other two;
+
+-   the groups increase or decrease in order;
+
+-   all groups have different means.
+
+## Why not just run many t-tests?
+
+Multiple pairwise t-tests can inflate the Type I error rate.
+
+If each individual test is run at significance level $0.05$, then the chance of at least one false positive increases as the number of tests increases. For two independent tests, $$\mathbb{P}(\text{at least one Type I error})=1-(1-0.05)^2
+    =1-0.95^2\approx 0.0975.$$ For three independent tests, $$1-0.95^3\approx 0.143.$$ The ANOVA F-test provides a single global test with a controlled Type I error rate.
+
+## Follow-up analysis after ANOVA
+
+After rejecting the global ANOVA null, the next step is usually to examine scientifically meaningful comparisons.
+
+Examples of follow-up questions include:
+
+-   Which treatment differs from the control?
+
+-   Which pair of treatments differ?
+
+-   Is the average response under several treatments larger than the control?
+
+-   Is there an ordered pattern across treatment levels?
+
+Such questions can be formulated using contrasts, confidence intervals, or multiple comparison procedures.
+
+# Design of Experiments
+
+This section connects ANOVA to the design of experiments, because good design reduces unexplained variation.
+
+Effective experimental design is built on four principles traditionally associated with Ronald Fisher.
+
+::: {.callout-note title="Definition"}
+**Definition 5** (Four principles of experimental design). The four main principles are:
+
+1.  **Control**: Researchers control variables that might influence the outcome, often using a control group as a baseline.
+
+2.  **Randomization**: Subjects or experimental units are randomly assigned to treatment groups.
+
+3.  **Replication**: The experiment is repeated across multiple units so results are not driven by chance.
+
+4.  **Blocking**: Similar experimental units are grouped into blocks to reduce nuisance variability within each block.
+:::
+
+::: {.callout-tip title="Key idea"}
+Why blocking matters Without blocking, a large nuisance factor may be hidden inside the error term. With blocking, we explicitly model that nuisance factor and remove its contribution from the error sum of squares. This often makes treatment comparisons more sensitive.
+:::
+
+# Randomized Block Designs
+
+This section introduces randomized block designs as a two-way structure with treatments and blocks.
+
+## Motivation
+
+A randomized block design is useful when experimental units vary because of a nuisance factor.
+
+Examples of possible blocks include:
+
+-   fields or plots of land;
+
+-   patients with similar risk levels;
+
+-   machines;
+
+-   batches;
+
+-   days;
+
+-   classrooms or sections.
+
+The goal is to compare treatments within relatively homogeneous blocks.
+
+::: {.callout-note title="Definition"}
+**Definition 6** (Randomized block design). A randomized block design groups similar experimental units into blocks. Each block receives all treatments, usually exactly once. Treatments are randomized within each block.
+:::
+
+## When to Use a Randomized Block Design
+
+A randomized block design is appropriate when blocks capture an important source of variation.
+
+Use RBD when:
+
+1.  experimental units can be partitioned into homogeneous blocks;
+
+2.  variability among blocks is expected to be large;
+
+3.  variability within blocks is expected to be small;
+
+4.  the researcher wants to increase power without increasing sample size.
+
+::: {.callout-tip title="Example"}
+**Example 7** (Fertilizers in blocks). Suppose three fertilizers $A,B,C$ are applied in four blocks. Each block receives all treatments:
+
+::: center
+   Block   A    B    C
+  ------- ---- ---- ----
+     1     18   22   27
+     2     16   25   23
+     3     21   19   30
+     4     20   24   28
+:::
+
+The blocks may differ in productivity. The randomized block design removes between-block variation and improves the sensitivity of treatment comparisons.
+:::
+
+::: {.callout-caution title="Solution"}
+The treatment means are $$\bar{Y}_{A\cdot}=\frac{18+16+21+20}{4}=18.75,$$ $$\bar{Y}_{B\cdot}=\frac{22+25+19+24}{4}=22.50,$$ $$\bar{Y}_{C\cdot}=\frac{27+23+30+28}{4}=27.00.$$ These means suggest that fertilizer $C$ may produce the largest response. However, ANOVA for a randomized block design formally compares treatments after accounting for block-to-block differences.
+:::
+
+## Structure of a Randomized Block Design
+
+The randomized block model includes both treatment effects and block effects.
+
+Let there be $t$ treatments and $b$ blocks. The observation for treatment $i$ in block $j$ is modeled as $$Y_{ij}=\mu+\tau_i+\beta_j+\epsilon_{ij},
+    \qquad i=1,\ldots,t,
+    \quad j=1,\ldots,b.$$ Here:
+
+-   $\mu$ is the overall mean;
+
+-   $\tau_i$ is the treatment effect;
+
+-   $\beta_j$ is the block effect;
+
+-   $\epsilon_{ij}\overset{\mathrm{iid}}{\sim}\operatorname{Normal}(0,\sigma^2)$.
+
+Because the model is overparameterized, identifiability constraints are typically imposed: $$\sum_{i=1}^{t}\tau_i=0,
+    \qquad
+    \sum_{j=1}^{b}\beta_j=0.$$
+
+## Hypotheses for Treatments
+
+The main goal is usually to test whether treatment effects differ after accounting for blocks.
+
+The treatment hypothesis is $$H_0: \tau_1=\tau_2=\cdots=\tau_t=0$$ versus $$H_1: \tau_i\neq 0 \quad \text{for at least one } i.$$ Equivalently, we test whether all treatment means are equal after adjusting for block effects.
+
+# Computing Sums of Squares in a Randomized Block Design
+
+This section gives the computational formulas for an RBD ANOVA table.
+
+Let $$T_i=\sum_{j=1}^{b}Y_{ij}$$ be the total for treatment $i$, and let $$B_j=\sum_{i=1}^{t}Y_{ij}$$ be the total for block $j$. Let $$G=\sum_{i=1}^{t}\sum_{j=1}^{b}Y_{ij}$$ be the grand total. There are $tb$ total observations.
+
+::: {.callout-note title="Definition"}
+**Definition 8** (RBD sums of squares). The total sum of squares is $$\mathrm{SST}_{\mathrm{total}}
+    =\sum_{i=1}^{t}\sum_{j=1}^{b}Y_{ij}^2-\frac{G^2}{tb}.$$ The treatment sum of squares is $$\mathrm{SST}_{\mathrm{trt}}
+    =\frac{1}{b}\sum_{i=1}^{t}T_i^2-\frac{G^2}{tb}.$$ The block sum of squares is $$\mathrm{SSB}_{\mathrm{block}}
+    =\frac{1}{t}\sum_{j=1}^{b}B_j^2-\frac{G^2}{tb}.$$ The error sum of squares is $$\mathrm{SSE}=\mathrm{SST}_{\mathrm{total}}-\mathrm{SST}_{\mathrm{trt}}-\mathrm{SSB}_{\mathrm{block}}.$$
+:::
+
+## ANOVA Table for Randomized Block Design
+
+The RBD ANOVA table separates total variation into treatment variation, block variation, and error variation.
+
+::: center
+  Source             df                      SS                                          MS                                    F Statistic
+  ------------ -------------- --------------------------------- ---------------------------------------------------- -------------------------------
+  Treatments       $t-1$        $\mathrm{SST}_{\mathrm{trt}}$     $\mathrm{MST}=\mathrm{SST}_{\mathrm{trt}}/(t-1)$    $F=\mathrm{MST}/\mathrm{MSE}$
+  Blocks           $b-1$       $\mathrm{SSB}_{\mathrm{block}}$   $\mathrm{MSB}=\mathrm{SSB}_{\mathrm{block}}/(b-1)$  
+  Error         $(t-1)(b-1)$           $\mathrm{SSE}$                 $\mathrm{MSE}=\mathrm{SSE}/[(t-1)(b-1)]$       
+  Total            $tb-1$      $\mathrm{SST}_{\mathrm{total}}$                                                       
+:::
+
+The treatment F-test rejects $H_0$ for large values of $$F_{\mathrm{trt}}=\frac{\mathrm{MST}}{\mathrm{MSE}}.$$ Under the null hypothesis and model assumptions, $$F_{\mathrm{trt}}\sim F_{t-1,(t-1)(b-1)}.$$
+
+# Example: Complete Randomized Block Design Computation
+
+This section completes the fertilizer example using the randomized block design formulas.
+
+::: {.callout-tip title="Example"}
+**Example 9** (RBD computation for fertilizers). Consider the fertilizer data:
+
+::: center
+   Block   A    B    C
+  ------- ---- ---- ----
+     1     18   22   27
+     2     16   25   23
+     3     21   19   30
+     4     20   24   28
+:::
+
+Compute the randomized block ANOVA table and test for treatment differences.
+:::
+
+::: {.callout-caution title="Solution"}
+There are $t=3$ treatments and $b=4$ blocks. The treatment totals are $$T_A=75,\qquad T_B=90,\qquad T_C=108.$$ The block totals are $$B_1=67,\quad B_2=64,\quad B_3=70,\quad B_4=72.$$ The grand total is $$G=273,$$ and $tb=12$.
+
+First compute $$\sum_{i,j}Y_{ij}^2
+    =18^2+22^2+27^2+16^2+25^2+23^2+21^2+19^2+30^2+20^2+24^2+28^2
+    =6385.$$ Thus $$\mathrm{SST}_{\mathrm{total}}
+    =6385-\frac{273^2}{12}
+    =6385-6210.75
+    =174.25.$$ The treatment sum of squares is $$\begin{aligned}
+\mathrm{SST}_{\mathrm{trt}}
+&=\frac{1}{4}(75^2+90^2+108^2)-\frac{273^2}{12} \\
+&=\frac{25389}{4}-6210.75 \\
+&=136.50.
+\end{aligned}$$ The block sum of squares is $$\mathrm{SSB}_{\mathrm{block}}
+    =\frac{1}{3}(67^2+64^2+70^2+72^2)-6210.75
+    =13.583.$$ The error sum of squares is $$\mathrm{SSE}=174.25-136.50-13.583=24.167.$$ The degrees of freedom are $$\mathrm{df}_{\mathrm{trt}}=t-1=2,
+    \quad
+    \mathrm{df}_{\mathrm{block}}=b-1=3,
+    \quad
+    \mathrm{df}_{\mathrm{error}}=(t-1)(b-1)=6,
+    \quad
+    \mathrm{df}_{\mathrm{total}}=11.$$ The mean squares are $$\mathrm{MST}=\frac{136.50}{2}=68.250,
+    \qquad
+    \mathrm{MSB}=\frac{13.583}{3}=4.528,
+    \qquad
+    \mathrm{MSE}=\frac{24.167}{6}=4.028.$$ Therefore $$F_{\mathrm{trt}}=\frac{68.250}{4.028}\approx 16.95.$$ The ANOVA table is: $$\begin{array}{lcccc}
+\hline
+\text{Source} & \mathrm{df}& \text{SS} & \text{MS} & F \\
+\hline
+\text{Treatments} & 2 & 136.500 & 68.250 & 16.95 \\
+\text{Blocks} & 3 & 13.583 & 4.528 & \\
+\text{Error} & 6 & 24.167 & 4.028 & \\
+\text{Total} & 11 & 174.250 & & \\
+\hline
+\end{array}$$ The treatment p-value is $$\mathbb{P}(F_{2,6}>16.95),$$ which is small. Thus we reject the null hypothesis of equal treatment effects. There is strong evidence that the fertilizers do not all have the same mean response.
+:::
+
+# Lab: Randomized Block Designs with Python
+
+This section summarizes the lab-style setup for randomized block designs.
+
+A typical Python lab can use:
+
+-   treatments: $3$ fertilizers, for example F1, F2, and NF (no fertilizer);
+
+-   blocks: $3$ crop types, for example corn, rice, and wheat;
+
+-   response: number of months the crops stayed healthy.
+
+The model is $$Y_{ij}=\mu+\tau_i+\beta_j+\epsilon_{ij},
+    \qquad \epsilon_{ij}\sim \operatorname{Normal}(0,\sigma^2).$$
+
+::: {.callout-tip title="Key idea"}
+Practical workflow for an RBD analysis
+
+1.  Plot the response by treatment and by block.
+
+2.  Fit a model with treatment and block effects.
+
+3.  Construct the ANOVA table.
+
+4.  Test the treatment effect using $F=\mathrm{MST}/\mathrm{MSE}$.
+
+5.  Interpret the treatment result after accounting for block variation.
+:::
+
+# Practice Problems
+
+This section gives practice problems that reinforce one-way ANOVA and randomized block designs.
+
+::: {.callout-tip title="Practice problem"}
+**Practice Problem 10** (One-way ANOVA from summary statistics). Suppose three groups have sample sizes $n_1=n_2=n_3=5$, sample means $$\bar{x}_1=10,
+    \qquad
+    \bar{x}_2=14,
+    \qquad
+    \bar{x}_3=18,$$ and sample variances $$s_1^2=4,
+    \qquad
+    s_2^2=5,
+    \qquad
+    s_3^2=6.$$ Compute the one-way ANOVA table and the observed F statistic.
+:::
+
+::: {.callout-caution title="Solution"}
+The total sample size is $N=15$ and $k=3$. The grand mean is $$\bar{x}_{\cdot\cdot}=\frac{5(10)+5(14)+5(18)}{15}=14.$$ The between-group sum of squares is $$\mathrm{SSB}=5(10-14)^2+5(14-14)^2+5(18-14)^2=160.$$ The within-group sum of squares is $$\mathrm{SSE}=(5-1)4+(5-1)5+(5-1)6=16+20+24=60.$$ Thus $$\mathrm{MSB}=\frac{160}{2}=80,
+    \qquad
+    \mathrm{MSE}=\frac{60}{12}=5.$$ The observed F statistic is $$F_{\mathrm{obs}}=\frac{80}{5}=16.$$ The ANOVA table is: $$\begin{array}{lcccc}
+\hline
+\text{Source} & \text{SS} & \mathrm{df}& \text{MS} & F \\
+\hline
+\text{Between} & 160 & 2 & 80 & 16 \\
+\text{Within} & 60 & 12 & 5 & \\
+\text{Total} & 220 & 14 & & \\
+\hline
+\end{array}$$
+:::
+
+::: {.callout-tip title="Practice problem"}
+**Practice Problem 11** (Why blocking can help). Explain why a randomized block design can have more power than a completely randomized one-way ANOVA design.
+:::
+
+::: {.callout-caution title="Solution"}
+A randomized block design separates nuisance variation due to blocks from random error. In a completely randomized design, block-to-block variation is absorbed into the error term. This can make $\mathrm{MSE}$ large and reduce the F statistic for treatment effects. In an RBD, block variation is removed through the block sum of squares, often making the residual error smaller. A smaller $\mathrm{MSE}$ makes it easier to detect genuine treatment differences.
+:::
+
+::: {.callout-tip title="Practice problem"}
+**Practice Problem 12** (RBD degrees of freedom). A randomized block design has $t=5$ treatments and $b=6$ blocks. Find the degrees of freedom for treatment, block, error, and total sources of variation.
+:::
+
+::: {.callout-caution title="Solution"}
+The degrees of freedom are: $$\mathrm{df}_{\mathrm{treatment}}=t-1=4,$$ $$\mathrm{df}_{\mathrm{block}}=b-1=5,$$ $$\mathrm{df}_{\mathrm{error}}=(t-1)(b-1)=4\cdot 5=20,$$ and $$\mathrm{df}_{\mathrm{total}}=tb-1=30-1=29.$$ They add correctly: $$4+5+20=29.$$
+:::
+
+::: {.callout-tip title="Practice problem"}
+**Practice Problem 13** (Treatment F statistic in an RBD). In a randomized block design with $t=4$ treatments and $b=5$ blocks, suppose $$\mathrm{SST}_{\mathrm{trt}}=90,
+    \qquad
+    \mathrm{SSE}=60.$$ Compute the treatment F statistic.
+:::
+
+::: {.callout-caution title="Solution"}
+The treatment degrees of freedom are $$t-1=3.$$ The error degrees of freedom are $$(t-1)(b-1)=3\cdot 4=12.$$ Therefore $$\mathrm{MST}=\frac{90}{3}=30,
+    \qquad
+    \mathrm{MSE}=\frac{60}{12}=5.$$ The treatment F statistic is $$F=\frac{\mathrm{MST}}{\mathrm{MSE}}=\frac{30}{5}=6.$$
+:::
+
+# Summary
+
+This final section summarizes the key ideas from ANOVA applications and randomized block designs.
+
+-   One-way ANOVA compares $k$ group means using the ratio $F=\mathrm{MSB}/\mathrm{MSE}$.
+
+-   The ANOVA F-test is a global test: it detects whether at least one group mean differs.
+
+-   The sums of squares decomposition is $$\mathrm{SST}=\mathrm{SSB}+\mathrm{SSE}.$$
+
+-   Multiple pairwise t-tests can inflate Type I error.
+
+-   Good experimental design uses control, randomization, replication, and blocking.
+
+-   Randomized block designs reduce nuisance variation by comparing treatments within homogeneous blocks.
+
+-   In an RBD, total variation is decomposed into treatment variation, block variation, and error variation.
+
+## References and Further Reading
+
+9 George Casella and Roger L. Berger, *Statistical Inference*, 2nd edition. Larry Wasserman, *All of Statistics*. ProbabilityCourse.com, online probability and statistics resources. Penn State STAT 415 online notes. Harvard Stat 110 online resources. E. Garcia-Portugues, *Notes for Predictive Modeling and Statistical Inference*.

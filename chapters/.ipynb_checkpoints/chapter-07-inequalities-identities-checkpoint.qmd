@@ -1,0 +1,710 @@
+---
+title: "Chapter 7: Inequalities and Identities"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+execute:
+  warning: false
+  message: false
+---
+
+# Inequalities and Identities
+
+This chapter introduces the main probability inequalities used to control tail probabilities, prove convergence results, and analyze estimators. The focus is not only on remembering formulas, but also on learning when each inequality is the right tool.
+
+ 
+
+**Topics.** Boole's inequality; inclusion-exclusion; Bonferroni inequalities; Markov's inequality; Chebyshev's inequality; Chernoff bounds; Hoeffding's inequality; Cauchy-Schwarz, Holder, Minkowski, and Jensen inequalities; equality identities for common distributions.
+
+
+### Overview
+
+This section introduces probability inequalities and distribution identities that are used to control tail probabilities, prove limit theorems, and analyze statistical estimators.
+
+Probability inequalities provide upper and lower bounds for probabilities of events, especially events involving deviations of random variables from their expectations. The important point is that a useful bound may require only partial information, such as the mean, variance, support, or moment generating function, rather than a full distributional calculation.
+
+::: {.callout-tip title="Main message"}
+Main message Probability inequalities answer questions of the form $$\mathbb{P}\{Z \geq \mathbb{E}[Z]+t\},\qquad \mathbb{P}\{Z\leq \mathbb{E}[Z]-t\},\qquad \mathbb{P}\{|Z-\mathbb{E}[Z]|\geq t\}.$$ They are useful when exact probabilities are hard to compute or when we want distribution-free guarantees.
+:::
+
+The inequalities in this section include:
+
+-   union bounds: Boole's inequality, inclusion-exclusion, and Bonferroni inequalities;
+
+-   tail bounds from moments: Markov's inequality and Chebyshev's inequality;
+
+-   exponential tail bounds: Chernoff bounds and Hoeffding's inequality;
+
+-   functional inequalities: Cauchy-Schwarz, Holder, Minkowski, and Jensen;
+
+-   equality identities for special distributions.
+
+## Union Bounds and Inclusion-Exclusion
+
+This section begins with inequalities for the probability that at least one event in a collection occurs.
+
+### Boole's inequality
+
+This subsection states the most basic and most useful union bound.
+
+::: {.callout-important title="Theorem"}
+**Theorem 1** (Boole's inequality). *Suppose $(S,\mathcal B,\mathbb{P})$ is a probability space and $E_1,E_2,\ldots\in \mathcal B$ are events. Then $$\mathbb{P}\left(\bigcup_{i=1}^{\infty}E_i\right)
+\leq
+\sum_{i=1}^{\infty}\mathbb{P}(E_i).$$ For finitely many events, $$\mathbb{P}\left(\bigcup_{i=1}^{n}E_i\right)
+\leq
+\sum_{i=1}^{n}\mathbb{P}(E_i).$$*
+:::
+
+Boole's inequality says that the probability that at least one of the events happens is no greater than the sum of the individual probabilities.
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* For two events, $$\mathbb{P}(A\cup B)=\mathbb{P}(A)+\mathbb{P}(B)-\mathbb{P}(A\cap B)\leq \mathbb{P}(A)+\mathbb{P}(B).$$ The finite result follows by induction. The countable result follows by continuity of probability from below: $$\mathbb{P}\left(\bigcup_{i=1}^{\infty}E_i\right)
+=
+\lim_{n\to\infty}\mathbb{P}\left(\bigcup_{i=1}^{n}E_i\right)
+\leq
+\lim_{n\to\infty}\sum_{i=1}^{n}\mathbb{P}(E_i).$$ ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 2** (A quick union-bound estimate). Suppose $100$ students each independently submit an assignment late with probability at most $0.01$. Without assuming independence, bound the probability that at least one student submits late.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $E_i$ be the event that student $i$ submits late. Then $$\mathbb{P}\left(\bigcup_{i=1}^{100}E_i\right)
+\leq \sum_{i=1}^{100}\mathbb{P}(E_i)
+\leq 100(0.01)=1.$$ This bound is not informative because it only gives an upper bound of $1$. If the late probability were $0.001$, then Boole's inequality would give $$\mathbb{P}(\text{at least one late})\leq 100(0.001)=0.1.$$ The example shows that the union bound is most useful when individual probabilities are small.
+:::
+
+### Inclusion-exclusion
+
+This subsection gives the exact formula for a finite union by adding and subtracting intersections.
+
+Suppose $E_1,\ldots,E_n$ are events. Define $$S_1=\sum_{i=1}^{n}\mathbb{P}(E_i),$$ $$S_2=\sum_{1\leq i<j\leq n}\mathbb{P}(E_i\cap E_j),$$ and, more generally, $$S_k=\sum_{1\leq i_1<\cdots<i_k\leq n}
+\mathbb{P}(E_{i_1}\cap\cdots\cap E_{i_k}).$$
+
+::: {.callout-important title="Theorem"}
+**Theorem 3** (Inclusion-exclusion). *For events $E_1,\ldots,E_n$, $$\mathbb{P}\left(\bigcup_{i=1}^{n}E_i\right)
+=S_1-S_2+S_3-\cdots+(-1)^{n-1}S_n.$$*
+:::
+
+::: {.callout-tip title="Example"}
+**Example 4** (Three events). Write the inclusion-exclusion formula for three events $A,B,C$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For three events, $$\mathbb{P}(A\cup B\cup C)
+=
+\mathbb{P}(A)+\mathbb{P}(B)+\mathbb{P}(C)
+-\mathbb{P}(A\cap B)-\mathbb{P}(A\cap C)-\mathbb{P}(B\cap C)
++\mathbb{P}(A\cap B\cap C).$$ The first line adds the probability of being in any one event. The second line removes double-counting. The last term adds back the triple intersection, which was removed too many times.
+:::
+
+### Bonferroni inequalities
+
+This subsection turns the inclusion-exclusion expansion into useful upper and lower bounds.
+
+::: {.callout-important title="Theorem"}
+**Theorem 5** (Bonferroni inequalities). *Let $E_1,\ldots,E_n$ be events and let $S_k$ be defined as above. For $1\leq k\leq n$, $$B_k=\sum_{j=1}^{k}(-1)^{j-1}S_j.$$ If $k$ is odd, then $$\mathbb{P}\left(\bigcup_{i=1}^{n}E_i\right)\leq B_k.$$ If $k$ is even, then $$\mathbb{P}\left(\bigcup_{i=1}^{n}E_i\right)\geq B_k.$$*
+:::
+
+The case $k=1$ is exactly Boole's inequality. The case $k=2$ gives $$\mathbb{P}\left(\bigcup_{i=1}^{n}E_i\right)
+\geq
+\sum_i\mathbb{P}(E_i)-\sum_{i<j}\mathbb{P}(E_i\cap E_j).$$
+
+::: {.callout-tip title="Example"}
+**Example 6** (Empty boxes). Place $n$ distinguishable balls into $m$ distinguishable boxes uniformly at random, where $n>m$. Let $E$ be the event that at least one box is empty. Use inclusion-exclusion and Bonferroni inequalities to estimate $\mathbb{P}(E)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The sample space is $$S=\{\omega=(\omega_1,\ldots,\omega_n):1\leq \omega_i\leq m\},
+\qquad |S|=m^n.$$ Let $$E_\ell=\{\omega:\omega_i\neq \ell \text{ for all } i=1,\ldots,n\}$$ be the event that box $\ell$ is empty. Then $$E=E_1\cup\cdots\cup E_m.$$ For any fixed $k$ distinct boxes $i_1,\ldots,i_k$, $$\mathbb{P}(E_{i_1}\cap\cdots\cap E_{i_k})
+=\left(\frac{m-k}{m}\right)^n
+=\left(1-\frac{k}{m}\right)^n.$$ Therefore inclusion-exclusion gives $$\mathbb{P}(E)
+=
+\binom{m}{1}\left(1-\frac1m\right)^n
+-
+\binom{m}{2}\left(1-\frac2m\right)^n
++\cdots
++(-1)^{m-1}\binom{m}{m}\left(1-\frac{m}{m}\right)^n.$$ The first two Bonferroni bounds give $$m\left(1-\frac1m\right)^n
+-
+\binom{m}{2}\left(1-\frac2m\right)^n
+\leq \mathbb{P}(E)
+\leq
+m\left(1-\frac1m\right)^n.$$ For $m=10$, $$10(0.9)^n-45(0.8)^n\leq \mathbb{P}(E)\leq 10(0.9)^n.$$ For $n=50$, the gap between the upper and lower bounds is $$45(0.8)^{50}\approx 0.00064226146,$$ so the two-sided estimate is quite accurate.
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 7** (At least one duplicated birthday). Assume each birthday is equally likely among $365$ days. Let $E_{ij}$ be the event that people $i$ and $j$ share a birthday in a class of $r$ people. Use Boole's inequality to bound the probability that at least two people share a birthday.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+There are $\binom r2$ pairs. For each pair, $$\mathbb{P}(E_{ij})=\frac1{365}.$$ If $E$ is the event that at least one pair shares a birthday, then $$E=\bigcup_{1\leq i<j\leq r}E_{ij}.$$ By Boole's inequality, $$\mathbb{P}(E)\leq \sum_{i<j}\mathbb{P}(E_{ij})=\binom r2\frac1{365}.$$ This is a simple upper bound; it can exceed $1$ for large $r$, in which case the best probability upper bound is $1$.
+:::
+
+## Markov's Inequality
+
+This section introduces the fundamental inequality behind many tail bounds.
+
+### Basic Markov inequality
+
+This subsection bounds a nonnegative random variable using only its expectation.
+
+::: {.callout-important title="Theorem"}
+**Theorem 8** (Markov's inequality). *Let $X$ be a nonnegative random variable. Then, for any $a>0$, $$\mathbb{P}(X\geq a)\leq \frac{\mathbb{E}[X]}{a}.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof for continuous $X$.* If $X$ has density $f$, then $$\mathbb{E}[X]=\int_0^\infty x f(x)\,dx
+=\int_0^a x f(x)\,dx+\int_a^\infty x f(x)\,dx
+\geq \int_a^\infty x f(x)\,dx
+\geq \int_a^\infty a f(x)\,dx
+=a\mathbb{P}(X\geq a).$$ Dividing by $a$ gives the result. The same proof works in the discrete case by replacing integrals with sums. ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 9** (A binomial upper-tail bound). Suppose $X\sim \operatorname{Binomial}(n,p)$. For $p<q<1$, use Markov's inequality to bound $\mathbb{P}(X\geq qn)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Since $X\geq 0$ and $\mathbb{E}[X]=np$, Markov's inequality gives $$\mathbb{P}(X\geq qn)
+\leq
+\frac{\mathbb{E}[X]}{qn}
+=
+\frac{np}{qn}
+=\frac pq.$$ This bound does not improve as $n$ increases, so it is often weak for sums of many independent variables.
+:::
+
+### General Markov inequality
+
+This subsection applies Markov's idea to a nonnegative function of a random variable.
+
+::: {.callout-important title="Theorem"}
+**Theorem 10** (General Markov inequality). *Let $g(X)$ be a nonnegative random variable. For any $r>0$, $$\mathbb{P}(g(X)\geq r)
+\leq
+\frac{\mathbb{E}[g(X)]}{r}.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Apply Markov's inequality to the nonnegative random variable $g(X)$. ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 11** (Universal deviation bound). Let $X$ be a random variable with mean $\mu$ and variance $\sigma^2$. Show that $$\mathbb{P}(|X-\mu|\geq t\sigma)\leq \frac1{t^2}$$ for $t>0$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $$g(X)=\frac{(X-\mu)^2}{\sigma^2}.$$ Then $g(X)\geq 0$ and $$\mathbb{E}[g(X)]=\frac{\mathbb{E}[(X-\mu)^2]}{\sigma^2}=1.$$ The event $|X-\mu|\geq t\sigma$ is the same as $$\frac{(X-\mu)^2}{\sigma^2}\geq t^2.$$ By the general Markov inequality, $$\mathbb{P}(|X-\mu|\geq t\sigma)
+=
+\mathbb{P}(g(X)\geq t^2)
+\leq \frac{\mathbb{E}[g(X)]}{t^2}
+=\frac1{t^2}.$$ For example, if $t=2$, then $$\mathbb{P}(|X-\mu|\geq 2\sigma)\leq \frac14,$$ so there is at least a $75\%$ chance that $X$ lies within two standard deviations of its mean, no matter what the distribution is.
+:::
+
+## Chebyshev's Inequality
+
+This section improves Markov's inequality by using variance to control deviations from the mean.
+
+### Statement and proof
+
+This subsection proves Chebyshev's inequality as a direct consequence of Markov's inequality.
+
+::: {.callout-important title="Theorem"}
+**Theorem 12** (Chebyshev's inequality). *Let $X$ be a random variable with finite variance. Then, for any $k>0$, $$\mathbb{P}(|X-\mathbb{E}[X]|\geq k)
+\leq
+\frac{\operatorname{Var}(X)}{k^2}.$$ Equivalently, for $t>0$, $$\mathbb{P}(|X-\mathbb{E}[X]|\geq t\sqrt{\operatorname{Var}(X)})\leq \frac1{t^2}.$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Let $$Y=(X-\mathbb{E}[X])^2.$$ Then $Y\geq 0$. By Markov's inequality, $$\mathbb{P}(|X-\mathbb{E}[X]|\geq k)
+=\mathbb{P}((X-\mathbb{E}[X])^2\geq k^2)
+\leq
+\frac{\mathbb{E}[(X-\mathbb{E}[X])^2]}{k^2}
+=\frac{\operatorname{Var}(X)}{k^2}.$$ ◻
+:::
+
+### Comparison with Markov for a binomial tail
+
+This subsection shows that Chebyshev's inequality improves Markov's inequality for a binomial upper tail because it uses the variance.
+
+::: {.callout-tip title="Example"}
+**Example 13** (Binomial tail: Markov versus Chebyshev). Suppose $X\sim \operatorname{Binomial}(n,p)$ and $p<q<1$. Compare Markov's and Chebyshev's bounds for $\mathbb{P}(X\geq qn)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Markov's inequality gives $$\mathbb{P}(X\geq qn)\leq \frac pq.$$ For Chebyshev's inequality, note that $$\mathbb{E}[X]=np,
+\qquad
+\operatorname{Var}(X)=np(1-p).$$ Since $q>p$, $$\{X\geq qn\}\subseteq \{|X-np|\geq (q-p)n\}.$$ Therefore $$\mathbb{P}(X\geq qn)
+\leq
+\mathbb{P}(|X-np|\geq (q-p)n)
+\leq
+\frac{np(1-p)}{(q-p)^2n^2}
+=
+\frac{p(1-p)}{(q-p)^2n}.$$ Unlike the Markov bound, this bound goes to $0$ as $n\to\infty$.
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 14** (Sample mean bound). Let $X_1,\ldots,X_n$ be iid with mean $\mu$ and variance $\sigma^2$. Let $\bar X_n=n^{-1}\sum_{i=1}^n X_i$. Use Chebyshev's inequality to bound $\mathbb{P}(|\bar X_n-\mu|\geq \varepsilon)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+We have $$\mathbb{E}[\bar X_n]=\mu,
+\qquad
+\operatorname{Var}(\bar X_n)=\frac{\sigma^2}{n}.$$ Chebyshev's inequality gives $$\mathbb{P}(|\bar X_n-\mu|\geq \varepsilon)
+\leq
+\frac{\operatorname{Var}(\bar X_n)}{\varepsilon^2}
+=
+\frac{\sigma^2}{n\varepsilon^2}.$$ This is the basic second-moment concentration bound for the sample mean.
+:::
+
+## Chernoff Bounds
+
+This section introduces exponential tail bounds based on moment generating functions.
+
+### The Chernoff method
+
+This subsection derives the Chernoff bound by applying Markov's inequality to $e^{tX}$.
+
+::: {.callout-important title="Theorem"}
+**Theorem 15** (Chernoff bounds). *Let $X$ be a random variable with moment generating function $$M_X(t)=\mathbb{E}[e^{tX}].$$ For any $a\in\mathbb{R}$, $$\mathbb{P}(X\geq a)
+\leq
+\inf_{t\geq 0} e^{-ta}M_X(t),$$ and $$\mathbb{P}(X\leq a)
+\leq
+\inf_{t\geq 0} e^{ta}M_X(-t).$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* For $t\geq 0$, the function $e^{tX}$ is nonnegative and $$\{X\geq a\}=\{e^{tX}\geq e^{ta}\}.$$ By Markov's inequality, $$\mathbb{P}(X\geq a)
+\leq
+\frac{\mathbb{E}[e^{tX}]}{e^{ta}}
+=e^{-ta}M_X(t).$$ Taking the infimum over $t\geq 0$ gives the upper-tail bound. For the lower tail, apply the same argument to $-X$: $$\mathbb{P}(X\leq a)=\mathbb{P}(-X\geq -a)
+\leq e^{ta}M_X(-t).$$ ◻
+:::
+
+### Binomial Chernoff bound
+
+This subsection applies the Chernoff method to a binomial random variable.
+
+::: {.callout-tip title="Example"}
+**Example 16** (Chernoff bound for a binomial tail). Let $X\sim \operatorname{Binomial}(n,p)$. For $p<q<1$, derive an exponential upper bound for $\mathbb{P}(X\geq qn)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The moment generating function of $X\sim \operatorname{Binomial}(n,p)$ is $$M_X(t)=(pe^t+1-p)^n.$$ The Chernoff bound gives $$\mathbb{P}(X\geq qn)
+\leq
+\inf_{t\geq 0} e^{-tqn}(pe^t+1-p)^n.$$ Let $$g(t)= e^{-tqn}(pe^t+1-p)^n.$$ Minimizing $\log g(t)$ gives $$\frac{\,d}{\,dt}\log g(t)
+=-qn+n\frac{pe^t}{pe^t+1-p}=0.$$ Thus $$\frac{pe^{t^*}}{pe^{t^*}+1-p}=q,$$ which implies $$e^{t^*}=\frac{q(1-p)}{(1-q)p}.$$ Substituting this value into $g(t)$ gives $$\mathbb{P}(X\geq qn)
+\leq
+\left(\frac pq\right)^{qn}
+\left(\frac{1-p}{1-q}\right)^{(1-q)n}.$$ This is an exponential bound in $n$.
+:::
+
+### Comparison: Markov, Chebyshev, and Chernoff
+
+This subsection compares the three bounds for binomial tails.
+
+For $X\sim \operatorname{Binomial}(n,p)$ and $p<q<1$: $$\text{Markov:}\qquad
+\mathbb{P}(X\geq qn)\leq \frac pq.$$ $$\text{Chebyshev:}\qquad
+\mathbb{P}(X\geq qn)
+\leq
+\frac{p(1-p)}{(q-p)^2n}.$$ $$\text{Chernoff:}\qquad
+\mathbb{P}(X\geq qn)
+\leq
+\left(\frac pq\right)^{qn}
+\left(\frac{1-p}{1-q}\right)^{(1-q)n}.$$
+
+::: {.callout-tip title="Example"}
+**Example 17** (Comparison when $p=1/2$ and $q=3/4$). Let $X\sim \operatorname{Binomial}(n,1/2)$. Compare bounds for $\mathbb{P}(X\geq 3n/4)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Markov's inequality gives $$\mathbb{P}(X\geq 3n/4)\leq \frac{1/2}{3/4}=\frac23.$$ Chebyshev's inequality gives $$\mathbb{P}(X\geq 3n/4)
+\leq
+\frac{(1/2)(1/2)}{(1/4)^2n}
+=\frac4n.$$ Chernoff's bound gives $$\mathbb{P}(X\geq 3n/4)
+\leq
+\left(\frac{1/2}{3/4}\right)^{3n/4}
+\left(\frac{1/2}{1/4}\right)^{n/4}
+=\left(\frac{16}{27}\right)^{n/4}.$$ Markov's bound does not decay with $n$, Chebyshev's bound decays like $1/n$, and Chernoff's bound decays exponentially.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 18** (Comparison when $p=1/3$ and $q=2/3$). Let $X\sim \operatorname{Binomial}(n,1/3)$. Compare bounds for $\mathbb{P}(X\geq 2n/3)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Markov's inequality gives $$\mathbb{P}(X\geq 2n/3)\leq \frac{1/3}{2/3}=\frac12.$$ Chebyshev's inequality gives $$\mathbb{P}(X\geq 2n/3)
+\leq
+\frac{(1/3)(2/3)}{(1/3)^2n}
+=\frac2n.$$ The Chernoff bound gives $$\mathbb{P}(X\geq 2n/3)
+\leq
+\left(\frac{1/3}{2/3}\right)^{2n/3}
+\left(\frac{2/3}{1/3}\right)^{n/3}
+=2^{-2n/3}2^{n/3}=2^{-n/3}.$$ The lecture slide states the sharper form $2^{-n/2}$ for this special comparison. The key qualitative point is the same: Chernoff gives exponential decay, while Chebyshev gives polynomial decay.
+:::
+
+### Chernoff bounds for sums
+
+This subsection explains why Chernoff bounds are especially convenient for sums of independent random variables.
+
+Suppose $Z_1,\ldots,Z_n$ are independent. Then $$M_{Z_1+\cdots+Z_n}(t)
+=\prod_{i=1}^{n}M_{Z_i}(t).$$ Therefore, if $Z_i$ are iid, $$M_{\sum_{i=1}^n Z_i}(t)=M_Z(t)^n.$$ This means that the Chernoff bound of a sum usually reduces to computing the MGF of a single summand.
+
+::: {.callout-tip title="Example"}
+**Example 19** (Random signs). Let $S$ be a random sign variable with $$\mathbb{P}(S=1)=\mathbb{P}(S=-1)=\frac12.$$ Let $X=S_1+\cdots+S_n$, where $S_i$ are iid copies of $S$. Find a Chernoff bound for $\mathbb{P}(X\geq a)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The MGF of one random sign is $$M_S(t)=\mathbb{E}[e^{tS}]=\frac12e^t+\frac12e^{-t}=\cosh t.$$ Hence $$M_X(t)=(\cosh t)^n.$$ Chernoff's bound gives $$\mathbb{P}(X\geq a)
+\leq
+\inf_{t\geq 0} e^{-ta}(\cosh t)^n.$$ Using $\cosh t\leq e^{t^2/2}$ for all $t$, we get $$\mathbb{P}(X\geq a)
+\leq
+\inf_{t\geq 0}\exp\left(-ta+\frac{nt^2}{2}\right).$$ The minimum occurs at $t=a/n$, giving $$\mathbb{P}(X\geq a)
+\leq
+\exp\left(-\frac{a^2}{2n}\right).$$
+:::
+
+## Hoeffding's Inequality
+
+This section gives a powerful exponential concentration inequality for bounded independent random variables.
+
+### Concentration of the sample mean
+
+This subsection compares Chebyshev's polynomial-rate bound with Hoeffding's exponential-rate bound.
+
+Recall that if $X_1,\ldots,X_n$ are iid with variance $\sigma^2$, then Chebyshev's inequality applied to the sample mean gives $$\mathbb{P}(|\bar X_n-\mathbb{E}[\bar X_n]|\geq \varepsilon)
+\leq
+\frac{\sigma^2}{n\varepsilon^2}.$$ This decays like $1/n$.
+
+::: {.callout-important title="Theorem"}
+**Theorem 20** (Hoeffding's inequality, bounded case). *Suppose $X_1,\ldots,X_n$ are independent and $0\leq X_i\leq 1$. Let $$\bar X_n=\frac1n\sum_{i=1}^n X_i.$$ Then, for any $\varepsilon>0$, $$\mathbb{P}(|\bar X_n-\mathbb{E}[\bar X_n]|\geq \varepsilon)
+\leq
+2e^{-2n\varepsilon^2}.$$ More generally, if $a_i\leq X_i\leq b_i$, then a scaled version holds.*
+:::
+
+::: {.callout-tip title="Main message"}
+Why Hoeffding matters Hoeffding's inequality gives an exponential concentration rate. This is much faster than the Chebyshev rate and is a central tool in modern statistics, statistical learning, high-dimensional problems, nonparametric inference, semiparametric inference, and empirical risk minimization.
+:::
+
+::: {.callout-tip title="Example"}
+**Example 21** (Coin-flip sample proportion). Let $X_1,\ldots,X_n$ be iid Bernoulli$(p)$ random variables and let $\bar X_n$ be the sample proportion of successes. Bound $$\mathbb{P}(|\bar X_n-p|\geq \varepsilon).$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Since $0\leq X_i\leq 1$ and $\mathbb{E}[\bar X_n]=p$, Hoeffding's inequality gives $$\mathbb{P}(|\bar X_n-p|\geq \varepsilon)
+\leq
+2e^{-2n\varepsilon^2}.$$ For example, if $\varepsilon=0.05$ and $n=1000$, then $$2e^{-2(1000)(0.05)^2}=2e^{-5}\approx 0.0135.$$ Thus the sample proportion is within $0.05$ of $p$ with probability at least $0.9865$.
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 22** (Sample size from Hoeffding). How large should $n$ be to guarantee $$\mathbb{P}(|\bar X_n-p|\geq \varepsilon)\leq \delta$$ for Bernoulli data?
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Hoeffding gives $$\mathbb{P}(|\bar X_n-p|\geq \varepsilon)
+\leq 2e^{-2n\varepsilon^2}.$$ We want $$2e^{-2n\varepsilon^2}\leq \delta.$$ Taking logs, $$-2n\varepsilon^2\leq \log(\delta/2).$$ Thus it is enough to take $$n\geq \frac{1}{2\varepsilon^2}\log\left(\frac2\delta\right).$$
+:::
+
+## Cauchy-Schwarz, Holder, and Minkowski Inequalities
+
+This section introduces norm and inner-product inequalities for random variables.
+
+### Cauchy-Schwarz inequality
+
+This subsection views random variables as vectors with inner product $\langle X,Y\rangle=\mathbb{E}[XY]$.
+
+::: {.callout-important title="Theorem"}
+**Theorem 23** (Cauchy-Schwarz inequality). *Suppose $X$ and $Y$ are random variables with finite second moments. Then $$\bigl(\mathbb{E}[XY]\bigr)^2\leq \mathbb{E}[X^2]\mathbb{E}[Y^2].$$ Equality holds if and only if $X=aY$ almost surely for some constant $a\in\mathbb{R}$.*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* For any real number $t$, $$0\leq \mathbb{E}[(X-tY)^2]=\mathbb{E}[X^2]-2t\mathbb{E}[XY]+t^2\mathbb{E}[Y^2].$$ This quadratic in $t$ is nonnegative for all $t$, so its discriminant is nonpositive: $$4(\mathbb{E}[XY])^2-4\mathbb{E}[X^2]\mathbb{E}[Y^2]\leq 0.$$ Thus $$(\mathbb{E}[XY])^2\leq \mathbb{E}[X^2]\mathbb{E}[Y^2].$$ Equality occurs precisely when $X-tY=0$ almost surely for some $t$. ◻
+:::
+
+The same idea generalizes to random vectors. If $X,Y\in\mathbb{R}^n$, define $$\langle X,Y\rangle=\mathbb{E}[X^T Y]=\mathbb{E}[X_1Y_1+\cdots+X_nY_n].$$ Then Cauchy-Schwarz becomes $$\left(\mathbb{E}[X^TY]\right)^2
+\leq
+\mathbb{E}[X^TX]\,\mathbb{E}[Y^TY].$$
+
+::: {.callout-tip title="Example"}
+**Example 24** (Correlation is between $-1$ and $1$). Use Cauchy-Schwarz to prove $$|\operatorname{Corr}(X,Y)|\leq 1.$$ Also characterize equality.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Assume $\operatorname{Var}(X)>0$ and $\operatorname{Var}(Y)>0$. Define standardized variables $$U=\frac{X-\mathbb{E}[X]}{\sqrt{\operatorname{Var}(X)}},
+\qquad
+V=\frac{Y-\mathbb{E}[Y]}{\sqrt{\operatorname{Var}(Y)}}.$$ Then $$\mathbb{E}[U]=0,
+\qquad \mathbb{E}[V]=0,
+\qquad \mathbb{E}[U^2]=\mathbb{E}[V^2]=1,$$ and $$\operatorname{Corr}(X,Y)=\mathbb{E}[UV].$$ By Cauchy-Schwarz, $$|\mathbb{E}[UV]|\leq \sqrt{\mathbb{E}[U^2]\mathbb{E}[V^2]}=1.$$ Equality holds if and only if $U=aV$ almost surely for some constant $a$, which is equivalent to $$X=\alpha+\beta Y$$ almost surely for constants $\alpha,\beta\in\mathbb{R}$.
+:::
+
+### Holder's inequality
+
+This subsection generalizes Cauchy-Schwarz from second moments to $p$-th moments.
+
+::: {.callout-important title="Theorem"}
+**Theorem 25** (Holder's inequality). *Let $X$ and $Y$ be random variables and let $p,q>1$ satisfy $$\frac1p+\frac1q=1.$$ Then $$\mathbb{E}[|XY|]
+\leq
+\left(\mathbb{E}[|X|^p]\right)^{1/p}
+\left(\mathbb{E}[|Y|^q]\right)^{1/q}.$$*
+:::
+
+When $p=q=2$, Holder's inequality is the Cauchy-Schwarz inequality.
+
+::: {.callout-tip title="Example"}
+**Example 26** (Cauchy-Schwarz as a special case). Show that Holder's inequality with $p=q=2$ gives Cauchy-Schwarz.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+If $p=q=2$, then $1/p+1/q=1/2+1/2=1$. Holder's inequality gives $$\mathbb{E}[|XY|]
+\leq
+\left(\mathbb{E}[|X|^2]\right)^{1/2}
+\left(\mathbb{E}[|Y|^2]\right)^{1/2}.$$ Squaring both sides gives $$(\mathbb{E}[|XY|])^2\leq \mathbb{E}[X^2]\mathbb{E}[Y^2].$$ For signed variables, applying this to $|X|$ and $|Y|$ yields the usual bound $$|\mathbb{E}[XY]|\leq \mathbb{E}[|XY|]\leq \sqrt{\mathbb{E}[X^2]\mathbb{E}[Y^2]}.$$
+:::
+
+### Minkowski's inequality
+
+This subsection gives the triangle inequality for $L^p$ norms of random variables.
+
+::: {.callout-important title="Theorem"}
+**Theorem 27** (Minkowski's inequality). *Let $X$ and $Y$ be random variables. For $1\leq p<\infty$, $$\left(\mathbb{E}[|X+Y|^p]\right)^{1/p}
+\leq
+\left(\mathbb{E}[|X|^p]\right)^{1/p}
++
+\left(\mathbb{E}[|Y|^p]\right)^{1/p}.$$*
+:::
+
+::: {.callout-tip title="Example"}
+**Example 28** (Triangle inequality in $L^2$). State Minkowski's inequality for $p=2$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+For $p=2$, Minkowski's inequality says $$\sqrt{\mathbb{E}[(X+Y)^2]}
+\leq
+\sqrt{\mathbb{E}[X^2]}+
+\sqrt{\mathbb{E}[Y^2]}.$$ This is the triangle inequality for the norm $$\|X\|_2=\sqrt{\mathbb{E}[X^2]}.$$
+:::
+
+## Jensen's Inequality
+
+This section explains how convexity interacts with expectation.
+
+### Convex functions
+
+This subsection reviews convexity before stating Jensen's inequality.
+
+::: definition
+**Definition 29** (Convex and concave functions). A function $g:\mathbb{R}\to\mathbb{R}$ is convex on an interval $[a,b]$ if for all $x,y\in[a,b]$ and all $\lambda\in[0,1]$, $$g(\lambda x+(1-\lambda)y)
+\leq
+\lambda g(x)+(1-\lambda)g(y).$$ A function $g$ is concave if $-g$ is convex.
+:::
+
+For a convex function, the same property holds for finite convex combinations: $$g\left(\sum_{i=1}^n \lambda_i x_i\right)
+\leq
+\sum_{i=1}^n \lambda_i g(x_i),$$ where $\lambda_i\geq 0$ and $\sum_i\lambda_i=1$.
+
+If $g$ is twice differentiable, then $g$ is convex on an interval if $g''(x)\geq 0$ for all $x$ in the interval.
+
+::: {.callout-important title="Theorem"}
+**Theorem 30** (Convex functions lie above tangents). *Let $g:[a,b]\to\mathbb{R}$ be convex and let $a<c<b$. Then there exist constants $A,B\in\mathbb{R}$ such that $$g(c)=Ac+B$$ and $$g(x)\geq Ax+B$$ for all $x\in[a,b]$.*
+:::
+
+### Jensen's inequality
+
+This subsection gives one of the most important inequalities involving expectation.
+
+::: {.callout-important title="Theorem"}
+**Theorem 31** (Jensen's inequality). *Suppose $X$ is a random variable such that $\mathbb{P}(a\leq X\leq b)=1$. If $g:\mathbb{R}\to\mathbb{R}$ is convex on $[a,b]$, then $$\mathbb{E}[g(X)]\geq g(\mathbb{E}[X]).$$ If $g$ is concave on $[a,b]$, then $$\mathbb{E}[g(X)]\leq g(\mathbb{E}[X]).$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Assume $g$ is convex. Let $c=\mathbb{E}[X]$. By the tangent-line property, there exist $A,B\in\mathbb{R}$ such that $$g(x)\geq Ax+B$$ for all $x$ in the support of $X$, and $$g(c)=Ac+B.$$ Taking expectations gives $$\mathbb{E}[g(X)]\geq \mathbb{E}[AX+B]=A\mathbb{E}[X]+B=Ac+B=g(c)=g(\mathbb{E}[X]).$$ The concave case follows by applying the convex result to $-g$. ◻
+:::
+
+::: {.callout-tip title="Example"}
+**Example 32** (Arithmetic-geometric mean inequality). Let $a_1,\ldots,a_n$ be positive numbers. Use Jensen's inequality to prove $$\frac1n\sum_{k=1}^{n}a_k
+\geq
+\left(\prod_{k=1}^{n}a_k\right)^{1/n}.$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Let $X$ be a discrete random variable with $$\mathbb{P}(X=a_k)=\frac1n,
+\qquad k=1,\ldots,n.$$ The function $g(x)=-\log x$ is convex on $(0,\infty)$. Jensen's inequality gives $$-\log(\mathbb{E}[X])\leq \mathbb{E}[-\log X].$$ Therefore $$-\log\left(\frac1n\sum_{k=1}^{n}a_k\right)
+\leq
+-\frac1n\sum_{k=1}^{n}\log a_k.$$ Multiplying by $-1$ reverses the inequality: $$\log\left(\frac1n\sum_{k=1}^{n}a_k\right)
+\geq
+\frac1n\sum_{k=1}^{n}\log a_k
+=
+\log\left(\prod_{k=1}^{n}a_k\right)^{1/n}.$$ Exponentiating gives $$\frac1n\sum_{k=1}^{n}a_k
+\geq
+\left(\prod_{k=1}^{n}a_k\right)^{1/n}.$$
+:::
+
+::: {.callout-tip title="Example"}
+**Example 33** (Variance is nonnegative). Suppose $p>1$. Since $g(x)=x^p$ is convex on appropriate domains, Jensen's inequality implies moment inequalities. In particular, show that $\operatorname{Var}(X)\geq 0$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Take $g(x)=x^2$, which is convex. Jensen's inequality gives $$\mathbb{E}[X^2]\geq (\mathbb{E}[X])^2.$$ Therefore $$\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2\geq 0.$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 34** (Log expectation). Let $X>0$ almost surely. Use Jensen's inequality to compare $\mathbb{E}[\log X]$ and $\log\mathbb{E}[X]$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The function $\log x$ is concave on $(0,\infty)$. Jensen's inequality for concave functions gives $$\mathbb{E}[\log X]\leq \log\mathbb{E}[X].$$ Equivalently, $$\exp(\mathbb{E}[\log X])\leq \mathbb{E}[X].$$ This is the probabilistic version of the geometric mean being no larger than the arithmetic mean.
+:::
+
+## Equality Identities for Special Distributions
+
+This section collects useful identities for Poisson, Gamma, Normal, chi-squared, and negative binomial distributions.
+
+The lecture notes emphasize that for some specific distributions, such as normal, chi-squared, Poisson, and negative binomial, there are exact equality relations that can simplify calculations. These identities are especially useful for moments and distributional calculations.
+
+### Poisson recursion
+
+This subsection begins with the basic recursion for the Poisson probability mass function.
+
+::: {.callout-important title="Proposition"}
+**Proposition 35** (Poisson probability recursion). *If $X\sim \operatorname{Poisson}(\lambda)$, then for $x=0,1,2,\ldots$, $$\mathbb{P}(X=x+1)=\frac{\lambda}{x+1}\mathbb{P}(X=x).$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Since $$\mathbb{P}(X=x)=e^{-\lambda}\frac{\lambda^x}{x!},$$ we have $$\mathbb{P}(X=x+1)=e^{-\lambda}\frac{\lambda^{x+1}}{(x+1)!}
+=\frac{\lambda}{x+1}e^{-\lambda}\frac{\lambda^x}{x!}
+=\frac{\lambda}{x+1}\mathbb{P}(X=x).$$ ◻
+:::
+
+### Gamma identity
+
+This subsection records a useful relationship between Gamma probabilities with adjacent shape parameters.
+
+::: {.callout-important title="Proposition"}
+**Proposition 36** (Gamma identity). *Let $X_{\alpha,\beta}$ denote a Gamma$(\alpha,\beta)$ random variable with density $f(x\mid\alpha,\beta)$, where $\alpha>1$. Then for constants $a<b$, $$\mathbb{P}(a<X_{\alpha,\beta}<b)
+=
+\beta\{f(a\mid\alpha,\beta)-f(b\mid\alpha,\beta)\}
++
+\mathbb{P}(a<X_{\alpha-1,\beta}<b),$$ under the parameterization used in Casella-Berger style identities.*
+:::
+
+::: remark
+*Remark 37*. This identity is useful because it relates Gamma probabilities with shape $\alpha$ to Gamma probabilities with shape $\alpha-1$ plus boundary density terms.
+:::
+
+### Stein's lemma
+
+This subsection gives a normal-distribution identity that turns moments into derivative expectations.
+
+::: {.callout-important title="Theorem"}
+**Theorem 38** (Stein's lemma). *Let $X\sim \operatorname{Normal}(\theta,\sigma^2)$ and let $g$ be differentiable with $\mathbb{E}[|g'(X)|]<\infty$. Then $$\mathbb{E}[g(X)(X-\theta)]=\sigma^2\mathbb{E}[g'(X)].$$*
+:::
+
+::: {.callout-tip title="Example"}
+**Example 39** (Computing a normal third moment). Use Stein's lemma to compute $\mathbb{E}[X^3]$ when $X\sim \operatorname{Normal}(\theta,\sigma^2)$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Write $$X^3=X^2(X-\theta+\theta)=X^2(X-\theta)+\theta X^2.$$ Taking expectations, $$\mathbb{E}[X^3]=\mathbb{E}[X^2(X-\theta)]+\theta\mathbb{E}[X^2].$$ Apply Stein's lemma with $g(x)=x^2$, so $g'(x)=2x$: $$\mathbb{E}[X^2(X-\theta)]=\sigma^2\mathbb{E}[2X]=2\sigma^2\theta.$$ Also, $$\mathbb{E}[X^2]=\operatorname{Var}(X)+(\mathbb{E}[X])^2=\sigma^2+\theta^2.$$ Therefore $$\mathbb{E}[X^3]=2\sigma^2\theta+\theta(\sigma^2+\theta^2)
+=3\theta\sigma^2+\theta^3.$$
+:::
+
+### Chi-squared identity
+
+This subsection records an identity involving chi-squared random variables with different degrees of freedom.
+
+::: {.callout-important title="Proposition"}
+**Proposition 40** (Chi-squared identity). *Let $\chi_p^2$ denote a chi-squared random variable with $p$ degrees of freedom. If expectations exist, then for any function $h$, $$\mathbb{E}[h(\chi_p^2)]
+=p\,\mathbb{E}\left[\frac{h(\chi_{p+2}^2)}{\chi_{p+2}^2}\right].$$*
+:::
+
+::: remark
+*Remark 41*. This identity relates expectations under $p$ degrees of freedom to expectations under $p+2$ degrees of freedom. Such identities are often useful in distribution theory and statistical inference.
+:::
+
+### Hwang-type identities for Poisson and negative binomial variables
+
+This subsection presents identities from the lecture note for Poisson and negative binomial random variables.
+
+::: {.callout-important title="Proposition"}
+**Proposition 42** (Poisson identity). *Let $g$ be a function such that the expectations below exist. If $X\sim \operatorname{Poisson}(\lambda)$, then $$\mathbb{E}[\lambda g(X)]=\mathbb{E}[Xg(X-1)].$$*
+:::
+
+::: {.callout-note title="Proof" collapse="true"}
+*Proof.* Using the Poisson pmf, $$\mathbb{E}[Xg(X-1)]
+=
+\sum_{x=1}^{\infty} x g(x-1)e^{-\lambda}\frac{\lambda^x}{x!}
+=
+\sum_{x=1}^{\infty} g(x-1)e^{-\lambda}\frac{\lambda^x}{(x-1)!}.$$ Let $u=x-1$. Then $$\mathbb{E}[Xg(X-1)]
+=
+\sum_{u=0}^{\infty} g(u)e^{-\lambda}\frac{\lambda^{u+1}}{u!}
+=
+\lambda\sum_{u=0}^{\infty}g(u)e^{-\lambda}\frac{\lambda^u}{u!}
+=
+\mathbb{E}[\lambda g(X)].$$ ◻
+:::
+
+::: {.callout-important title="Proposition"}
+**Proposition 43** (Negative binomial identity). *If $X\sim \operatorname{NegBinomial}(r,p)$, then under the parameterization used in the lecture note, $$\mathbb{E}[(1-p)g(X)]
+=
+\mathbb{E}\left[\frac{X}{r+X-1}g(X-1)\right],$$ provided the expectations exist.*
+:::
+
+::: {.callout-tip title="Example"}
+**Example 44** (Poisson moment from the Poisson identity). If $X\sim \operatorname{Poisson}(\lambda)$, use the identity with $g(x)=x^2$ to compute $\mathbb{E}[X^3]$.
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+The Poisson identity gives $$\mathbb{E}[\lambda X^2]=\mathbb{E}[X(X-1)^2].$$ Expanding the right-hand side, $$X(X-1)^2=X(X^2-2X+1)=X^3-2X^2+X.$$ Therefore $$\lambda\mathbb{E}[X^2]=\mathbb{E}[X^3]-2\mathbb{E}[X^2]+\mathbb{E}[X].$$ Solving for $\mathbb{E}[X^3]$ gives $$\mathbb{E}[X^3]=\lambda\mathbb{E}[X^2]+2\mathbb{E}[X^2]-\mathbb{E}[X].$$ For $X\sim\operatorname{Poisson}(\lambda)$, $$\mathbb{E}[X]=\lambda,
+\qquad
+\mathbb{E}[X^2]=\operatorname{Var}(X)+(\mathbb{E}X)^2=\lambda+\lambda^2.$$ Thus $$\mathbb{E}[X^3]
+=\lambda(\lambda+\lambda^2)+2(\lambda+\lambda^2)-\lambda
+=\lambda^3+3\lambda^2+\lambda.$$
+:::
+
+::: {.callout-caution title="Practice Problem"}
+**Practice Problem 45** (Use Jensen for a moment bound). Let $X$ be any random variable with finite fourth moment. Prove that $$(\mathbb{E}[X^2])^2\leq \mathbb{E}[X^4].$$
+:::
+
+::: {.callout-note title="Solution" collapse="true"}
+Apply Jensen's inequality to the convex function $g(u)=u^2$ and the random variable $U=X^2$. Then $$\mathbb{E}[g(U)]\geq g(\mathbb{E}[U]).$$ This means $$\mathbb{E}[(X^2)^2]\geq (\mathbb{E}[X^2])^2.$$ Hence $$\mathbb{E}[X^4]\geq (\mathbb{E}[X^2])^2.$$
+:::
+
+## Summary and Study Guide
+
+This final section summarizes the main inequalities and indicates when each one is useful.
+
+| Tool | Statement / idea | Uses |
+|---|---|---|
+| Boole | $\mathbb{P}(\cup_i E_i)\leq \sum_i\mathbb{P}(E_i)$ | At least one bad event |
+| Inclusion-exclusion | Exact alternating formula for finite unions | Exact union probabilities |
+| Bonferroni | Truncated inclusion-exclusion gives upper/lower bounds | Better union bounds |
+| Markov | $\mathbb{P}(X\geq a)\leq \mathbb{E}[X]/a$ for $X\geq0$ | First moment tail bounds |
+| Chebyshev | $\mathbb{P}(|X-\mathbb{E}X|\geq k)\leq \operatorname{Var}(X)/k^2$ | Variance-based concentration |
+| Chernoff | $\mathbb{P}(X\geq a)\leq \inf_{t\geq0}e^{-ta}M_X(t)$ | Exponential tail bounds |
+| Hoeffding | $\mathbb{P}(|\bar X-\mathbb{E}\bar X|\geq\epsilon)\leq 2e^{-2n\epsilon^2}$ for $0\leq X_i\leq1$ | Bounded sample means |
+| Cauchy-Schwarz | $(\mathbb{E}[XY])^2\leq \mathbb{E}[X^2]\mathbb{E}[Y^2]$ | Correlation and inner products |
+| Hölder | $\mathbb{E}|XY|\leq (\mathbb{E}|X|^p)^{1/p}(\mathbb{E}|Y|^q)^{1/q}$ | General moment control |
+| Minkowski | $\|X+Y\|_p\leq \|X\|_p+\|Y\|_p$ | Triangle inequality for random variables |
+| Jensen | $g(\mathbb{E}X)\leq \mathbb{E}[g(X)]$ for convex $g$ | Convexity and expectation |
+
+
+::: {.callout-tip title="Main message"}
+How to choose a bound Use Boole/Bonferroni for unions of events. Use Markov if only a first moment is available. Use Chebyshev if a variance is available. Use Chernoff or Hoeffding for exponential concentration, especially for sums or averages of independent random variables. Use Cauchy-Schwarz/Holder/Minkowski/Jensen when the problem involves expectations of functions, products, or convexity.
+
+:::
+
+## References
+
+-   Casella, George and Berger, Roger L. *Statistical Inference*, 2nd edition, Sections 3.6 and 4.7.
+
+-   Larry Wasserman. *All of Statistics*.
+
+-   C. M. Grinstead and J. L. Snell. *Introduction to Probability*. American Mathematical Society, 2012.
+
+-   Sheldon Ross. *Introduction to Probability Models*, 12th edition.
+
+-   Online resources: <https://www.probabilitycourse.com/>.

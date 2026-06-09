@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MATH 5010 Section 7 — Probability Inequalities</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$','$$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <style>
+    :root{
+      --bg:#f7f8fc; --card:#ffffff; --ink:#182033; --muted:#5f6b85;
+      --accent:#365cff; --accent2:#00a389; --line:#dfe4f2; --soft:#eef3ff;
+      --warn:#fff6df; --good:#eaf9f3; --bad:#fff0f0;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background:linear-gradient(180deg,#f8fbff 0%,#f3f5fb 100%);
+      color:var(--ink); line-height:1.55;
+    }
+    header{
+      padding:46px 22px 28px; background:linear-gradient(135deg,#14213d,#365cff 55%,#00a389);
+      color:white;
+    }
+    header .wrap{max-width:1120px;margin:0 auto}
+    h1{margin:0 0 10px;font-size:clamp(2rem,4vw,3.4rem);line-height:1.05}
+    header p{max-width:900px;font-size:1.08rem;margin:0;opacity:.95}
+    nav{
+      position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+      border-bottom:1px solid var(--line);
+    }
+    nav .wrap{max-width:1120px;margin:0 auto;display:flex;gap:10px;overflow:auto;padding:10px 16px}
+    nav a{white-space:nowrap;text-decoration:none;color:var(--ink);padding:8px 12px;border-radius:999px;border:1px solid transparent;font-size:.92rem}
+    nav a:hover{background:var(--soft);border-color:#cbd6ff;color:var(--accent)}
+    main{max-width:1120px;margin:0 auto;padding:24px 16px 70px}
+    section{margin:22px 0}
+    .card{
+      background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px;
+      box-shadow:0 12px 30px rgba(28,39,72,.07);
+    }
+    .grid{display:grid;gap:18px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    @media(max-width:900px){.grid.two,.grid.three,.grid.four{grid-template-columns:1fr}}
+    h2{margin:0 0 12px;font-size:1.65rem}
+    h3{margin:10px 0 8px;font-size:1.18rem}
+    .tag{display:inline-block;background:var(--soft);color:var(--accent);border:1px solid #d4dcff;border-radius:999px;padding:4px 10px;font-size:.82rem;font-weight:700;margin-bottom:10px}
+    .note{background:var(--soft);border-left:5px solid var(--accent);padding:13px 15px;border-radius:12px;color:#24304a}
+    .formula{background:#fbfcff;border:1px solid var(--line);border-radius:14px;padding:14px;overflow:auto;margin-top:12px}
+    label{display:block;font-weight:700;margin:10px 0 4px}
+    input[type=range]{width:100%}
+    input,select,button{
+      font:inherit;border:1px solid #cfd6e6;border-radius:12px;padding:9px 11px;background:white;color:var(--ink)
+    }
+    button{
+      cursor:pointer;background:var(--accent);color:white;border:none;font-weight:800;
+      box-shadow:0 8px 18px rgba(54,92,255,.22)
+    }
+    button.secondary{background:#edf2ff;color:#21306c;box-shadow:none;border:1px solid #d7e0ff}
+    .result{background:var(--good);border:1px solid #c7efdf;border-radius:14px;padding:12px;margin-top:12px}
+    .warning{background:var(--warn);border:1px solid #f2df9f;border-radius:14px;padding:12px;margin-top:12px}
+    .bad{background:var(--bad);border:1px solid #f0cccc;border-radius:14px;padding:12px;margin-top:12px}
+    canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:16px;background:white}
+    .small{font-size:.92rem;color:var(--muted)}
+    table{border-collapse:collapse;width:100%;font-size:.94rem;background:white;border-radius:14px;overflow:hidden}
+    th,td{border:1px solid var(--line);padding:8px 10px;text-align:center}
+    th{background:#f2f5ff}
+    .pillrow{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{border:1px solid var(--line);border-radius:999px;padding:5px 10px;background:white;font-size:.9rem}
+    footer{color:var(--muted);font-size:.9rem;text-align:center;margin-top:34px}
+    details{background:#fbfcff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px}
+    summary{cursor:pointer;font-weight:800}
+    .stat{background:#fbfcff;border:1px solid var(--line);border-radius:16px;padding:14px}
+    .stat .num{font-size:1.45rem;font-weight:900;color:var(--accent)}
+    .mini{font-size:.86rem;color:var(--muted)}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="tag" style="background:rgba(255,255,255,.16);color:white;border-color:rgba(255,255,255,.35)">MATH 5010 • Section 7</div>
+    <h1>Probability Inequalities</h1>
+    <p>
+      An interactive lesson on Markov, Chebyshev, Chernoff, and Jensen inequalities.
+      Use sliders and simulations to see how deterministic bounds control random behavior.
+    </p>
+  </div>
+</header>
+
+<nav>
+  <div class="wrap">
+    <a href="#bigidea">Big idea</a>
+    <a href="#markov">Markov</a>
+    <a href="#chebyshev">Chebyshev</a>
+    <a href="#chernoff">Chernoff</a>
+    <a href="#compare">Compare bounds</a>
+    <a href="#jensen">Jensen</a>
+    <a href="#practice">Practice</a>
+  </div>
+</nav>
+
+<main>
+  <section id="bigidea" class="card">
+    <span class="tag">Concept map</span>
+    <h2>Why probability inequalities?</h2>
+    <p>
+      Probability inequalities give useful upper bounds when an exact probability is hard to compute.
+      They turn limited information such as a mean, variance, or moment-generating function into a statement about tail probabilities.
+    </p>
+    <div class="grid four">
+      <div class="note"><strong>Markov</strong><br>Uses only $E[X]$ for nonnegative $X$.</div>
+      <div class="note"><strong>Chebyshev</strong><br>Uses $E[X]$ and $\operatorname{Var}(X)$.</div>
+      <div class="note"><strong>Chernoff</strong><br>Uses $E[e^{tX}]$ and optimizes over $t$.</div>
+      <div class="note"><strong>Jensen</strong><br>Compares $\varphi(E[X])$ and $E[\varphi(X)]$.</div>
+    </div>
+    <div class="formula">
+      $$P(X\ge a)\le \frac{E[X]}{a}\quad (X\ge 0),$$
+      $$P(|X-\mu|\ge k)\le \frac{\sigma^2}{k^2},$$
+      $$P(X\ge a)\le \inf_{t>0} e^{-ta}E[e^{tX}],$$
+      $$\varphi(E[X])\le E[\varphi(X)]\quad \text{for convex }\varphi.$$
+    </div>
+  </section>
+
+  <section id="markov" class="card">
+    <span class="tag">Interactive 1</span>
+    <h2>Markov inequality: one mean controls one tail</h2>
+    <p>
+      For a nonnegative random variable, large values cannot happen too often unless the mean is large.
+      Try an exponential random variable $X\sim \operatorname{Exp}(\lambda)$, whose true tail is $P(X\ge a)=e^{-\lambda a}$.
+    </p>
+    <div class="grid two">
+      <div>
+        <label for="lambdaM">Rate $\lambda$: <span id="lambdaMVal">1.00</span></label>
+        <input id="lambdaM" type="range" min="0.2" max="3" step="0.05" value="1" oninput="updateMarkov()" />
+        <label for="aM">Threshold $a$: <span id="aMVal">2.00</span></label>
+        <input id="aM" type="range" min="0.2" max="8" step="0.05" value="2" oninput="updateMarkov()" />
+        <div class="result" id="markovResult"></div>
+        <details>
+          <summary>Derivation</summary>
+          Since $X\ge 0$, $E[X]\ge aP(X\ge a)$. Therefore $P(X\ge a)\le E[X]/a=1/(\lambda a)$.
+          The bound is useful only after truncating at $1$, because probabilities cannot exceed $1$.
+        </details>
+      </div>
+      <div>
+        <canvas id="markovCanvas" width="700" height="360"></canvas>
+        <p class="small">The shaded tail is the true exponential probability. The horizontal guide shows the Markov upper bound.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="chebyshev" class="card">
+    <span class="tag">Interactive 2</span>
+    <h2>Chebyshev inequality: variance controls spread</h2>
+    <p>
+      Chebyshev's inequality works for any distribution with finite variance. It says that the probability of being far from the mean is small if the variance is small.
+    </p>
+    <div class="grid two">
+      <div>
+        <label for="muC">Mean $\mu$: <span id="muCVal">0.0</span></label>
+        <input id="muC" type="range" min="-3" max="3" step="0.1" value="0" oninput="updateCheb()" />
+        <label for="sigmaC">Standard deviation $\sigma$: <span id="sigmaCVal">1.0</span></label>
+        <input id="sigmaC" type="range" min="0.3" max="3" step="0.1" value="1" oninput="updateCheb()" />
+        <label for="kC">Distance $k$: <span id="kCVal">2.0</span></label>
+        <input id="kC" type="range" min="0.3" max="6" step="0.1" value="2" oninput="updateCheb()" />
+        <div class="result" id="chebResult"></div>
+      </div>
+      <div>
+        <canvas id="chebCanvas" width="700" height="360"></canvas>
+        <p class="small">The curve is a normal example. Chebyshev's bound is distribution-free, so it is often conservative.</p>
+      </div>
+    </div>
+    <div class="formula">
+      $$P(|X-\mu|\ge k)\le \frac{\sigma^2}{k^2}=\frac{1}{(k/\sigma)^2}.$$
+    </div>
+  </section>
+
+  <section id="chernoff" class="card">
+    <span class="tag">Interactive 3</span>
+    <h2>Chernoff bound for an exponential tail</h2>
+    <p>
+      Chernoff uses exponential Markov inequality. For $X\sim\operatorname{Exp}(\lambda)$,
+      $E[e^{tX}]=\lambda/(\lambda-t)$ for $0<t<\lambda$.
+    </p>
+    <div class="grid two">
+      <div>
+        <label for="lambdaCh">Rate $\lambda$: <span id="lambdaChVal">1.00</span></label>
+        <input id="lambdaCh" type="range" min="0.2" max="3" step="0.05" value="1" oninput="updateChernoff()" />
+        <label for="aCh">Threshold $a$: <span id="aChVal">3.00</span></label>
+        <input id="aCh" type="range" min="0.4" max="10" step="0.05" value="3" oninput="updateChernoff()" />
+        <label for="tCh">Choose $t$: <span id="tChVal">0.60</span></label>
+        <input id="tCh" type="range" min="0.01" max="0.99" step="0.01" value="0.60" oninput="updateChernoff()" />
+        <div class="result" id="chernoffResult"></div>
+        <div class="warning" id="chernoffHint"></div>
+      </div>
+      <div>
+        <canvas id="chernoffCanvas" width="700" height="360"></canvas>
+        <p class="small">The graph shows the Chernoff objective $e^{-ta}\lambda/(\lambda-t)$ as a function of $t$.</p>
+      </div>
+    </div>
+    <div class="formula">
+      $$P(X\ge a)\le e^{-ta}\frac{\lambda}{\lambda-t},\qquad 0<t<\lambda.$$
+      $$t^*=\lambda-\frac{1}{a}\quad \text{when }a>1/\lambda,
+      \qquad P(X\ge a)\le \lambda a e^{1-\lambda a}.$$
+    </div>
+  </section>
+
+  <section id="compare" class="card">
+    <span class="tag">Interactive 4</span>
+    <h2>Compare true tail, Markov, Chebyshev, and Chernoff</h2>
+    <p>
+      This reproduces the key Section 7 homework-style comparison for $X\sim\operatorname{Exp}(\lambda)$.
+      For large $a$, Chernoff is much closer because it decays exponentially like the true tail.
+    </p>
+    <div class="grid two">
+      <div>
+        <label for="lambdaComp">Rate $\lambda$: <span id="lambdaCompVal">1.00</span></label>
+        <input id="lambdaComp" type="range" min="0.2" max="3" step="0.05" value="1" oninput="updateCompare()" />
+        <label for="aComp">Threshold $a$: <span id="aCompVal">4.00</span></label>
+        <input id="aComp" type="range" min="1.05" max="12" step="0.05" value="4" oninput="updateCompare()" />
+        <table id="compareTable" style="margin-top:12px"></table>
+      </div>
+      <div>
+        <canvas id="compareCanvas" width="700" height="360"></canvas>
+        <p class="small">Log-scale plot: lower curves are tighter upper bounds. Values above $1$ are clipped to $1$ because probabilities cannot exceed $1$.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="jensen" class="card">
+    <span class="tag">Interactive 5</span>
+    <h2>Jensen inequality: convex functions reward variability</h2>
+    <p>
+      For a convex function $\varphi$, the average value of $\varphi(X)$ is at least $\varphi$ of the average value of $X$.
+      Move probability mass between two points and watch the Jensen gap change.
+    </p>
+    <div class="grid two">
+      <div>
+        <label for="x1J">Point $x_1$: <span id="x1JVal">0.0</span></label>
+        <input id="x1J" type="range" min="-3" max="3" step="0.1" value="0" oninput="updateJensen()" />
+        <label for="x2J">Point $x_2$: <span id="x2JVal">2.0</span></label>
+        <input id="x2J" type="range" min="-3" max="3" step="0.1" value="2" oninput="updateJensen()" />
+        <label for="pJ">Probability $P(X=x_1)=p$: <span id="pJVal">0.50</span></label>
+        <input id="pJ" type="range" min="0" max="1" step="0.01" value="0.5" oninput="updateJensen()" />
+        <label for="phiJ">Convex function:</label>
+        <select id="phiJ" onchange="updateJensen()">
+          <option value="square">$\varphi(x)=x^2$</option>
+          <option value="exp">$\varphi(x)=e^x$</option>
+          <option value="abs">$\varphi(x)=|x|$</option>
+        </select>
+        <div class="result" id="jensenResult"></div>
+      </div>
+      <div>
+        <canvas id="jensenCanvas" width="700" height="360"></canvas>
+        <p class="small">The chord between $(x_1,\varphi(x_1))$ and $(x_2,\varphi(x_2))$ lies above a convex graph. This is the geometric reason for Jensen's inequality.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="practice" class="card">
+    <span class="tag">Practice</span>
+    <h2>Quick checks</h2>
+    <div class="grid three">
+      <div class="stat">
+        <h3>1. Markov</h3>
+        <p>If $X\ge0$ and $E[X]=5$, what is an upper bound for $P(X\ge20)$?</p>
+        <button onclick="document.getElementById('q1').innerHTML='Answer: $5/20=0.25$.'; MathJax.typesetPromise();">Show answer</button>
+        <div id="q1" class="result"></div>
+      </div>
+      <div class="stat">
+        <h3>2. Chebyshev</h3>
+        <p>If $\mu=10$, $\sigma=2$, what bound do we get for $P(|X-10|\ge6)$?</p>
+        <button onclick="document.getElementById('q2').innerHTML='Answer: $\sigma^2/k^2=4/36=1/9\approx0.111$.'; MathJax.typesetPromise();">Show answer</button>
+        <div id="q2" class="result"></div>
+      </div>
+      <div class="stat">
+        <h3>3. Jensen</h3>
+        <p>For convex $\varphi(x)=x^2$, Jensen gives which familiar inequality?</p>
+        <button onclick="document.getElementById('q3').innerHTML='Answer: $(E[X])^2\le E[X^2]$, equivalently $\operatorname{Var}(X)\ge0$.'; MathJax.typesetPromise();">Show answer</button>
+        <div id="q3" class="result"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    MATH 5010 — Foundations of Statistical Theory & Probability • Section 7 interactive page
+  </footer>
+</main>
+
+<script>
+function fmt(x,d=4){ if(!isFinite(x)) return '∞'; return Number(x).toFixed(d); }
+function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+function normPdf(x,mu,s){ return Math.exp(-0.5*Math.pow((x-mu)/s,2))/(s*Math.sqrt(2*Math.PI)); }
+function normCdf(x){
+  const sign = x < 0 ? -1 : 1; x = Math.abs(x)/Math.sqrt(2);
+  const t = 1/(1+0.3275911*x);
+  const a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429;
+  const erf = 1 - (((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x);
+  return 0.5*(1+sign*erf);
+}
+function drawAxes(ctx,w,h,xlab='',ylab=''){
+  ctx.clearRect(0,0,w,h); ctx.fillStyle='white'; ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle='#dfe4f2'; ctx.lineWidth=1;
+  for(let i=0;i<=5;i++){ let x=50+i*(w-80)/5; ctx.beginPath(); ctx.moveTo(x,20); ctx.lineTo(x,h-45); ctx.stroke(); }
+  for(let i=0;i<=4;i++){ let y=20+i*(h-65)/4; ctx.beginPath(); ctx.moveTo(50,y); ctx.lineTo(w-30,y); ctx.stroke(); }
+  ctx.strokeStyle='#182033'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(50,h-45); ctx.lineTo(w-30,h-45); ctx.moveTo(50,20); ctx.lineTo(50,h-45); ctx.stroke();
+  ctx.fillStyle='#5f6b85'; ctx.font='13px system-ui'; ctx.fillText(xlab,w-70,h-15); ctx.fillText(ylab,14,30);
+}
+function drawLine(ctx,pts,color,width=2){ ctx.strokeStyle=color; ctx.lineWidth=width; ctx.beginPath(); pts.forEach((p,i)=>{ if(i===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); }); ctx.stroke(); }
+
+function updateMarkov(){
+  const lam=+document.getElementById('lambdaM').value, a=+document.getElementById('aM').value;
+  document.getElementById('lambdaMVal').textContent=fmt(lam,2); document.getElementById('aMVal').textContent=fmt(a,2);
+  const trueTail=Math.exp(-lam*a), mark=clamp01(1/(lam*a));
+  document.getElementById('markovResult').innerHTML=`<strong>True tail:</strong> $e^{-\\lambda a}=${fmt(trueTail)}$<br><strong>Markov bound:</strong> $1/(\\lambda a)=${fmt(mark)}$<br><span class="small">The bound is ${fmt(mark/trueTail,2)} times the true tail for this exponential example.</span>`;
+  const c=document.getElementById('markovCanvas'), ctx=c.getContext('2d'), w=c.width,h=c.height;
+  drawAxes(ctx,w,h,'x','density');
+  const xmax=Math.max(8,a*1.3), ymax=lam*1.1;
+  const sx=x=>50+x/xmax*(w-80), sy=y=>h-45-y/ymax*(h-70);
+  let pts=[]; for(let i=0;i<=300;i++){let x=xmax*i/300; pts.push([sx(x),sy(lam*Math.exp(-lam*x))]);}
+  drawLine(ctx,pts,'#365cff',2.5);
+  ctx.fillStyle='rgba(0,163,137,.22)'; ctx.beginPath(); ctx.moveTo(sx(a),sy(0));
+  for(let i=0;i<=160;i++){let x=a+(xmax-a)*i/160; ctx.lineTo(sx(x),sy(lam*Math.exp(-lam*x)));}
+  ctx.lineTo(sx(xmax),sy(0)); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#ff7a59'; ctx.setLineDash([6,5]); ctx.beginPath(); ctx.moveTo(sx(a),20); ctx.lineTo(sx(a),h-45); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#182033'; ctx.font='14px system-ui'; ctx.fillText(`P(X ≥ a) = ${fmt(trueTail,3)}`, sx(a)+8, 42); ctx.fillText(`Markov ≤ ${fmt(mark,3)}`, 62, 62);
+  MathJax.typesetPromise();
+}
+
+function updateCheb(){
+  const mu=+document.getElementById('muC').value, sig=+document.getElementById('sigmaC').value, k=+document.getElementById('kC').value;
+  document.getElementById('muCVal').textContent=fmt(mu,1); document.getElementById('sigmaCVal').textContent=fmt(sig,1); document.getElementById('kCVal').textContent=fmt(k,1);
+  const cheb=clamp01(sig*sig/(k*k));
+  const normalTail=2*(1-normCdf(k/sig));
+  document.getElementById('chebResult').innerHTML=`<strong>Chebyshev bound:</strong> $${fmt(cheb)}$<br><strong>Normal example true tail:</strong> $${fmt(normalTail)}$<br><span class="small">Chebyshev applies to all distributions with this variance; the normal tail is shown only for comparison.</span>`;
+  const c=document.getElementById('chebCanvas'), ctx=c.getContext('2d'), w=c.width,h=c.height;
+  drawAxes(ctx,w,h,'x','density');
+  const xmin=mu-5*sig, xmax=mu+5*sig, ymax=normPdf(mu,mu,sig)*1.1;
+  const sx=x=>50+(x-xmin)/(xmax-xmin)*(w-80), sy=y=>h-45-y/ymax*(h-70);
+  let pts=[]; for(let i=0;i<=360;i++){let x=xmin+(xmax-xmin)*i/360; pts.push([sx(x),sy(normPdf(x,mu,sig))]);}
+  drawLine(ctx,pts,'#365cff',2.5);
+  ctx.fillStyle='rgba(255,122,89,.22)';
+  ctx.beginPath(); ctx.moveTo(sx(xmin),sy(0)); for(let i=0;i<=100;i++){let x=xmin+(mu-k-xmin)*i/100; ctx.lineTo(sx(x),sy(normPdf(x,mu,sig)));} ctx.lineTo(sx(mu-k),sy(0)); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(sx(mu+k),sy(0)); for(let i=0;i<=100;i++){let x=mu+k+(xmax-mu-k)*i/100; ctx.lineTo(sx(x),sy(normPdf(x,mu,sig)));} ctx.lineTo(sx(xmax),sy(0)); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='#00a389'; ctx.setLineDash([6,5]); [mu-k,mu+k].forEach(x=>{ctx.beginPath();ctx.moveTo(sx(x),20);ctx.lineTo(sx(x),h-45);ctx.stroke();}); ctx.setLineDash([]);
+  ctx.fillStyle='#182033'; ctx.font='14px system-ui'; ctx.fillText(`Chebyshev ≤ ${fmt(cheb,3)}`, 62, 58);
+  MathJax.typesetPromise();
+}
+
+function updateChernoff(){
+  const lam=+document.getElementById('lambdaCh').value, a=+document.getElementById('aCh').value;
+  const tSlider=document.getElementById('tCh'); tSlider.max=(lam-0.01).toFixed(2); if(+tSlider.value>=lam) tSlider.value=(lam*0.6).toFixed(2);
+  const t=+tSlider.value;
+  document.getElementById('lambdaChVal').textContent=fmt(lam,2); document.getElementById('aChVal').textContent=fmt(a,2); document.getElementById('tChVal').textContent=fmt(t,2);
+  const bound=Math.exp(-t*a)*lam/(lam-t), trueTail=Math.exp(-lam*a);
+  const tstar=(a>1/lam)? lam-1/a : NaN;
+  const opt=(a>1/lam)? lam*a*Math.exp(1-lam*a) : 1;
+  document.getElementById('chernoffResult').innerHTML=`<strong>Your $t$ bound:</strong> $${fmt(clamp01(bound))}$<br><strong>True tail:</strong> $${fmt(trueTail)}$<br><strong>Optimized Chernoff:</strong> $${fmt(clamp01(opt))}$`;
+  document.getElementById('chernoffHint').innerHTML=(a>1/lam)? `Best $t^*=\\lambda-1/a=${fmt(tstar,3)}$. Move the slider close to this value.` : `Here $a\le E[X]=1/\\lambda$, so the Chernoff optimizer is at the boundary and the nontrivial bound is not useful.`;
+  const c=document.getElementById('chernoffCanvas'), ctx=c.getContext('2d'), w=c.width,h=c.height;
+  drawAxes(ctx,w,h,'t','bound');
+  const xmin=0.001, xmax=lam-0.001; let vals=[]; let ymax=0;
+  for(let i=0;i<=300;i++){let x=xmin+(xmax-xmin)*i/300; let y=Math.exp(-x*a)*lam/(lam-x); y=Math.min(y,3); vals.push([x,y]); ymax=Math.max(ymax,y);}
+  ymax=Math.max(1,Math.min(3,ymax))*1.1;
+  const sx=x=>50+(x-xmin)/(xmax-xmin)*(w-80), sy=y=>h-45-y/ymax*(h-70);
+  drawLine(ctx, vals.map(p=>[sx(p[0]),sy(p[1])]), '#365cff', 2.5);
+  ctx.strokeStyle='#ff7a59'; ctx.setLineDash([6,5]); ctx.beginPath(); ctx.moveTo(sx(t),20); ctx.lineTo(sx(t),h-45); ctx.stroke(); ctx.setLineDash([]);
+  if(a>1/lam){ ctx.strokeStyle='#00a389'; ctx.setLineDash([3,4]); ctx.beginPath(); ctx.moveTo(sx(tstar),20); ctx.lineTo(sx(tstar),h-45); ctx.stroke(); ctx.setLineDash([]); }
+  ctx.fillStyle='#182033'; ctx.font='14px system-ui'; ctx.fillText(`current = ${fmt(clamp01(bound),3)}`, sx(t)+8, 44);
+  MathJax.typesetPromise();
+}
+
+function updateCompare(){
+  const lam=+document.getElementById('lambdaComp').value, a=+document.getElementById('aComp').value;
+  document.getElementById('lambdaCompVal').textContent=fmt(lam,2); document.getElementById('aCompVal').textContent=fmt(a,2);
+  const trueTail=Math.exp(-lam*a);
+  const mark=clamp01(1/(lam*a));
+  const chebRaw=1/(lam*lam*Math.pow(a-1/lam,2));
+  const cheb=clamp01(chebRaw);
+  const ch=(a>1/lam)? clamp01(lam*a*Math.exp(1-lam*a)) : 1;
+  document.getElementById('compareTable').innerHTML=`<thead><tr><th>Quantity</th><th>Formula</th><th>Value</th></tr></thead><tbody>
+    <tr><td>True tail</td><td>$e^{-\\lambda a}$</td><td>${fmt(trueTail,6)}</td></tr>
+    <tr><td>Markov</td><td>$1/(\\lambda a)$</td><td>${fmt(mark,6)}</td></tr>
+    <tr><td>Chebyshev</td><td>$1/[\\lambda^2(a-1/\\lambda)^2]$</td><td>${fmt(cheb,6)}</td></tr>
+    <tr><td>Chernoff</td><td>$\\lambda a e^{1-\\lambda a}$</td><td>${fmt(ch,6)}</td></tr>
+  </tbody>`;
+  const c=document.getElementById('compareCanvas'), ctx=c.getContext('2d'), w=c.width,h=c.height;
+  drawAxes(ctx,w,h,'a','log probability');
+  const amin=Math.max(1.01/lam,0.2), xmax=12; const ymin=-12,ymax=0.2;
+  const sx=x=>50+(x-amin)/(xmax-amin)*(w-80), sy=y=>h-45-(y-ymin)/(ymax-ymin)*(h-70);
+  function curve(fn,color){let pts=[]; for(let i=0;i<=300;i++){let x=amin+(xmax-amin)*i/300; let y=Math.log(Math.max(1e-12, fn(x))); pts.push([sx(x), sy(y)]);} drawLine(ctx,pts,color,2.4);}
+  curve(x=>Math.exp(-lam*x),'#182033'); curve(x=>clamp01(1/(lam*x)),'#365cff'); curve(x=>clamp01(1/(lam*lam*Math.pow(x-1/lam,2))),'#ff7a59'); curve(x=>(x>1/lam?clamp01(lam*x*Math.exp(1-lam*x)):1),'#00a389');
+  ctx.strokeStyle='#7a5cff'; ctx.setLineDash([5,4]); ctx.beginPath(); ctx.moveTo(sx(a),20); ctx.lineTo(sx(a),h-45); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#182033'; ctx.font='13px system-ui'; ctx.fillText('true', 62, 40); ctx.fillStyle='#365cff'; ctx.fillText('Markov', 62, 58); ctx.fillStyle='#ff7a59'; ctx.fillText('Chebyshev', 62, 76); ctx.fillStyle='#00a389'; ctx.fillText('Chernoff', 62, 94);
+  MathJax.typesetPromise();
+}
+
+function phi(type,x){ if(type==='square') return x*x; if(type==='exp') return Math.exp(x); return Math.abs(x); }
+function updateJensen(){
+  let x1=+document.getElementById('x1J').value, x2=+document.getElementById('x2J').value, p=+document.getElementById('pJ').value, type=document.getElementById('phiJ').value;
+  document.getElementById('x1JVal').textContent=fmt(x1,1); document.getElementById('x2JVal').textContent=fmt(x2,1); document.getElementById('pJVal').textContent=fmt(p,2);
+  const ex=p*x1+(1-p)*x2, ephi=p*phi(type,x1)+(1-p)*phi(type,x2), phiex=phi(type,ex);
+  document.getElementById('jensenResult').innerHTML=`<strong>$E[X]$:</strong> ${fmt(ex,4)}<br><strong>$\\varphi(E[X])$:</strong> ${fmt(phiex,4)}<br><strong>$E[\\varphi(X)]$:</strong> ${fmt(ephi,4)}<br><strong>Jensen gap:</strong> ${fmt(ephi-phiex,4)}`;
+  const c=document.getElementById('jensenCanvas'), ctx=c.getContext('2d'), w=c.width,h=c.height;
+  drawAxes(ctx,w,h,'x','φ(x)');
+  const xmin=-3.2,xmax=3.2; let ymax=0; for(let i=0;i<=200;i++){let x=xmin+(xmax-xmin)*i/200; ymax=Math.max(ymax, phi(type,x));} ymax*=1.08;
+  const sx=x=>50+(x-xmin)/(xmax-xmin)*(w-80), sy=y=>h-45-y/ymax*(h-70);
+  let pts=[]; for(let i=0;i<=300;i++){let x=xmin+(xmax-xmin)*i/300; pts.push([sx(x),sy(phi(type,x))]);}
+  drawLine(ctx,pts,'#365cff',2.5);
+  drawLine(ctx,[[sx(x1),sy(phi(type,x1))],[sx(x2),sy(phi(type,x2))]],'#00a389',2.5);
+  [[x1,phi(type,x1),'x1'],[x2,phi(type,x2),'x2'],[ex,phiex,'φ(E[X])'],[ex,ephi,'E[φ(X)]']].forEach((q,i)=>{ctx.fillStyle=i<2?'#ff7a59':(i===2?'#182033':'#00a389'); ctx.beginPath(); ctx.arc(sx(q[0]),sy(q[1]),5,0,2*Math.PI); ctx.fill();});
+  ctx.strokeStyle='#182033'; ctx.setLineDash([4,4]); ctx.beginPath(); ctx.moveTo(sx(ex),sy(0)); ctx.lineTo(sx(ex),sy(ephi)); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle='#182033'; ctx.font='13px system-ui'; ctx.fillText('gap', sx(ex)+8, sy((ephi+phiex)/2));
+  MathJax.typesetPromise();
+}
+
+document.addEventListener('DOMContentLoaded',()=>{updateMarkov(); updateCheb(); updateChernoff(); updateCompare(); updateJensen();});
+</script>
+</body>
+</html>

@@ -1,0 +1,2271 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>15&nbsp; Chapter 11: Sufficient Statistics and the Likelihood Principle – MATH 5010: Foundations of Statistical Theory &amp; Probability</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/chapter-12-point-estimation1.html" rel="next">
+<link href="../chapters/chapter-10-monte-carlo-sampling.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-53391ae0d416d99de149949e142ad115.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-24dd7dc8f02457b0d1995d224439a69a.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-53391ae0d416d99de149949e142ad115.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+
+<body class="nav-sidebar docked quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/chapter-11-sufficient-statistics.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Chapter 11: Sufficient Statistics and the Likelihood Principle</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">MATH 5010: Foundations of Statistical Theory &amp; Probability</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/wanghemath/Book-ProbabilityStatisticalTheory" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">MATH 5010</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../labs-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Computer Labs and Interactive Pages</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-01-basic-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Chapter 1: Basic Probability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-02-random-variables-distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Chapter 2: Random Variables and Distributions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-03-joint-conditional-probability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Chapter 3: Joint and Conditional Probability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-04-expectations-moments-mgf.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Chapter 4: Expectations, Moments, and Moment Generating Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-05-transformations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Chapter 5: Transformations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-06-conditional-expectations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Chapter 6: Conditional Expectations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-06-extra-multinomial-multinormal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Chapter 6 Extra: Multinomial and Multinormal Distributions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-07-inequalities-identities.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Chapter 7: Inequalities and Identities</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-08-sampling-order-statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Chapter 8: Sampling and Order Statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-09-convergence-theory.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Chapter 9: Convergence Theory and Limit Theorems</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-10-monte-carlo-sampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Chapter 10: Monte Carlo Sampling</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-11-sufficient-statistics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Chapter 11: Sufficient Statistics and the Likelihood Principle</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-12-point-estimation1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Chapter 12: Point Estimation I — Finding Estimators</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-13-point-estimation2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Chapter 13: Point Estimation II — Evaluating Estimators</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-14-hypothesis-tests1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Chapter 14: Hypothesis Tests I — Methods of Finding Tests</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-15-hypothesis-tests2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Chapter 15: Hypothesis Tests II — Evaluating Tests</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-16-interval-estimation1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Chapter 16: Interval Estimation I — Finding Interval Estimators</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-17-interval-estimation2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Chapter 17: Interval Estimation II — Evaluating Interval Estimators</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-18-anova1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Chapter 18: Analysis of Variance I — One-Way ANOVA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-19-anova2-applications.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Chapter 19: Analysis of Variance II — Applications and Randomized Block Designs</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/chapter-20-bayesian-inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">Chapter 20: Bayesian Inference</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sufficient-statistics-and-the-likelihood-principle" id="toc-sufficient-statistics-and-the-likelihood-principle" class="nav-link active" data-scroll-target="#sufficient-statistics-and-the-likelihood-principle"><span class="header-section-number">16</span> Sufficient Statistics and the Likelihood Principle</a></li>
+  <li><a href="#overview" id="toc-overview" class="nav-link" data-scroll-target="#overview"><span class="header-section-number">17</span> Overview</a></li>
+  <li><a href="#statistics-and-estimators" id="toc-statistics-and-estimators" class="nav-link" data-scroll-target="#statistics-and-estimators"><span class="header-section-number">18</span> Statistics and Estimators</a></li>
+  <li><a href="#heuristic-meaning-of-sufficient-statistics" id="toc-heuristic-meaning-of-sufficient-statistics" class="nav-link" data-scroll-target="#heuristic-meaning-of-sufficient-statistics"><span class="header-section-number">19</span> Heuristic Meaning of Sufficient Statistics</a></li>
+  <li><a href="#mathematical-definition-of-sufficient-statistics" id="toc-mathematical-definition-of-sufficient-statistics" class="nav-link" data-scroll-target="#mathematical-definition-of-sufficient-statistics"><span class="header-section-number">20</span> Mathematical Definition of Sufficient Statistics</a></li>
+  <li><a href="#the-factorization-theorem" id="toc-the-factorization-theorem" class="nav-link" data-scroll-target="#the-factorization-theorem"><span class="header-section-number">21</span> The Factorization Theorem</a></li>
+  <li><a href="#example-bernoulli-distribution" id="toc-example-bernoulli-distribution" class="nav-link" data-scroll-target="#example-bernoulli-distribution"><span class="header-section-number">22</span> Example: Bernoulli Distribution</a></li>
+  <li><a href="#example-normal-distribution-with-known-variance" id="toc-example-normal-distribution-with-known-variance" class="nav-link" data-scroll-target="#example-normal-distribution-with-known-variance"><span class="header-section-number">23</span> Example: Normal Distribution with Known Variance</a></li>
+  <li><a href="#example-uniform-population-with-unknown-upper-bound" id="toc-example-uniform-population-with-unknown-upper-bound" class="nav-link" data-scroll-target="#example-uniform-population-with-unknown-upper-bound"><span class="header-section-number">24</span> Example: Uniform Population with Unknown Upper Bound</a></li>
+  <li><a href="#example-gamma-population-with-unknown-shape" id="toc-example-gamma-population-with-unknown-shape" class="nav-link" data-scroll-target="#example-gamma-population-with-unknown-shape"><span class="header-section-number">25</span> Example: Gamma Population with Unknown Shape</a></li>
+  <li><a href="#minimal-and-complete-sufficient-statistics" id="toc-minimal-and-complete-sufficient-statistics" class="nav-link" data-scroll-target="#minimal-and-complete-sufficient-statistics"><span class="header-section-number">26</span> Minimal and Complete Sufficient Statistics</a></li>
+  <li><a href="#the-likelihood-function" id="toc-the-likelihood-function" class="nav-link" data-scroll-target="#the-likelihood-function"><span class="header-section-number">27</span> The Likelihood Function</a></li>
+  <li><a href="#the-likelihood-principle" id="toc-the-likelihood-principle" class="nav-link" data-scroll-target="#the-likelihood-principle"><span class="header-section-number">28</span> The Likelihood Principle</a></li>
+  <li><a href="#coin-tossing-example-binomial-versus-negative-binomial" id="toc-coin-tossing-example-binomial-versus-negative-binomial" class="nav-link" data-scroll-target="#coin-tossing-example-binomial-versus-negative-binomial"><span class="header-section-number">29</span> Coin-Tossing Example: Binomial versus Negative Binomial</a></li>
+  <li><a href="#practice-problems" id="toc-practice-problems" class="nav-link" data-scroll-target="#practice-problems"><span class="header-section-number">30</span> Practice Problems</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">31</span> Summary</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references"><span class="header-section-number">32</span> References</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/wanghemath/Book-ProbabilityStatisticalTheory/edit/main/chapters/chapter-11-sufficient-statistics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/wanghemath/Book-ProbabilityStatisticalTheory/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Chapter 11: Sufficient Statistics and the Likelihood Principle</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sufficient-statistics-and-the-likelihood-principle" class="level1" data-number="16">
+<h1 data-number="16"><span class="header-section-number">16</span> Sufficient Statistics and the Likelihood Principle</h1>
+<p>This chapter introduces sufficient statistics as a formal data-reduction principle for statistical inference. The main goal is to identify when a statistic keeps all information in the sample about an unknown parameter. The chapter also introduces the likelihood function and the likelihood principle.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Topics">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Topics
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Statistics and estimators; heuristic and mathematical definitions of sufficient statistics; the factorization theorem; Bernoulli, normal, uniform, and gamma examples; minimal and complete sufficient statistics; likelihood functions; likelihood principle; binomial versus negative binomial coin-tossing example.</p>
+</div>
+</div>
+</section>
+<section id="overview" class="level1" data-number="17">
+<h1 data-number="17"><span class="header-section-number">17</span> Overview</h1>
+<p>This section introduces sufficient statistics, which formalize the idea of reducing a data set without losing information about an unknown parameter.</p>
+<p>In statistical inference, the data set may contain many observations, but often the information relevant to a parameter can be summarized by a lower-dimensional statistic. For example, for Bernoulli data, the total number of successes contains all the information about the success probability. For normal data with known variance, the sample mean contains all the information about the unknown mean.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Key idea">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A statistic is <em>sufficient</em> for a parameter if, after the statistic is known, the remaining details of the sample no longer contain information about the parameter. <span class="math display">\[\text{full data} \quad \longrightarrow \quad \text{sufficient statistic} \quad \longrightarrow \quad \text{inference about } \theta.\]</span></p>
+</div>
+</div>
+<p>The main tool in this section is the <strong>factorization theorem</strong>. It gives an efficient way to check sufficiency by factoring the joint density or joint mass function into two parts: one part involving the parameter only through the statistic, and one part independent of the parameter.</p>
+</section>
+<section id="statistics-and-estimators" class="level1" data-number="18">
+<h1 data-number="18"><span class="header-section-number">18</span> Statistics and Estimators</h1>
+<p>This section recalls the basic language of statistics before defining sufficient statistics.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 1</strong> (Statistic). Let <span class="math inline">\(X_1,\ldots,X_n\)</span> be a random sample from a population. A <strong>statistic</strong> is any function of the sample, <span class="math display">\[T=T(X_1,\ldots,X_n),\]</span> that does not depend on unknown parameters.</p>
+</div>
+</div>
+<p>A statistic is itself a random variable, because it is computed from random data. After the data are observed, the statistic takes a numerical value.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 2</strong> (Common statistics). Let <span class="math inline">\(X_1,\ldots,X_n\)</span> be a random sample.</p>
+<ol type="1">
+<li><p>The sample mean <span class="math display">\[\overline X=\frac{1}{n}\sum_{i=1}^n X_i\]</span> is a statistic.</p></li>
+<li><p>The sample variance <span class="math display">\[S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\overline X)^2\]</span> is a statistic.</p></li>
+<li><p>The maximum <span class="math display">\[X_{(n)}=\max\{X_1,\ldots,X_n\}\]</span> is a statistic.</p></li>
+<li><p>The constant statistic <span class="math inline">\(T=3\)</span> is also technically a statistic, although it ignores the data.</p></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Each quantity listed is a function of <span class="math inline">\(X_1,\ldots,X_n\)</span> and does not use an unknown parameter. Therefore each is a statistic. The constant statistic is mathematically allowed, but it is usually not useful because it does not summarize any sample information.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 3</strong> (Estimator). A statistic <span class="math inline">\(T(X_1,\ldots,X_n)\)</span> is called an <strong>estimator</strong> of a population parameter <span class="math inline">\(\theta\)</span> if it is used to estimate <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<p>For example, <span class="math inline">\(\overline X\)</span> is commonly used to estimate the population mean <span class="math inline">\(\mu\)</span>, and <span class="math inline">\(S^2\)</span> is commonly used to estimate the population variance <span class="math inline">\(\sigma^2\)</span>.</p>
+</section>
+<section id="heuristic-meaning-of-sufficient-statistics" class="level1" data-number="19">
+<h1 data-number="19"><span class="header-section-number">19</span> Heuristic Meaning of Sufficient Statistics</h1>
+<p>This section explains the intuitive meaning of sufficiency before giving the formal definition.</p>
+<p>A sufficient statistic is a function of the data that captures all the information needed to estimate a parameter <span class="math inline">\(\theta\)</span>. Once the sufficient statistic is known, the rest of the data provides no additional information about <span class="math inline">\(\theta\)</span>.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 4</strong> (Heuristic definition of sufficiency). Let <span class="math inline">\(X_1,\ldots,X_n\)</span> be a random sample from a model with unknown parameter <span class="math inline">\(\theta\)</span>. A statistic <span class="math display">\[T=T(X_1,\ldots,X_n)\]</span> is <strong>sufficient</strong> for <span class="math inline">\(\theta\)</span> if a statistician who knows only <span class="math inline">\(T\)</span> can do just as well for inference about <span class="math inline">\(\theta\)</span> as a statistician who knows the full data set <span class="math inline">\((X_1,\ldots,X_n)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Key idea">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Sufficiency is a data-reduction principle: <span class="math display">\[(X_1,\ldots,X_n) \quad \leadsto \quad T(X_1,\ldots,X_n).\]</span> If <span class="math inline">\(T\)</span> is sufficient, then this reduction does not lose information about <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 5</strong> (Bernoulli intuition). Suppose <span class="math inline">\(X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p)\)</span>. Each <span class="math inline">\(X_i\)</span> is <span class="math inline">\(1\)</span> for success and <span class="math inline">\(0\)</span> for failure. If the goal is to learn <span class="math inline">\(p\)</span>, the order of successes and failures does not matter. The total number of successes <span class="math display">\[T=\sum_{i=1}^n X_i\]</span> contains all information about <span class="math inline">\(p\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For example, the sequences <span class="math display">\[(1,1,0,1,0) \quad \text{and} \quad (0,1,1,0,1)\]</span> both have three successes out of five trials. Their probabilities under the Bernoulli model are both proportional to <span class="math display">\[p^3(1-p)^2.\]</span> For inference about <span class="math inline">\(p\)</span>, the relevant information is the number of successes, not the order in which they occurred.</p>
+</div>
+</div>
+</section>
+<section id="mathematical-definition-of-sufficient-statistics" class="level1" data-number="20">
+<h1 data-number="20"><span class="header-section-number">20</span> Mathematical Definition of Sufficient Statistics</h1>
+<p>This section gives the formal conditional-distribution definition of sufficiency.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 6</strong> (Sufficient statistic). Let <span class="math inline">\(X_1,\ldots,X_n\)</span> be a random sample from a distribution with parameter <span class="math inline">\(\theta\)</span>, and let <span class="math display">\[T=T(X_1,\ldots,X_n)\]</span> be a statistic. We say that <span class="math inline">\(T\)</span> is <strong>sufficient</strong> for <span class="math inline">\(\theta\)</span> if, for every possible value <span class="math inline">\(t\)</span>, the conditional distribution of the full sample <span class="math display">\[(X_1,\ldots,X_n) \mid T=t\]</span> does not depend on <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<p>In words, once <span class="math inline">\(T=t\)</span> is known, the remaining randomness in the sample does not involve the unknown parameter. Therefore the remaining details of the sample cannot help us learn about <span class="math inline">\(\theta\)</span>.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Remark">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Remark
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Remark 7</em>. The conditional-distribution definition is conceptually important, but it can be difficult to check directly. The factorization theorem gives a much easier method.</p>
+</div>
+</div>
+</section>
+<section id="the-factorization-theorem" class="level1" data-number="21">
+<h1 data-number="21"><span class="header-section-number">21</span> The Factorization Theorem</h1>
+<p>This section introduces the main theorem for checking sufficiency.</p>
+<div class="callout callout-style-default callout-important callout-titled" title="Theorem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Theorem 8</strong> (Neyman–Fisher factorization theorem). <em>Let <span class="math inline">\(X_1,\ldots,X_n\)</span> be a random sample with joint density or joint mass function <span class="math display">\[f(x_1,\ldots,x_n\mid\theta).\]</span> A statistic <span class="math display">\[T=T(X_1,\ldots,X_n)\]</span> is sufficient for <span class="math inline">\(\theta\)</span> if and only if there exist functions <span class="math inline">\(g\)</span> and <span class="math inline">\(h\)</span> such that, for all sample points <span class="math inline">\(x=(x_1,\ldots,x_n)\)</span> and all parameter values <span class="math inline">\(\theta\)</span>, <span class="math display">\[f(x_1,\ldots,x_n\mid\theta)
+= g(T(x_1,\ldots,x_n),\theta)\,h(x_1,\ldots,x_n).\]</span> Here:</em></p>
+<ul>
+<li><p><em><span class="math inline">\(g(T(x),\theta)\)</span> depends on the data only through <span class="math inline">\(T(x)\)</span> and may depend on <span class="math inline">\(\theta\)</span>;</em></p></li>
+<li><p><em><span class="math inline">\(h(x)\)</span> may depend on the full data but does not depend on <span class="math inline">\(\theta\)</span>.</em></p></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Key idea">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To prove that <span class="math inline">\(T\)</span> is sufficient:</p>
+<ol type="1">
+<li><p>Write the joint density or joint pmf of the sample.</p></li>
+<li><p>Rearrange it so that every parameter-dependent term involving the data appears only through <span class="math inline">\(T\)</span>.</p></li>
+<li><p>Put the remaining parameter-free data terms into <span class="math inline">\(h(x)\)</span>.</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="example-bernoulli-distribution" class="level1" data-number="22">
+<h1 data-number="22"><span class="header-section-number">22</span> Example: Bernoulli Distribution</h1>
+<p>This section shows the most basic example: the number of successes is sufficient for the Bernoulli parameter.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 9</strong> (Bernoulli distribution). Let <span class="math display">\[X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p), \qquad 0&lt;p&lt;1.\]</span> Show that <span class="math display">\[T(X)=\sum_{i=1}^n X_i\]</span> is sufficient for <span class="math inline">\(p\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The joint pmf is <span class="math display">\[f(x_1,\ldots,x_n\mid p)
+=\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i},\]</span> where each <span class="math inline">\(x_i\in\{0,1\}\)</span>. Therefore <span class="math display">\[f(x_1,\ldots,x_n\mid p)
+=p^{\sum_{i=1}^n x_i}(1-p)^{n-\sum_{i=1}^n x_i}.\]</span> Let <span class="math display">\[T(x)=\sum_{i=1}^n x_i.\]</span> Then <span class="math display">\[f(x_1,\ldots,x_n\mid p)
+=\underbrace{p^{T(x)}(1-p)^{n-T(x)}}_{g(T(x),p)}\underbrace{1}_{h(x)}.\]</span> By the factorization theorem, <span class="math inline">\(T(X)=\sum_{i=1}^n X_i\)</span> is sufficient for <span class="math inline">\(p\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Remark">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Remark
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Remark 10</em>. The sample mean <span class="math inline">\(\overline X=T/n\)</span> is also sufficient for <span class="math inline">\(p\)</span>, because it contains exactly the same information as <span class="math inline">\(T\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="example-normal-distribution-with-known-variance" class="level1" data-number="23">
+<h1 data-number="23"><span class="header-section-number">23</span> Example: Normal Distribution with Known Variance</h1>
+<p>This section shows that, for normal data with known variance, the sample mean is sufficient for the unknown mean.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 11</strong> (Normal distribution with known variance). Let <span class="math display">\[X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2),\]</span> where <span class="math inline">\(\sigma^2\)</span> is known and <span class="math inline">\(\mu\)</span> is unknown. Show that <span class="math display">\[T(X)=\sum_{i=1}^n X_i\]</span> is sufficient for <span class="math inline">\(\mu\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The joint density is <span class="math display">\[f(x_1,\ldots,x_n\mid\mu)
+=\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left\{-\frac{(x_i-\mu)^2}{2\sigma^2}\right\}.\]</span> Thus <span class="math display">\[f(x_1,\ldots,x_n\mid\mu)
+=(2\pi)^{-n/2}\sigma^{-n}
+\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right\}.\]</span> Expand the quadratic term: <span class="math display">\[\sum_{i=1}^n (x_i-\mu)^2
+=\sum_{i=1}^n x_i^2-2\mu\sum_{i=1}^n x_i+n\mu^2.\]</span> Therefore <span class="math display">\[\begin{aligned}
+f(x_1,\ldots,x_n\mid\mu)
+&amp;=(2\pi)^{-n/2}\sigma^{-n}
+\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n x_i^2
++\frac{\mu}{\sigma^2}\sum_{i=1}^n x_i
+-\frac{n\mu^2}{2\sigma^2}\right\} \\
+&amp;=\underbrace{\exp\left\{\frac{\mu}{\sigma^2}T(x)-\frac{n\mu^2}{2\sigma^2}\right\}}_{g(T(x),\mu)}
+\underbrace{(2\pi)^{-n/2}\sigma^{-n}\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n x_i^2\right\}}_{h(x)}.
+\end{aligned}\]</span> The function <span class="math inline">\(h(x)\)</span> does not depend on <span class="math inline">\(\mu\)</span>, and the function <span class="math inline">\(g\)</span> depends on the data only through <span class="math inline">\(T(x)=\sum_i x_i\)</span>. Hence <span class="math inline">\(T(X)=\sum_i X_i\)</span> is sufficient for <span class="math inline">\(\mu\)</span>.</p>
+<p>Since <span class="math inline">\(\overline X=T/n\)</span> is a one-to-one function of <span class="math inline">\(T\)</span>, the sample mean <span class="math inline">\(\overline X\)</span> is also sufficient for <span class="math inline">\(\mu\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="example-uniform-population-with-unknown-upper-bound" class="level1" data-number="24">
+<h1 data-number="24"><span class="header-section-number">24</span> Example: Uniform Population with Unknown Upper Bound</h1>
+<p>This section illustrates an important point: the sufficient statistic may not be the sample mean.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 12</strong> (Uniform population). Suppose <span class="math display">\[X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Uniform}(0,\theta),\]</span> where <span class="math inline">\(\theta&gt;0\)</span> is unknown. Show that <span class="math display">\[T(X)=\max\{X_1,\ldots,X_n\}=X_{(n)}\]</span> is sufficient for <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The density of one observation is <span class="math display">\[f(x\mid\theta)=\frac{1}{\theta}\mathbbm{1}(0\le x\le \theta).\]</span> The joint density is <span class="math display">\[f(x_1,\ldots,x_n\mid\theta)
+=\theta^{-n}\prod_{i=1}^n \mathbbm{1}(0\le x_i\le \theta).\]</span> The condition <span class="math inline">\(x_i\le \theta\)</span> for all <span class="math inline">\(i\)</span> is equivalent to <span class="math display">\[\max\{x_1,\ldots,x_n\}\le \theta.\]</span> Also, the condition <span class="math inline">\(0\le x_i\)</span> for all <span class="math inline">\(i\)</span> does not involve <span class="math inline">\(\theta\)</span>. Therefore <span class="math display">\[f(x_1,\ldots,x_n\mid\theta)
+=\underbrace{\theta^{-n}\mathbbm{1}\bigl(\max\{x_1,\ldots,x_n\}\le \theta\bigr)}_{g(T(x),\theta)}
+\underbrace{\prod_{i=1}^n \mathbbm{1}(x_i\ge 0)}_{h(x)}.\]</span> By the factorization theorem, <span class="math inline">\(T(X)=X_{(n)}\)</span> is sufficient for <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Question">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Question 13</strong> (Is the sample mean sufficient?). For the uniform model <span class="math inline">\(X_i\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,\theta)\)</span>, is the sample mean <span class="math inline">\(\overline X\)</span> sufficient for <span class="math inline">\(\theta\)</span>?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>No.&nbsp;By the factorization theorem, sufficiency would require the indicator <span class="math display">\[\mathbbm{1}\bigl(\max\{x_1,\ldots,x_n\}\le \theta\bigr)\]</span> to be expressible as a function of only <span class="math inline">\(\overline x\)</span> and <span class="math inline">\(\theta\)</span>. This is impossible because two samples can have the same sample mean but different maxima.</p>
+<p>For example, with <span class="math inline">\(n=2\)</span>, <span class="math display">\[(0.5,0.5) \quad \text{and} \quad (0,1)\]</span> have the same sample mean <span class="math inline">\(0.5\)</span>, but their maxima are <span class="math inline">\(0.5\)</span> and <span class="math inline">\(1\)</span>. If <span class="math inline">\(\theta=0.75\)</span>, the first sample is possible under <span class="math inline">\(\operatorname{Uniform}(0,\theta)\)</span>, but the second is not. Therefore the sample mean does not contain all information about <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="example-gamma-population-with-unknown-shape" class="level1" data-number="25">
+<h1 data-number="25"><span class="header-section-number">25</span> Example: Gamma Population with Unknown Shape</h1>
+<p>This section gives an example where the sufficient statistic is a sum of logarithms rather than a sum of observations.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 14</strong> (Gamma population: shape unknown, rate known). Suppose the population has a gamma distribution with density <span class="math display">\[f(x\mid\alpha)=\frac{\beta^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}, \qquad x&gt;0,\]</span> where <span class="math inline">\(\beta\)</span> is known and <span class="math inline">\(\alpha\)</span> is unknown. Let <span class="math inline">\(X_1,\ldots,X_n\)</span> be a random sample. Show that <span class="math display">\[T(X)=\sum_{i=1}^n \log X_i\]</span> is sufficient for <span class="math inline">\(\alpha\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The joint density is <span class="math display">\[\begin{aligned}
+f(x_1,\ldots,x_n\mid\alpha)
+&amp;=\prod_{i=1}^n \frac{\beta^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\beta x_i} \\
+&amp;=\frac{\beta^{n\alpha}}{\Gamma(\alpha)^n}
+\left(\prod_{i=1}^n x_i^{\alpha-1}\right)
+\exp\left\{-\beta\sum_{i=1}^n x_i\right\}.
+\end{aligned}\]</span> Now <span class="math display">\[\prod_{i=1}^n x_i^{\alpha-1}
+=\exp\left\{(\alpha-1)\sum_{i=1}^n \log x_i\right\}.\]</span> Hence <span class="math display">\[f(x_1,\ldots,x_n\mid\alpha)
+=\underbrace{\frac{\beta^{n\alpha}}{\Gamma(\alpha)^n}
+\exp\left\{(\alpha-1)T(x)\right\}}_{g(T(x),\alpha)}
+\underbrace{\exp\left\{-\beta\sum_{i=1}^n x_i\right\}}_{h(x)}.\]</span> Because <span class="math inline">\(h(x)\)</span> does not depend on <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(g\)</span> depends on the data only through <span class="math inline">\(T(x)=\sum_i \log x_i\)</span>, the statistic <span class="math inline">\(T(X)=\sum_i \log X_i\)</span> is sufficient for <span class="math inline">\(\alpha\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Remark">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Remark
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Remark 15</em>. The statistic <span class="math display">\[\exp(T)=\prod_{i=1}^n X_i\]</span> is also sufficient, because it is a one-to-one transformation of <span class="math inline">\(T\)</span> on the positive sample space. In this model, the sample mean <span class="math inline">\(\overline X\)</span> is not sufficient for the unknown shape parameter <span class="math inline">\(\alpha\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="minimal-and-complete-sufficient-statistics" class="level1" data-number="26">
+<h1 data-number="26"><span class="header-section-number">26</span> Minimal and Complete Sufficient Statistics</h1>
+<p>This section introduces two refinements of sufficiency that are important in statistical theory.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 16</strong> (Minimal sufficient statistic). A sufficient statistic <span class="math inline">\(T\)</span> is called <strong>minimal sufficient</strong> if it is the smallest sufficient statistic in the sense that every other sufficient statistic is a function of it.</p>
+</div>
+</div>
+<p>Minimal sufficiency means that the statistic gives the most compressed version of the data that still preserves all information about the parameter.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 17</strong> (Complete sufficient statistic). A statistic <span class="math inline">\(T\)</span> is <strong>complete and sufficient</strong> for <span class="math inline">\(\theta\)</span> if it is sufficient and has the following property: <span class="math display">\[\mathbb{E}_\theta[g(T)]=0 \text{ for all } \theta
+\quad \Longrightarrow \quad
+\mathbb{P}_\theta(g(T)=0)=1 \text{ for all } \theta.\]</span></p>
+</div>
+</div>
+<p>Completeness is a technical condition that is useful for proving uniqueness and optimality results for unbiased estimators.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Key idea">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Why sufficiency matters Sufficient statistics are important because they support:</p>
+<ul>
+<li><p><strong>data reduction</strong>: compress the sample without losing information about <span class="math inline">\(\theta\)</span>;</p></li>
+<li><p><strong>maximum likelihood estimation</strong>: MLEs often depend only on sufficient statistics;</p></li>
+<li><p><strong>Bayesian inference</strong>: posterior distributions often depend on the data only through sufficient statistics;</p></li>
+<li><p><strong>efficient inference</strong>: sufficient statistics help identify estimators with good theoretical properties.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="the-likelihood-function" class="level1" data-number="27">
+<h1 data-number="27"><span class="header-section-number">27</span> The Likelihood Function</h1>
+<p>This section introduces the likelihood function, which is the central object connecting observed data to inference about parameters.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 18</strong> (Likelihood function). Let <span class="math inline">\(f(x\mid\theta)\)</span> be the joint density or joint pmf of the sample <span class="math inline">\(X=(X_1,\ldots,X_n)\)</span>. After observing <span class="math display">\[X=x=(x_1,\ldots,x_n),\]</span> the <strong>likelihood function</strong> is the function of <span class="math inline">\(\theta\)</span> defined by <span class="math display">\[L(\theta\mid x)=f(x\mid\theta).\]</span></p>
+</div>
+</div>
+<p>The joint density and the likelihood function have the same algebraic expression, but they are viewed differently:</p>
+<ul>
+<li><p>as a density or pmf, <span class="math inline">\(x\)</span> varies and <span class="math inline">\(\theta\)</span> is fixed;</p></li>
+<li><p>as a likelihood, <span class="math inline">\(x\)</span> is observed and fixed, while <span class="math inline">\(\theta\)</span> varies.</p></li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 19</strong> (Bernoulli likelihood). Let <span class="math inline">\(X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p)\)</span>, and suppose the observed data have <span class="math inline">\(t=\sum_i x_i\)</span> successes. The likelihood is <span class="math display">\[L(p\mid x)=p^t(1-p)^{n-t}, \qquad 0&lt;p&lt;1.\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The joint pmf is <span class="math display">\[\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}
+=p^{\sum_i x_i}(1-p)^{n-\sum_i x_i}.\]</span> After the data are observed, <span class="math inline">\(t=\sum_i x_i\)</span> is fixed, so the likelihood as a function of <span class="math inline">\(p\)</span> is <span class="math display">\[L(p\mid x)=p^t(1-p)^{n-t}.\]</span></p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Remark">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Remark
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Remark 20</em> (Connection with sufficiency). The factorization theorem says that if <span class="math inline">\(T\)</span> is sufficient, then the likelihood can be written so that all parameter-dependent information from the data passes through <span class="math inline">\(T\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="the-likelihood-principle" class="level1" data-number="28">
+<h1 data-number="28"><span class="header-section-number">28</span> The Likelihood Principle</h1>
+<p>This section states the likelihood principle, a foundational idea especially important in Bayesian statistics.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Definition 21</strong> (Likelihood principle). If two experiments produce likelihood functions that are proportional as functions of <span class="math inline">\(\theta\)</span>, then they provide the same evidence about <span class="math inline">\(\theta\)</span> and should lead to the same inference about <span class="math inline">\(\theta\)</span>.</p>
+<p>More precisely, if two observed data sets <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> have likelihoods satisfying <span class="math display">\[L_1(\theta\mid x)=C(x,y)L_2(\theta\mid y)
+\quad \text{for all } \theta,\]</span> where <span class="math inline">\(C(x,y)\)</span> does not depend on <span class="math inline">\(\theta\)</span>, then the two data sets have the same likelihood information about <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Key idea">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Interpretation The likelihood principle says that once the data are observed, the evidential content about <span class="math inline">\(\theta\)</span> is contained in the likelihood function. How the data were collected matters only through its effect on the likelihood.</p>
+</div>
+</div>
+<p>This principle is central in Bayesian inference, where the posterior is proportional to likelihood times prior: <span class="math display">\[\pi(\theta\mid x)\propto L(\theta\mid x)\pi(\theta).\]</span> If two likelihoods are proportional and the same prior is used, then the posterior distributions are identical.</p>
+</section>
+<section id="coin-tossing-example-binomial-versus-negative-binomial" class="level1" data-number="29">
+<h1 data-number="29"><span class="header-section-number">29</span> Coin-Tossing Example: Binomial versus Negative Binomial</h1>
+<p>This section illustrates the likelihood principle using two coin-tossing experiments.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Example">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Example
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Example 22</strong> (Coin tossing and the likelihood principle). Consider two different experiments involving a coin with unknown probability <span class="math inline">\(p\)</span> of heads.</p>
+<p><strong>Scenario 1: Binomial experiment.</strong> Toss the coin <span class="math inline">\(n=10\)</span> times and observe <span class="math inline">\(7\)</span> heads. Then <span class="math display">\[X=7, \qquad X\sim \operatorname{Binomial}(10,p),\]</span> and the likelihood is <span class="math display">\[L_1(p)=\binom{10}{7}p^7(1-p)^3.\]</span></p>
+<p><strong>Scenario 2: Negative binomial experiment.</strong> Toss the coin until <span class="math inline">\(7\)</span> heads appear. Suppose it takes <span class="math inline">\(10\)</span> tosses. Then the first <span class="math inline">\(9\)</span> tosses contain <span class="math inline">\(6\)</span> heads and <span class="math inline">\(3\)</span> tails, and the tenth toss is heads. The likelihood is <span class="math display">\[L_2(p)=\binom{9}{6}p^7(1-p)^3.\]</span></p>
+<p>Explain why the likelihood principle says these two experiments provide the same evidence about <span class="math inline">\(p\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The two likelihoods are <span class="math display">\[L_1(p)=\binom{10}{7}p^7(1-p)^3\]</span> and <span class="math display">\[L_2(p)=\binom{9}{6}p^7(1-p)^3.\]</span> They differ only by a multiplicative constant that does not depend on <span class="math inline">\(p\)</span>: <span class="math display">\[L_1(p)=\frac{\binom{10}{7}}{\binom{9}{6}}L_2(p).\]</span> Thus the likelihood functions are proportional as functions of <span class="math inline">\(p\)</span>. By the likelihood principle, the two experiments provide the same evidence about <span class="math inline">\(p\)</span>, even though the stopping rules were different.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled" title="Remark">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Remark
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><em>Remark 23</em>. Frequentist procedures sometimes depend on the sampling plan or stopping rule, while likelihood-based and Bayesian procedures focus on the likelihood after the data are observed. This is one reason the likelihood principle is philosophically important.</p>
+</div>
+</div>
+</section>
+<section id="practice-problems" class="level1" data-number="30">
+<h1 data-number="30"><span class="header-section-number">30</span> Practice Problems</h1>
+<p>This section gives additional practice with the factorization theorem and likelihood principle.</p>
+<div class="callout callout-style-default callout-warning callout-titled" title="Practice Problem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Practice Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Practice Problem 24</strong> (Poisson sufficient statistic). Let <span class="math inline">\(X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Poisson}(\lambda)\)</span>. Find a sufficient statistic for <span class="math inline">\(\lambda\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The joint pmf is <span class="math display">\[f(x_1,\ldots,x_n\mid\lambda)
+=\prod_{i=1}^n \frac{e^{-\lambda}\lambda^{x_i}}{x_i!}
+=e^{-n\lambda}\lambda^{\sum_i x_i}\prod_{i=1}^n \frac{1}{x_i!}.\]</span> Let <span class="math display">\[T(X)=\sum_{i=1}^n X_i.\]</span> Then <span class="math display">\[f(x\mid\lambda)=\underbrace{e^{-n\lambda}\lambda^{T(x)}}_{g(T(x),\lambda)}
+\underbrace{\prod_{i=1}^n \frac{1}{x_i!}}_{h(x)}.\]</span> By the factorization theorem, <span class="math inline">\(T(X)=\sum_i X_i\)</span> is sufficient for <span class="math inline">\(\lambda\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Practice Problem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Practice Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Practice Problem 25</strong> (Exponential sufficient statistic). Let <span class="math inline">\(X_1,\ldots,X_n \overset{\text{iid}}{\sim}Exp(\lambda)\)</span> with density <span class="math display">\[f(x\mid\lambda)=\lambda e^{-\lambda x},\qquad x&gt;0.\]</span> Find a sufficient statistic for <span class="math inline">\(\lambda\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The joint density is <span class="math display">\[f(x_1,\ldots,x_n\mid\lambda)
+=\lambda^n\exp\left\{-\lambda\sum_{i=1}^n x_i\right\}
+\prod_{i=1}^n \mathbbm{1}(x_i&gt;0).\]</span> Let <span class="math display">\[T(X)=\sum_{i=1}^n X_i.\]</span> Then <span class="math display">\[f(x\mid\lambda)
+=\underbrace{\lambda^n e^{-\lambda T(x)}}_{g(T(x),\lambda)}
+\underbrace{\prod_{i=1}^n \mathbbm{1}(x_i&gt;0)}_{h(x)}.\]</span> Therefore <span class="math inline">\(T(X)=\sum_i X_i\)</span> is sufficient for <span class="math inline">\(\lambda\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Practice Problem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Practice Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Practice Problem 26</strong> (Normal distribution with both parameters unknown). Let <span class="math inline">\(X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2)\)</span>, where both <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span> are unknown. Find a sufficient statistic for <span class="math inline">\((\mu,\sigma^2)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The joint density is <span class="math display">\[f(x\mid\mu,\sigma^2)
+=(2\pi\sigma^2)^{-n/2}
+\exp\left\{-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right\}.\]</span> Expand: <span class="math display">\[\sum_{i=1}^n (x_i-\mu)^2
+=\sum_{i=1}^n x_i^2-2\mu\sum_{i=1}^n x_i+n\mu^2.\]</span> Thus the joint density depends on the data through <span class="math display">\[\sum_{i=1}^n x_i
+\quad \text{and} \quad
+\sum_{i=1}^n x_i^2.\]</span> Therefore <span class="math display">\[T(X)=\left(\sum_{i=1}^n X_i,\sum_{i=1}^n X_i^2\right)\]</span> is sufficient for <span class="math inline">\((\mu,\sigma^2)\)</span> by the factorization theorem.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Practice Problem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Practice Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Practice Problem 27</strong> (Uniform lower and upper endpoints). Let <span class="math inline">\(X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Uniform}(a,b)\)</span>, where both <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> are unknown. Find a sufficient statistic for <span class="math inline">\((a,b)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The density of one observation is <span class="math display">\[f(x\mid a,b)=\frac{1}{b-a}\mathbbm{1}(a\le x\le b).\]</span> The joint density is <span class="math display">\[f(x_1,\ldots,x_n\mid a,b)
+=(b-a)^{-n}\prod_{i=1}^n \mathbbm{1}(a\le x_i\le b).\]</span> The condition <span class="math inline">\(a\le x_i\le b\)</span> for all <span class="math inline">\(i\)</span> is equivalent to <span class="math display">\[a\le \min_i x_i
+\quad \text{and} \quad
+\max_i x_i\le b.\]</span> Hence <span class="math display">\[f(x\mid a,b)
+=(b-a)^{-n}\mathbbm{1}(a\le x_{(1)})\mathbbm{1}(x_{(n)}\le b).\]</span> This depends on the data only through <span class="math display">\[T(X)=(X_{(1)},X_{(n)}).\]</span> Therefore <span class="math inline">\((X_{(1)},X_{(n)})\)</span> is sufficient for <span class="math inline">\((a,b)\)</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-warning callout-titled" title="Practice Problem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Practice Problem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Practice Problem 28</strong> (Likelihood principle). Suppose two experiments give likelihoods <span class="math display">\[L_1(\theta)=12\theta^4(1-\theta)^6,
+\qquad
+L_2(\theta)=3\theta^4(1-\theta)^6,\]</span> for <span class="math inline">\(0&lt;\theta&lt;1\)</span>. Do they provide the same likelihood information about <span class="math inline">\(\theta\)</span>?</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Solution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Yes. We have <span class="math display">\[L_1(\theta)=4L_2(\theta),\]</span> and the constant <span class="math inline">\(4\)</span> does not depend on <span class="math inline">\(\theta\)</span>. Therefore the likelihoods are proportional as functions of <span class="math inline">\(\theta\)</span>. By the likelihood principle, they provide the same likelihood information about <span class="math inline">\(\theta\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="summary" class="level1" data-number="31">
+<h1 data-number="31"><span class="header-section-number">31</span> Summary</h1>
+<p>This section is about reducing data without losing information about parameters.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Key idea">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Key idea
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>A statistic is a function of the random sample.</p></li>
+<li><p>A statistic is sufficient for <span class="math inline">\(\theta\)</span> if the conditional distribution of the full sample given the statistic does not depend on <span class="math inline">\(\theta\)</span>.</p></li>
+<li><p>The factorization theorem is the main practical tool for proving sufficiency.</p></li>
+<li><p>For Bernoulli, Poisson, exponential, and normal-with-known-variance models, sums often appear as sufficient statistics.</p></li>
+<li><p>For a uniform model with unknown endpoint, the maximum is sufficient; the sample mean is not.</p></li>
+<li><p>The likelihood function is the joint density or pmf viewed as a function of the parameter after observing data.</p></li>
+<li><p>The likelihood principle says proportional likelihoods provide the same evidence about the parameter.</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="references" class="level1" data-number="32">
+<h1 data-number="32"><span class="header-section-number">32</span> References</h1>
+<ul>
+<li><p>Casella, G. and Berger, R. L. <em>Statistical Inference</em>, 2nd edition.</p></li>
+<li><p>Wasserman, L. <em>All of Statistics</em>.</p></li>
+<li><p>ProbabilityCourse.com, online probability text.</p></li>
+</ul>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/wanghemath\.github\.io\/Book-ProbabilityStatisticalTheory\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/chapter-10-monte-carlo-sampling.html" class="pagination-link" aria-label="Chapter 10: Monte Carlo Sampling">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Chapter 10: Monte Carlo Sampling</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/chapter-12-point-estimation1.html" class="pagination-link" aria-label="Chapter 12: Point Estimation I — Finding Estimators">
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Chapter 12: Point Estimation I — Finding Estimators</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Chapter 11: Sufficient Statistics and the Likelihood Principle"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">    toc-depth: 3</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">  pdf:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">    number-sections: true</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu"># Sufficient Statistics and the Likelihood Principle</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>This chapter introduces sufficient statistics as a formal data-reduction principle for statistical inference. The main goal is to identify when a statistic keeps all information in the sample about an unknown parameter. The chapter also introduces the likelihood function and the likelihood principle.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Topics"}</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>Statistics and estimators; heuristic and mathematical definitions of sufficient statistics; the factorization theorem; Bernoulli, normal, uniform, and gamma examples; minimal and complete sufficient statistics; likelihood functions; likelihood principle; binomial versus negative binomial coin-tossing example.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu"># Overview</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>This section introduces sufficient statistics, which formalize the idea of reducing a data set without losing information about an unknown parameter.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>In statistical inference, the data set may contain many observations, but often the information relevant to a parameter can be summarized by a lower-dimensional statistic. For example, for Bernoulli data, the total number of successes contains all the information about the success probability. For normal data with known variance, the sample mean contains all the information about the unknown mean.</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Key idea"}</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>A statistic is *sufficient* for a parameter if, after the statistic is known, the remaining details of the sample no longer contain information about the parameter. $$\text{full data} \quad \longrightarrow \quad \text{sufficient statistic} \quad \longrightarrow \quad \text{inference about } \theta.$$</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>The main tool in this section is the **factorization theorem**. It gives an efficient way to check sufficiency by factoring the joint density or joint mass function into two parts: one part involving the parameter only through the statistic, and one part independent of the parameter.</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="fu"># Statistics and Estimators</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>This section recalls the basic language of statistics before defining sufficient statistics.</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>**Definition 1** (Statistic). Let $X_1,\ldots,X_n$ be a random sample from a population. A **statistic** is any function of the sample, $$T=T(X_1,\ldots,X_n),$$ that does not depend on unknown parameters.</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>A statistic is itself a random variable, because it is computed from random data. After the data are observed, the statistic takes a numerical value.</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>**Example 2** (Common statistics). Let $X_1,\ldots,X_n$ be a random sample.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>The sample mean $$\overline X=\frac{1}{n}\sum_{i=1}^n X_i$$ is a statistic.</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>The sample variance $$S^2=\frac{1}{n-1}\sum_{i=1}^n (X_i-\overline X)^2$$ is a statistic.</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>The maximum $$X_{(n)}=\max<span class="sc">\{</span>X_1,\ldots,X_n<span class="sc">\}</span>$$ is a statistic.</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>The constant statistic $T=3$ is also technically a statistic, although it ignores the data.</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>Each quantity listed is a function of $X_1,\ldots,X_n$ and does not use an unknown parameter. Therefore each is a statistic. The constant statistic is mathematically allowed, but it is usually not useful because it does not summarize any sample information.</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>**Definition 3** (Estimator). A statistic $T(X_1,\ldots,X_n)$ is called an **estimator** of a population parameter $\theta$ if it is used to estimate $\theta$.</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>For example, $\overline X$ is commonly used to estimate the population mean $\mu$, and $S^2$ is commonly used to estimate the population variance $\sigma^2$.</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="fu"># Heuristic Meaning of Sufficient Statistics</span></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>This section explains the intuitive meaning of sufficiency before giving the formal definition.</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>A sufficient statistic is a function of the data that captures all the information needed to estimate a parameter $\theta$. Once the sufficient statistic is known, the rest of the data provides no additional information about $\theta$.</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>**Definition 4** (Heuristic definition of sufficiency). Let $X_1,\ldots,X_n$ be a random sample from a model with unknown parameter $\theta$. A statistic $$T=T(X_1,\ldots,X_n)$$ is **sufficient** for $\theta$ if a statistician who knows only $T$ can do just as well for inference about $\theta$ as a statistician who knows the full data set $(X_1,\ldots,X_n)$.</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Key idea"}</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>Sufficiency is a data-reduction principle: $$(X_1,\ldots,X_n) \quad \leadsto \quad T(X_1,\ldots,X_n).$$ If $T$ is sufficient, then this reduction does not lose information about $\theta$.</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>**Example 5** (Bernoulli intuition). Suppose $X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p)$. Each $X_i$ is $1$ for success and $0$ for failure. If the goal is to learn $p$, the order of successes and failures does not matter. The total number of successes $$T=\sum_{i=1}^n X_i$$ contains all information about $p$.</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>For example, the sequences $$(1,1,0,1,0) \quad \text{and} \quad (0,1,1,0,1)$$ both have three successes out of five trials. Their probabilities under the Bernoulli model are both proportional to $$p^3(1-p)^2.$$ For inference about $p$, the relevant information is the number of successes, not the order in which they occurred.</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a><span class="fu"># Mathematical Definition of Sufficient Statistics</span></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>This section gives the formal conditional-distribution definition of sufficiency.</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>**Definition 6** (Sufficient statistic). Let $X_1,\ldots,X_n$ be a random sample from a distribution with parameter $\theta$, and let $$T=T(X_1,\ldots,X_n)$$ be a statistic. We say that $T$ is **sufficient** for $\theta$ if, for every possible value $t$, the conditional distribution of the full sample $$(X_1,\ldots,X_n) \mid T=t$$ does not depend on $\theta$.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>In words, once $T=t$ is known, the remaining randomness in the sample does not involve the unknown parameter. Therefore the remaining details of the sample cannot help us learn about $\theta$.</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Remark"}</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>*Remark 7*. The conditional-distribution definition is conceptually important, but it can be difficult to check directly. The factorization theorem gives a much easier method.</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="fu"># The Factorization Theorem</span></span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>This section introduces the main theorem for checking sufficiency.</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Theorem"}</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>**Theorem 8** (Neyman--Fisher factorization theorem). *Let $X_1,\ldots,X_n$ be a random sample with joint density or joint mass function $$f(x_1,\ldots,x_n\mid\theta).$$ A statistic $$T=T(X_1,\ldots,X_n)$$ is sufficient for $\theta$ if and only if there exist functions $g$ and $h$ such that, for all sample points $x=(x_1,\ldots,x_n)$ and all parameter values $\theta$, $$f(x_1,\ldots,x_n\mid\theta)</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>= g(T(x_1,\ldots,x_n),\theta)\,h(x_1,\ldots,x_n).$$ Here:*</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*$g(T(x),\theta)$ depends on the data only through $T(x)$ and may depend on $\theta$;*</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>*$h(x)$ may depend on the full data but does not depend on $\theta$.*</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Key idea"}</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>To prove that $T$ is sufficient:</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Write the joint density or joint pmf of the sample.</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Rearrange it so that every parameter-dependent term involving the data appears only through $T$.</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Put the remaining parameter-free data terms into $h(x)$.</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="fu"># Example: Bernoulli Distribution</span></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>This section shows the most basic example: the number of successes is sufficient for the Bernoulli parameter.</span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>**Example 9** (Bernoulli distribution). Let $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p), \qquad 0&lt;p&lt;1.$$ Show that $$T(X)=\sum_{i=1}^n X_i$$ is sufficient for $p$.</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a>The joint pmf is $$f(x_1,\ldots,x_n\mid p)</span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>=\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i},$$ where each $x_i\in<span class="sc">\{</span>0,1<span class="sc">\}</span>$. Therefore $$f(x_1,\ldots,x_n\mid p)</span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>=p^{\sum_{i=1}^n x_i}(1-p)^{n-\sum_{i=1}^n x_i}.$$ Let $$T(x)=\sum_{i=1}^n x_i.$$ Then $$f(x_1,\ldots,x_n\mid p)</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>=\underbrace{p^{T(x)}(1-p)^{n-T(x)}}_{g(T(x),p)}\underbrace{1}_{h(x)}.$$ By the factorization theorem, $T(X)=\sum_{i=1}^n X_i$ is sufficient for $p$.</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Remark"}</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>*Remark 10*. The sample mean $\overline X=T/n$ is also sufficient for $p$, because it contains exactly the same information as $T$.</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="fu"># Example: Normal Distribution with Known Variance</span></span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a>This section shows that, for normal data with known variance, the sample mean is sufficient for the unknown mean.</span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a>**Example 11** (Normal distribution with known variance). Let $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2),$$ where $\sigma^2$ is known and $\mu$ is unknown. Show that $$T(X)=\sum_{i=1}^n X_i$$ is sufficient for $\mu$.</span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a>The joint density is $$f(x_1,\ldots,x_n\mid\mu)</span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>=\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left<span class="sc">\{</span>-\frac{(x_i-\mu)^2}{2\sigma^2}\right<span class="sc">\}</span>.$$ Thus $$f(x_1,\ldots,x_n\mid\mu)</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>=(2\pi)^{-n/2}\sigma^{-n}</span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>\exp\left<span class="sc">\{</span>-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right<span class="sc">\}</span>.$$ Expand the quadratic term: $$\sum_{i=1}^n (x_i-\mu)^2</span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a>=\sum_{i=1}^n x_i^2-2\mu\sum_{i=1}^n x_i+n\mu^2.$$ Therefore $$\begin{aligned}</span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>f(x_1,\ldots,x_n\mid\mu)</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a>&amp;=(2\pi)^{-n/2}\sigma^{-n}</span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a>\exp\left<span class="sc">\{</span>-\frac{1}{2\sigma^2}\sum_{i=1}^n x_i^2</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a>+\frac{\mu}{\sigma^2}\sum_{i=1}^n x_i</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a>-\frac{n\mu^2}{2\sigma^2}\right<span class="sc">\}</span> <span class="sc">\\</span></span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a>&amp;=\underbrace{\exp\left<span class="sc">\{</span>\frac{\mu}{\sigma^2}T(x)-\frac{n\mu^2}{2\sigma^2}\right<span class="sc">\}</span>}_{g(T(x),\mu)}</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a>\underbrace{(2\pi)^{-n/2}\sigma^{-n}\exp\left<span class="sc">\{</span>-\frac{1}{2\sigma^2}\sum_{i=1}^n x_i^2\right<span class="sc">\}</span>}_{h(x)}.</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a>\end{aligned}$$ The function $h(x)$ does not depend on $\mu$, and the function $g$ depends on the data only through $T(x)=\sum_i x_i$. Hence $T(X)=\sum_i X_i$ is sufficient for $\mu$.</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a>Since $\overline X=T/n$ is a one-to-one function of $T$, the sample mean $\overline X$ is also sufficient for $\mu$.</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a><span class="fu"># Example: Uniform Population with Unknown Upper Bound</span></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a>This section illustrates an important point: the sufficient statistic may not be the sample mean.</span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>**Example 12** (Uniform population). Suppose $$X_1,\ldots,X_n \overset{\text{iid}}{\sim}\operatorname{Uniform}(0,\theta),$$ where $\theta&gt;0$ is unknown. Show that $$T(X)=\max<span class="sc">\{</span>X_1,\ldots,X_n<span class="sc">\}</span>=X_{(n)}$$ is sufficient for $\theta$.</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-180"><a href="#cb1-180" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-181"><a href="#cb1-181" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-182"><a href="#cb1-182" aria-hidden="true" tabindex="-1"></a>The density of one observation is $$f(x\mid\theta)=\frac{1}{\theta}\mathbbm{1}(0\le x\le \theta).$$ The joint density is $$f(x_1,\ldots,x_n\mid\theta)</span>
+<span id="cb1-183"><a href="#cb1-183" aria-hidden="true" tabindex="-1"></a>=\theta^{-n}\prod_{i=1}^n \mathbbm{1}(0\le x_i\le \theta).$$ The condition $x_i\le \theta$ for all $i$ is equivalent to $$\max<span class="sc">\{</span>x_1,\ldots,x_n<span class="sc">\}</span>\le \theta.$$ Also, the condition $0\le x_i$ for all $i$ does not involve $\theta$. Therefore $$f(x_1,\ldots,x_n\mid\theta)</span>
+<span id="cb1-184"><a href="#cb1-184" aria-hidden="true" tabindex="-1"></a>=\underbrace{\theta^{-n}\mathbbm{1}\bigl(\max<span class="sc">\{</span>x_1,\ldots,x_n<span class="sc">\}</span>\le \theta\bigr)}_{g(T(x),\theta)}</span>
+<span id="cb1-185"><a href="#cb1-185" aria-hidden="true" tabindex="-1"></a>\underbrace{\prod_{i=1}^n \mathbbm{1}(x_i\ge 0)}_{h(x)}.$$ By the factorization theorem, $T(X)=X_{(n)}$ is sufficient for $\theta$.</span>
+<span id="cb1-186"><a href="#cb1-186" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-187"><a href="#cb1-187" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-188"><a href="#cb1-188" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Question"}</span>
+<span id="cb1-189"><a href="#cb1-189" aria-hidden="true" tabindex="-1"></a>**Question 13** (Is the sample mean sufficient?). For the uniform model $X_i\overset{\text{iid}}{\sim}\operatorname{Uniform}(0,\theta)$, is the sample mean $\overline X$ sufficient for $\theta$?</span>
+<span id="cb1-190"><a href="#cb1-190" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-191"><a href="#cb1-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-192"><a href="#cb1-192" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-193"><a href="#cb1-193" aria-hidden="true" tabindex="-1"></a>No. By the factorization theorem, sufficiency would require the indicator $$\mathbbm{1}\bigl(\max<span class="sc">\{</span>x_1,\ldots,x_n<span class="sc">\}</span>\le \theta\bigr)$$ to be expressible as a function of only $\overline x$ and $\theta$. This is impossible because two samples can have the same sample mean but different maxima.</span>
+<span id="cb1-194"><a href="#cb1-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-195"><a href="#cb1-195" aria-hidden="true" tabindex="-1"></a>For example, with $n=2$, $$(0.5,0.5) \quad \text{and} \quad (0,1)$$ have the same sample mean $0.5$, but their maxima are $0.5$ and $1$. If $\theta=0.75$, the first sample is possible under $\operatorname{Uniform}(0,\theta)$, but the second is not. Therefore the sample mean does not contain all information about $\theta$.</span>
+<span id="cb1-196"><a href="#cb1-196" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-197"><a href="#cb1-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-198"><a href="#cb1-198" aria-hidden="true" tabindex="-1"></a><span class="fu"># Example: Gamma Population with Unknown Shape</span></span>
+<span id="cb1-199"><a href="#cb1-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-200"><a href="#cb1-200" aria-hidden="true" tabindex="-1"></a>This section gives an example where the sufficient statistic is a sum of logarithms rather than a sum of observations.</span>
+<span id="cb1-201"><a href="#cb1-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-202"><a href="#cb1-202" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-203"><a href="#cb1-203" aria-hidden="true" tabindex="-1"></a>**Example 14** (Gamma population: shape unknown, rate known). Suppose the population has a gamma distribution with density $$f(x\mid\alpha)=\frac{\beta^\alpha}{\Gamma(\alpha)}x^{\alpha-1}e^{-\beta x}, \qquad x&gt;0,$$ where $\beta$ is known and $\alpha$ is unknown. Let $X_1,\ldots,X_n$ be a random sample. Show that $$T(X)=\sum_{i=1}^n \log X_i$$ is sufficient for $\alpha$.</span>
+<span id="cb1-204"><a href="#cb1-204" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-205"><a href="#cb1-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-206"><a href="#cb1-206" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-207"><a href="#cb1-207" aria-hidden="true" tabindex="-1"></a>The joint density is $$\begin{aligned}</span>
+<span id="cb1-208"><a href="#cb1-208" aria-hidden="true" tabindex="-1"></a>f(x_1,\ldots,x_n\mid\alpha)</span>
+<span id="cb1-209"><a href="#cb1-209" aria-hidden="true" tabindex="-1"></a>&amp;=\prod_{i=1}^n \frac{\beta^\alpha}{\Gamma(\alpha)}x_i^{\alpha-1}e^{-\beta x_i} <span class="sc">\\</span></span>
+<span id="cb1-210"><a href="#cb1-210" aria-hidden="true" tabindex="-1"></a>&amp;=\frac{\beta^{n\alpha}}{\Gamma(\alpha)^n}</span>
+<span id="cb1-211"><a href="#cb1-211" aria-hidden="true" tabindex="-1"></a>\left(\prod_{i=1}^n x_i^{\alpha-1}\right)</span>
+<span id="cb1-212"><a href="#cb1-212" aria-hidden="true" tabindex="-1"></a>\exp\left<span class="sc">\{</span>-\beta\sum_{i=1}^n x_i\right<span class="sc">\}</span>.</span>
+<span id="cb1-213"><a href="#cb1-213" aria-hidden="true" tabindex="-1"></a>\end{aligned}$$ Now $$\prod_{i=1}^n x_i^{\alpha-1}</span>
+<span id="cb1-214"><a href="#cb1-214" aria-hidden="true" tabindex="-1"></a>=\exp\left<span class="sc">\{</span>(\alpha-1)\sum_{i=1}^n \log x_i\right<span class="sc">\}</span>.$$ Hence $$f(x_1,\ldots,x_n\mid\alpha)</span>
+<span id="cb1-215"><a href="#cb1-215" aria-hidden="true" tabindex="-1"></a>=\underbrace{\frac{\beta^{n\alpha}}{\Gamma(\alpha)^n}</span>
+<span id="cb1-216"><a href="#cb1-216" aria-hidden="true" tabindex="-1"></a>\exp\left<span class="sc">\{</span>(\alpha-1)T(x)\right<span class="sc">\}</span>}_{g(T(x),\alpha)}</span>
+<span id="cb1-217"><a href="#cb1-217" aria-hidden="true" tabindex="-1"></a>\underbrace{\exp\left<span class="sc">\{</span>-\beta\sum_{i=1}^n x_i\right<span class="sc">\}</span>}_{h(x)}.$$ Because $h(x)$ does not depend on $\alpha$ and $g$ depends on the data only through $T(x)=\sum_i \log x_i$, the statistic $T(X)=\sum_i \log X_i$ is sufficient for $\alpha$.</span>
+<span id="cb1-218"><a href="#cb1-218" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-219"><a href="#cb1-219" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-220"><a href="#cb1-220" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Remark"}</span>
+<span id="cb1-221"><a href="#cb1-221" aria-hidden="true" tabindex="-1"></a>*Remark 15*. The statistic $$\exp(T)=\prod_{i=1}^n X_i$$ is also sufficient, because it is a one-to-one transformation of $T$ on the positive sample space. In this model, the sample mean $\overline X$ is not sufficient for the unknown shape parameter $\alpha$.</span>
+<span id="cb1-222"><a href="#cb1-222" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-223"><a href="#cb1-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-224"><a href="#cb1-224" aria-hidden="true" tabindex="-1"></a><span class="fu"># Minimal and Complete Sufficient Statistics</span></span>
+<span id="cb1-225"><a href="#cb1-225" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-226"><a href="#cb1-226" aria-hidden="true" tabindex="-1"></a>This section introduces two refinements of sufficiency that are important in statistical theory.</span>
+<span id="cb1-227"><a href="#cb1-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-228"><a href="#cb1-228" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-229"><a href="#cb1-229" aria-hidden="true" tabindex="-1"></a>**Definition 16** (Minimal sufficient statistic). A sufficient statistic $T$ is called **minimal sufficient** if it is the smallest sufficient statistic in the sense that every other sufficient statistic is a function of it.</span>
+<span id="cb1-230"><a href="#cb1-230" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-231"><a href="#cb1-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-232"><a href="#cb1-232" aria-hidden="true" tabindex="-1"></a>Minimal sufficiency means that the statistic gives the most compressed version of the data that still preserves all information about the parameter.</span>
+<span id="cb1-233"><a href="#cb1-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-234"><a href="#cb1-234" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-235"><a href="#cb1-235" aria-hidden="true" tabindex="-1"></a>**Definition 17** (Complete sufficient statistic). A statistic $T$ is **complete and sufficient** for $\theta$ if it is sufficient and has the following property: $$\mathbb{E}_\theta<span class="co">[</span><span class="ot">g(T)</span><span class="co">]</span>=0 \text{ for all } \theta</span>
+<span id="cb1-236"><a href="#cb1-236" aria-hidden="true" tabindex="-1"></a>\quad \Longrightarrow \quad</span>
+<span id="cb1-237"><a href="#cb1-237" aria-hidden="true" tabindex="-1"></a>\mathbb{P}_\theta(g(T)=0)=1 \text{ for all } \theta.$$</span>
+<span id="cb1-238"><a href="#cb1-238" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-239"><a href="#cb1-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-240"><a href="#cb1-240" aria-hidden="true" tabindex="-1"></a>Completeness is a technical condition that is useful for proving uniqueness and optimality results for unbiased estimators.</span>
+<span id="cb1-241"><a href="#cb1-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-242"><a href="#cb1-242" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Key idea"}</span>
+<span id="cb1-243"><a href="#cb1-243" aria-hidden="true" tabindex="-1"></a>Why sufficiency matters Sufficient statistics are important because they support:</span>
+<span id="cb1-244"><a href="#cb1-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-245"><a href="#cb1-245" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**data reduction**: compress the sample without losing information about $\theta$;</span>
+<span id="cb1-246"><a href="#cb1-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-247"><a href="#cb1-247" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**maximum likelihood estimation**: MLEs often depend only on sufficient statistics;</span>
+<span id="cb1-248"><a href="#cb1-248" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-249"><a href="#cb1-249" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Bayesian inference**: posterior distributions often depend on the data only through sufficient statistics;</span>
+<span id="cb1-250"><a href="#cb1-250" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-251"><a href="#cb1-251" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**efficient inference**: sufficient statistics help identify estimators with good theoretical properties.</span>
+<span id="cb1-252"><a href="#cb1-252" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-253"><a href="#cb1-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-254"><a href="#cb1-254" aria-hidden="true" tabindex="-1"></a><span class="fu"># The Likelihood Function</span></span>
+<span id="cb1-255"><a href="#cb1-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-256"><a href="#cb1-256" aria-hidden="true" tabindex="-1"></a>This section introduces the likelihood function, which is the central object connecting observed data to inference about parameters.</span>
+<span id="cb1-257"><a href="#cb1-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-258"><a href="#cb1-258" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-259"><a href="#cb1-259" aria-hidden="true" tabindex="-1"></a>**Definition 18** (Likelihood function). Let $f(x\mid\theta)$ be the joint density or joint pmf of the sample $X=(X_1,\ldots,X_n)$. After observing $$X=x=(x_1,\ldots,x_n),$$ the **likelihood function** is the function of $\theta$ defined by $$L(\theta\mid x)=f(x\mid\theta).$$</span>
+<span id="cb1-260"><a href="#cb1-260" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-261"><a href="#cb1-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-262"><a href="#cb1-262" aria-hidden="true" tabindex="-1"></a>The joint density and the likelihood function have the same algebraic expression, but they are viewed differently:</span>
+<span id="cb1-263"><a href="#cb1-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-264"><a href="#cb1-264" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>as a density or pmf, $x$ varies and $\theta$ is fixed;</span>
+<span id="cb1-265"><a href="#cb1-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-266"><a href="#cb1-266" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>as a likelihood, $x$ is observed and fixed, while $\theta$ varies.</span>
+<span id="cb1-267"><a href="#cb1-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-268"><a href="#cb1-268" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-269"><a href="#cb1-269" aria-hidden="true" tabindex="-1"></a>**Example 19** (Bernoulli likelihood). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Bernoulli}(p)$, and suppose the observed data have $t=\sum_i x_i$ successes. The likelihood is $$L(p\mid x)=p^t(1-p)^{n-t}, \qquad 0&lt;p&lt;1.$$</span>
+<span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>The joint pmf is $$\prod_{i=1}^n p^{x_i}(1-p)^{1-x_i}</span>
+<span id="cb1-274"><a href="#cb1-274" aria-hidden="true" tabindex="-1"></a>=p^{\sum_i x_i}(1-p)^{n-\sum_i x_i}.$$ After the data are observed, $t=\sum_i x_i$ is fixed, so the likelihood as a function of $p$ is $$L(p\mid x)=p^t(1-p)^{n-t}.$$</span>
+<span id="cb1-275"><a href="#cb1-275" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-276"><a href="#cb1-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-277"><a href="#cb1-277" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Remark"}</span>
+<span id="cb1-278"><a href="#cb1-278" aria-hidden="true" tabindex="-1"></a>*Remark 20* (Connection with sufficiency). The factorization theorem says that if $T$ is sufficient, then the likelihood can be written so that all parameter-dependent information from the data passes through $T$.</span>
+<span id="cb1-279"><a href="#cb1-279" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-280"><a href="#cb1-280" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-281"><a href="#cb1-281" aria-hidden="true" tabindex="-1"></a><span class="fu"># The Likelihood Principle</span></span>
+<span id="cb1-282"><a href="#cb1-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-283"><a href="#cb1-283" aria-hidden="true" tabindex="-1"></a>This section states the likelihood principle, a foundational idea especially important in Bayesian statistics.</span>
+<span id="cb1-284"><a href="#cb1-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-285"><a href="#cb1-285" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Definition"}</span>
+<span id="cb1-286"><a href="#cb1-286" aria-hidden="true" tabindex="-1"></a>**Definition 21** (Likelihood principle). If two experiments produce likelihood functions that are proportional as functions of $\theta$, then they provide the same evidence about $\theta$ and should lead to the same inference about $\theta$.</span>
+<span id="cb1-287"><a href="#cb1-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-288"><a href="#cb1-288" aria-hidden="true" tabindex="-1"></a>More precisely, if two observed data sets $x$ and $y$ have likelihoods satisfying $$L_1(\theta\mid x)=C(x,y)L_2(\theta\mid y)</span>
+<span id="cb1-289"><a href="#cb1-289" aria-hidden="true" tabindex="-1"></a>\quad \text{for all } \theta,$$ where $C(x,y)$ does not depend on $\theta$, then the two data sets have the same likelihood information about $\theta$.</span>
+<span id="cb1-290"><a href="#cb1-290" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-291"><a href="#cb1-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-292"><a href="#cb1-292" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Key idea"}</span>
+<span id="cb1-293"><a href="#cb1-293" aria-hidden="true" tabindex="-1"></a>Interpretation The likelihood principle says that once the data are observed, the evidential content about $\theta$ is contained in the likelihood function. How the data were collected matters only through its effect on the likelihood.</span>
+<span id="cb1-294"><a href="#cb1-294" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-295"><a href="#cb1-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-296"><a href="#cb1-296" aria-hidden="true" tabindex="-1"></a>This principle is central in Bayesian inference, where the posterior is proportional to likelihood times prior: $$\pi(\theta\mid x)\propto L(\theta\mid x)\pi(\theta).$$ If two likelihoods are proportional and the same prior is used, then the posterior distributions are identical.</span>
+<span id="cb1-297"><a href="#cb1-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-298"><a href="#cb1-298" aria-hidden="true" tabindex="-1"></a><span class="fu"># Coin-Tossing Example: Binomial versus Negative Binomial</span></span>
+<span id="cb1-299"><a href="#cb1-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-300"><a href="#cb1-300" aria-hidden="true" tabindex="-1"></a>This section illustrates the likelihood principle using two coin-tossing experiments.</span>
+<span id="cb1-301"><a href="#cb1-301" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-302"><a href="#cb1-302" aria-hidden="true" tabindex="-1"></a>::: {.callout-note title="Example"}</span>
+<span id="cb1-303"><a href="#cb1-303" aria-hidden="true" tabindex="-1"></a>**Example 22** (Coin tossing and the likelihood principle). Consider two different experiments involving a coin with unknown probability $p$ of heads.</span>
+<span id="cb1-304"><a href="#cb1-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-305"><a href="#cb1-305" aria-hidden="true" tabindex="-1"></a>**Scenario 1: Binomial experiment.** Toss the coin $n=10$ times and observe $7$ heads. Then $$X=7, \qquad X\sim \operatorname{Binomial}(10,p),$$ and the likelihood is $$L_1(p)=\binom{10}{7}p^7(1-p)^3.$$</span>
+<span id="cb1-306"><a href="#cb1-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-307"><a href="#cb1-307" aria-hidden="true" tabindex="-1"></a>**Scenario 2: Negative binomial experiment.** Toss the coin until $7$ heads appear. Suppose it takes $10$ tosses. Then the first $9$ tosses contain $6$ heads and $3$ tails, and the tenth toss is heads. The likelihood is $$L_2(p)=\binom{9}{6}p^7(1-p)^3.$$</span>
+<span id="cb1-308"><a href="#cb1-308" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-309"><a href="#cb1-309" aria-hidden="true" tabindex="-1"></a>Explain why the likelihood principle says these two experiments provide the same evidence about $p$.</span>
+<span id="cb1-310"><a href="#cb1-310" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-311"><a href="#cb1-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-312"><a href="#cb1-312" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-313"><a href="#cb1-313" aria-hidden="true" tabindex="-1"></a>The two likelihoods are $$L_1(p)=\binom{10}{7}p^7(1-p)^3$$ and $$L_2(p)=\binom{9}{6}p^7(1-p)^3.$$ They differ only by a multiplicative constant that does not depend on $p$: $$L_1(p)=\frac{\binom{10}{7}}{\binom{9}{6}}L_2(p).$$ Thus the likelihood functions are proportional as functions of $p$. By the likelihood principle, the two experiments provide the same evidence about $p$, even though the stopping rules were different.</span>
+<span id="cb1-314"><a href="#cb1-314" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-315"><a href="#cb1-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-316"><a href="#cb1-316" aria-hidden="true" tabindex="-1"></a>::: {.callout-important title="Remark"}</span>
+<span id="cb1-317"><a href="#cb1-317" aria-hidden="true" tabindex="-1"></a>*Remark 23*. Frequentist procedures sometimes depend on the sampling plan or stopping rule, while likelihood-based and Bayesian procedures focus on the likelihood after the data are observed. This is one reason the likelihood principle is philosophically important.</span>
+<span id="cb1-318"><a href="#cb1-318" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-319"><a href="#cb1-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-320"><a href="#cb1-320" aria-hidden="true" tabindex="-1"></a><span class="fu"># Practice Problems</span></span>
+<span id="cb1-321"><a href="#cb1-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-322"><a href="#cb1-322" aria-hidden="true" tabindex="-1"></a>This section gives additional practice with the factorization theorem and likelihood principle.</span>
+<span id="cb1-323"><a href="#cb1-323" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-324"><a href="#cb1-324" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Practice Problem"}</span>
+<span id="cb1-325"><a href="#cb1-325" aria-hidden="true" tabindex="-1"></a>**Practice Problem 24** (Poisson sufficient statistic). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Poisson}(\lambda)$. Find a sufficient statistic for $\lambda$.</span>
+<span id="cb1-326"><a href="#cb1-326" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-327"><a href="#cb1-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-328"><a href="#cb1-328" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-329"><a href="#cb1-329" aria-hidden="true" tabindex="-1"></a>The joint pmf is $$f(x_1,\ldots,x_n\mid\lambda)</span>
+<span id="cb1-330"><a href="#cb1-330" aria-hidden="true" tabindex="-1"></a>=\prod_{i=1}^n \frac{e^{-\lambda}\lambda^{x_i}}{x_i!}</span>
+<span id="cb1-331"><a href="#cb1-331" aria-hidden="true" tabindex="-1"></a>=e^{-n\lambda}\lambda^{\sum_i x_i}\prod_{i=1}^n \frac{1}{x_i!}.$$ Let $$T(X)=\sum_{i=1}^n X_i.$$ Then $$f(x\mid\lambda)=\underbrace{e^{-n\lambda}\lambda^{T(x)}}_{g(T(x),\lambda)}</span>
+<span id="cb1-332"><a href="#cb1-332" aria-hidden="true" tabindex="-1"></a>\underbrace{\prod_{i=1}^n \frac{1}{x_i!}}_{h(x)}.$$ By the factorization theorem, $T(X)=\sum_i X_i$ is sufficient for $\lambda$.</span>
+<span id="cb1-333"><a href="#cb1-333" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-334"><a href="#cb1-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-335"><a href="#cb1-335" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Practice Problem"}</span>
+<span id="cb1-336"><a href="#cb1-336" aria-hidden="true" tabindex="-1"></a>**Practice Problem 25** (Exponential sufficient statistic). Let $X_1,\ldots,X_n \overset{\text{iid}}{\sim}Exp(\lambda)$ with density $$f(x\mid\lambda)=\lambda e^{-\lambda x},\qquad x&gt;0.$$ Find a sufficient statistic for $\lambda$.</span>
+<span id="cb1-337"><a href="#cb1-337" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-338"><a href="#cb1-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-339"><a href="#cb1-339" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-340"><a href="#cb1-340" aria-hidden="true" tabindex="-1"></a>The joint density is $$f(x_1,\ldots,x_n\mid\lambda)</span>
+<span id="cb1-341"><a href="#cb1-341" aria-hidden="true" tabindex="-1"></a>=\lambda^n\exp\left<span class="sc">\{</span>-\lambda\sum_{i=1}^n x_i\right<span class="sc">\}</span></span>
+<span id="cb1-342"><a href="#cb1-342" aria-hidden="true" tabindex="-1"></a>\prod_{i=1}^n \mathbbm{1}(x_i&gt;0).$$ Let $$T(X)=\sum_{i=1}^n X_i.$$ Then $$f(x\mid\lambda)</span>
+<span id="cb1-343"><a href="#cb1-343" aria-hidden="true" tabindex="-1"></a>=\underbrace{\lambda^n e^{-\lambda T(x)}}_{g(T(x),\lambda)}</span>
+<span id="cb1-344"><a href="#cb1-344" aria-hidden="true" tabindex="-1"></a>\underbrace{\prod_{i=1}^n \mathbbm{1}(x_i&gt;0)}_{h(x)}.$$ Therefore $T(X)=\sum_i X_i$ is sufficient for $\lambda$.</span>
+<span id="cb1-345"><a href="#cb1-345" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-346"><a href="#cb1-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-347"><a href="#cb1-347" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Practice Problem"}</span>
+<span id="cb1-348"><a href="#cb1-348" aria-hidden="true" tabindex="-1"></a>**Practice Problem 26** (Normal distribution with both parameters unknown). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Normal}(\mu,\sigma^2)$, where both $\mu$ and $\sigma^2$ are unknown. Find a sufficient statistic for $(\mu,\sigma^2)$.</span>
+<span id="cb1-349"><a href="#cb1-349" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-350"><a href="#cb1-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-351"><a href="#cb1-351" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-352"><a href="#cb1-352" aria-hidden="true" tabindex="-1"></a>The joint density is $$f(x\mid\mu,\sigma^2)</span>
+<span id="cb1-353"><a href="#cb1-353" aria-hidden="true" tabindex="-1"></a>=(2\pi\sigma^2)^{-n/2}</span>
+<span id="cb1-354"><a href="#cb1-354" aria-hidden="true" tabindex="-1"></a>\exp\left<span class="sc">\{</span>-\frac{1}{2\sigma^2}\sum_{i=1}^n (x_i-\mu)^2\right<span class="sc">\}</span>.$$ Expand: $$\sum_{i=1}^n (x_i-\mu)^2</span>
+<span id="cb1-355"><a href="#cb1-355" aria-hidden="true" tabindex="-1"></a>=\sum_{i=1}^n x_i^2-2\mu\sum_{i=1}^n x_i+n\mu^2.$$ Thus the joint density depends on the data through $$\sum_{i=1}^n x_i</span>
+<span id="cb1-356"><a href="#cb1-356" aria-hidden="true" tabindex="-1"></a>\quad \text{and} \quad</span>
+<span id="cb1-357"><a href="#cb1-357" aria-hidden="true" tabindex="-1"></a>\sum_{i=1}^n x_i^2.$$ Therefore $$T(X)=\left(\sum_{i=1}^n X_i,\sum_{i=1}^n X_i^2\right)$$ is sufficient for $(\mu,\sigma^2)$ by the factorization theorem.</span>
+<span id="cb1-358"><a href="#cb1-358" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-359"><a href="#cb1-359" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-360"><a href="#cb1-360" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Practice Problem"}</span>
+<span id="cb1-361"><a href="#cb1-361" aria-hidden="true" tabindex="-1"></a>**Practice Problem 27** (Uniform lower and upper endpoints). Let $X_1,\ldots,X_n\overset{\text{iid}}{\sim}\operatorname{Uniform}(a,b)$, where both $a$ and $b$ are unknown. Find a sufficient statistic for $(a,b)$.</span>
+<span id="cb1-362"><a href="#cb1-362" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-363"><a href="#cb1-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-364"><a href="#cb1-364" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-365"><a href="#cb1-365" aria-hidden="true" tabindex="-1"></a>The density of one observation is $$f(x\mid a,b)=\frac{1}{b-a}\mathbbm{1}(a\le x\le b).$$ The joint density is $$f(x_1,\ldots,x_n\mid a,b)</span>
+<span id="cb1-366"><a href="#cb1-366" aria-hidden="true" tabindex="-1"></a>=(b-a)^{-n}\prod_{i=1}^n \mathbbm{1}(a\le x_i\le b).$$ The condition $a\le x_i\le b$ for all $i$ is equivalent to $$a\le \min_i x_i</span>
+<span id="cb1-367"><a href="#cb1-367" aria-hidden="true" tabindex="-1"></a>\quad \text{and} \quad</span>
+<span id="cb1-368"><a href="#cb1-368" aria-hidden="true" tabindex="-1"></a>\max_i x_i\le b.$$ Hence $$f(x\mid a,b)</span>
+<span id="cb1-369"><a href="#cb1-369" aria-hidden="true" tabindex="-1"></a>=(b-a)^{-n}\mathbbm{1}(a\le x_{(1)})\mathbbm{1}(x_{(n)}\le b).$$ This depends on the data only through $$T(X)=(X_{(1)},X_{(n)}).$$ Therefore $(X_{(1)},X_{(n)})$ is sufficient for $(a,b)$.</span>
+<span id="cb1-370"><a href="#cb1-370" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-371"><a href="#cb1-371" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-372"><a href="#cb1-372" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning title="Practice Problem"}</span>
+<span id="cb1-373"><a href="#cb1-373" aria-hidden="true" tabindex="-1"></a>**Practice Problem 28** (Likelihood principle). Suppose two experiments give likelihoods $$L_1(\theta)=12\theta^4(1-\theta)^6,</span>
+<span id="cb1-374"><a href="#cb1-374" aria-hidden="true" tabindex="-1"></a>\qquad</span>
+<span id="cb1-375"><a href="#cb1-375" aria-hidden="true" tabindex="-1"></a>L_2(\theta)=3\theta^4(1-\theta)^6,$$ for $0&lt;\theta&lt;1$. Do they provide the same likelihood information about $\theta$?</span>
+<span id="cb1-376"><a href="#cb1-376" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-377"><a href="#cb1-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-378"><a href="#cb1-378" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Solution"}</span>
+<span id="cb1-379"><a href="#cb1-379" aria-hidden="true" tabindex="-1"></a>Yes. We have $$L_1(\theta)=4L_2(\theta),$$ and the constant $4$ does not depend on $\theta$. Therefore the likelihoods are proportional as functions of $\theta$. By the likelihood principle, they provide the same likelihood information about $\theta$.</span>
+<span id="cb1-380"><a href="#cb1-380" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-381"><a href="#cb1-381" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-382"><a href="#cb1-382" aria-hidden="true" tabindex="-1"></a><span class="fu"># Summary</span></span>
+<span id="cb1-383"><a href="#cb1-383" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-384"><a href="#cb1-384" aria-hidden="true" tabindex="-1"></a>This section is about reducing data without losing information about parameters.</span>
+<span id="cb1-385"><a href="#cb1-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-386"><a href="#cb1-386" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip title="Key idea"}</span>
+<span id="cb1-387"><a href="#cb1-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-388"><a href="#cb1-388" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>A statistic is a function of the random sample.</span>
+<span id="cb1-389"><a href="#cb1-389" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-390"><a href="#cb1-390" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>A statistic is sufficient for $\theta$ if the conditional distribution of the full sample given the statistic does not depend on $\theta$.</span>
+<span id="cb1-391"><a href="#cb1-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-392"><a href="#cb1-392" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>The factorization theorem is the main practical tool for proving sufficiency.</span>
+<span id="cb1-393"><a href="#cb1-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-394"><a href="#cb1-394" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>For Bernoulli, Poisson, exponential, and normal-with-known-variance models, sums often appear as sufficient statistics.</span>
+<span id="cb1-395"><a href="#cb1-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-396"><a href="#cb1-396" aria-hidden="true" tabindex="-1"></a><span class="ss">5.  </span>For a uniform model with unknown endpoint, the maximum is sufficient; the sample mean is not.</span>
+<span id="cb1-397"><a href="#cb1-397" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-398"><a href="#cb1-398" aria-hidden="true" tabindex="-1"></a><span class="ss">6.  </span>The likelihood function is the joint density or pmf viewed as a function of the parameter after observing data.</span>
+<span id="cb1-399"><a href="#cb1-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-400"><a href="#cb1-400" aria-hidden="true" tabindex="-1"></a><span class="ss">7.  </span>The likelihood principle says proportional likelihoods provide the same evidence about the parameter.</span>
+<span id="cb1-401"><a href="#cb1-401" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-402"><a href="#cb1-402" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-403"><a href="#cb1-403" aria-hidden="true" tabindex="-1"></a><span class="fu"># References  </span></span>
+<span id="cb1-404"><a href="#cb1-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-405"><a href="#cb1-405" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition.</span>
+<span id="cb1-406"><a href="#cb1-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-407"><a href="#cb1-407" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Wasserman, L. *All of Statistics*.</span>
+<span id="cb1-408"><a href="#cb1-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-409"><a href="#cb1-409" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>ProbabilityCourse.com, online probability text.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>MATH 5010 — Foundations of Statistical Theory &amp; Probability</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/wanghemath/Book-ProbabilityStatisticalTheory/edit/main/chapters/chapter-11-sufficient-statistics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/wanghemath/Book-ProbabilityStatisticalTheory/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Built with Quarto</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

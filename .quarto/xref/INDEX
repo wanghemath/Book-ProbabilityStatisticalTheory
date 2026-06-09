@@ -1,0 +1,74 @@
+{
+  "index.qmd": {
+    "index.html": "010dac88"
+  },
+  "introduction.qmd": {
+    "introduction.html": "cb3b6ae1"
+  },
+  "labs-summary.qmd": {
+    "labs-summary.html": "1523bf93"
+  },
+  "chapters/chapter-01-basic-probability.qmd": {
+    "chapter-01-basic-probability.html": "997d06fe"
+  },
+  "chapters/chapter-02-random-variables-distributions.qmd": {
+    "chapter-02-random-variables-distributions.html": "55de7aa3"
+  },
+  "chapters/chapter-03-joint-conditional-probability.qmd": {
+    "chapter-03-joint-conditional-probability.html": "3fbb9298"
+  },
+  "chapters/chapter-04-expectations-moments-mgf.qmd": {
+    "chapter-04-expectations-moments-mgf.html": "afadf8e2"
+  },
+  "chapters/chapter-05-transformations.qmd": {
+    "chapter-05-transformations.html": "2f7065f4"
+  },
+  "chapters/chapter-06-conditional-expectations.qmd": {
+    "chapter-06-conditional-expectations.html": "d2743600"
+  },
+  "chapters/chapter-06-extra-multinomial-multinormal.qmd": {
+    "chapter-06-extra-multinomial-multinormal.html": "f9f4ca87"
+  },
+  "chapters/chapter-07-inequalities-identities.qmd": {
+    "chapter-07-inequalities-identities.html": "625b0984"
+  },
+  "chapters/chapter-08-sampling-order-statistics.qmd": {
+    "chapter-08-sampling-order-statistics.html": "1d1372a8"
+  },
+  "chapters/chapter-09-convergence-theory.qmd": {
+    "chapter-09-convergence-theory.html": "ef9e94a3"
+  },
+  "chapters/chapter-10-monte-carlo-sampling.qmd": {
+    "chapter-10-monte-carlo-sampling.html": "69390de1"
+  },
+  "chapters/chapter-11-sufficient-statistics.qmd": {
+    "chapter-11-sufficient-statistics.html": "ff57d82d"
+  },
+  "chapters/chapter-12-point-estimation1.qmd": {
+    "chapter-12-point-estimation1.html": "95112669"
+  },
+  "chapters/chapter-13-point-estimation2.qmd": {
+    "chapter-13-point-estimation2.html": "036ffb8c"
+  },
+  "chapters/chapter-14-hypothesis-tests1.qmd": {
+    "chapter-14-hypothesis-tests1.html": "c94bda33"
+  },
+  "chapters/chapter-15-hypothesis-tests2.qmd": {
+    "chapter-15-hypothesis-tests2.html": "05cdb823"
+  },
+  "chapters/chapter-16-interval-estimation1.qmd": {
+    "chapter-16-interval-estimation1.html": "4a9d36a1"
+  },
+  "chapters/chapter-17-interval-estimation2.qmd": {
+    "chapter-17-interval-estimation2.html": "66c150b9"
+  },
+  "chapters/chapter-18-anova1.qmd": {
+    "chapter-18-anova1.html": "230d165d"
+  },
+  "chapters/chapter-19-anova2-applications.qmd": {
+    "chapter-19-anova2-applications.html": "0ddf698e"
+  },
+  "chapters/chapter-20-bayesian-inference.qmd": {
+    "chapter-20-bayesian-inference.html": "5428d505"
+  }
+}

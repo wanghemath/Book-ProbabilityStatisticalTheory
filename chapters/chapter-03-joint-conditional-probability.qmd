@@ -1,0 +1,1487 @@
+---
+title: "Chapter 3: Joint and Conditional Probability"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+  pdf:
+    toc: true
+    number-sections: true
+---
+
+# Joint and Conditional Probability
+
+This chapter moves from one random variable to several random variables studied together. The main objects are joint distributions, marginal distributions, conditional distributions, independence, covariance, total probability, Bayes theorem, and conditional independence.
+ 
+
+**Topics.** Expected value review; variance and covariance; joint, marginal, and conditional distributions; independence; total probability; Bayes theorem; conditional independence.
+
+
+## Overview
+
+This section moves from one random variable to several random variables studied together.
+
+In Section 2, we learned how a single random variable is described by a CDF, a pmf, or a pdf.  In applications, however, data usually come in groups: height and weight, treatment and outcome, first die and second die, test result and disease status, or multiple measurements from the same experiment.  The correct mathematical language for this is the *joint distribution*.  Once we have a joint distribution, we can recover marginal distributions, define conditional distributions, test independence, and update probabilities using Bayes theorem.
+
+
+::: {.callout-tip title="Main message"}
+
+A joint distribution describes the complete probabilistic relationship among variables.  Marginal distributions describe individual variables.  Conditional distributions describe what remains after partial information is known.
+
+:::
+
+
+## Expected Values: Review
+
+This section reviews expected value and variance because they are the basic numerical summaries used throughout joint and conditional probability.
+
+### Expected value
+
+This subsection recalls the definition and interpretation of expected value for discrete and continuous random variables.
+
+
+::: {.definition}
+**Definition (Expected value).**
+
+Let $X$ be a random variable.  If $X$ is discrete with pmf $p_X(k)$, then
+\[
+\mathbb{E}[X]=\sum_{\text{all }k} k p_X(k).
+\]
+If $X$ is continuous with pdf $f_X(x)$, then
+\[
+\mathbb{E}[X]=\int_{-\infty}^{\infty} x f_X(x)\,d x.
+\]
+
+:::
+
+
+Expected value is a generalization of the idea of an average.  Operationally, if we measure $X$ in many independent trials and obtain $X_1,\ldots,X_n$, then the sample average
+\[
+\overline X_n=\frac{1}{n}(X_1+\cdots+X_n)
+\]
+should approach $\mathbb{E}[X]$ as $n$ becomes large.  This is formalized later by the Law of Large Numbers.
+
+
+::: {.callout-important title="Proposition: Linearity for one random variable"}
+
+For constants $a,b\in\mathbb{R}$,
+\[
+\mathbb{E}[aX+b]=a\mathbb{E}[X]+b.
+\]
+
+:::
+
+
+::: {.example}
+**Example (Bernoulli expected value).**
+
+Let $X\sim\operatorname{Bernoulli}(p)$, so
+\[
+\mathbb{P}(X=0)=1-p,\qquad \mathbb{P}(X=1)=p.
+\]
+Find $\mathbb{E}[X]$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+Using the discrete expectation formula,
+\[
+\mathbb{E}[X]=\sum_k k p_X(k)=0(1-p)+1(p)=p.
+\]
+Thus the expected value of a Bernoulli random variable is its success probability:
+\[
+\boxed{\mathbb{E}[X]=p.}
+\]
+
+:::
+
+
+::: {.example}
+**Example (Expected outcome of a fair die).**
+
+Let $X$ be the outcome of rolling a fair six-sided die.  Find $\mathbb{E}[X]$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+The pmf is $p_X(k)=1/6$ for $k=1,2,3,4,5,6$.  Therefore
+\[
+\mathbb{E}[X]=\sum_{k=1}^{6} k\frac{1}{6}
+=\frac{1+2+3+4+5+6}{6}
+=\frac{21}{6}=\frac{7}{2}.
+\]
+So the long-run average die value is
+\[
+\boxed{\mathbb{E}[X]=3.5.}
+\]
+
+:::
+
+
+### Variance and standard deviation
+
+This subsection reviews how variance and standard deviation measure the spread of a random variable around its mean.
+
+
+::: {.definition}
+**Definition (Variance and standard deviation).**
+
+The variance of a random variable $X$ is
+\[
+\operatorname{Var}(X)=\mathbb{E}\left[(X-\mathbb{E}[X])^2\right].
+\]
+The standard deviation is
+\[
+\operatorname{STD}(X)=\sqrt{\operatorname{Var}(X)}.
+\]
+
+:::
+
+
+A useful computational formula is
+\[
+\operatorname{Var}(X)=\mathbb{E}[X^2]-\left(\mathbb{E}[X]\right)^2.
+\]
+For constants $a,b\in\mathbb{R}$,
+\[
+\operatorname{Var}(aX+b)=a^2\operatorname{Var}(X).
+\]
+Adding a constant changes location but not spread; multiplying by $a$ scales spread by $a^2$ in variance and by $|a|$ in standard deviation.
+
+
+::: {.example}
+**Example (Variance of a Bernoulli random variable).**
+
+Let $X\sim\operatorname{Bernoulli}(p)$.  Find $\operatorname{Var}(X)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+Since $X$ only takes values $0$ and $1$, we have $X^2=X$.  Thus
+\[
+\mathbb{E}[X^2]=\mathbb{E}[X]=p.
+\]
+Using the computational formula,
+\[
+\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=p-p^2=p(1-p).
+\]
+Therefore
+\[
+\boxed{\operatorname{Var}(X)=p(1-p).}
+\]
+
+:::
+
+
+::: {.exercise}
+**Practice Problem (Review: expectation and variance).**
+
+Suppose $X$ takes values $-1,0,2$ with probabilities $1/4,1/2,1/4$, respectively.  Find $\mathbb{E}[X]$ and $\operatorname{Var}(X)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+First compute the mean:
+\[
+\mathbb{E}[X]=(-1)\frac14+0\frac12+2\frac14=-\frac14+\frac12=\frac14.
+\]
+Next compute the second moment:
+\[
+\mathbb{E}[X^2]=(-1)^2\frac14+0^2\frac12+2^2\frac14=\frac14+1=\frac54.
+\]
+Therefore
+\[
+\operatorname{Var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=\frac54-\left(\frac14\right)^2
+=\frac{20}{16}-\frac{1}{16}=\frac{19}{16}.
+\]
+So
+\[
+\boxed{\mathbb{E}[X]=\frac14,\qquad \operatorname{Var}(X)=\frac{19}{16}.}
+\]
+
+:::
+
+
+## Joint Distributions
+
+This section introduces the joint distribution, which is the main object for studying two or more random variables together.
+
+### Joint CDF, joint pmf, and joint pdf
+
+This subsection defines the joint distribution for two random variables in both discrete and continuous cases.
+
+
+::: {.definition}
+**Definition (Joint CDF).**
+
+For two random variables $X$ and $Y$, the joint cumulative distribution function is
+\[
+F_{X,Y}(x,y)=\mathbb{P}(X\le x,\,Y\le y).
+\]
+
+:::
+
+
+If $X$ and $Y$ are both discrete, then their joint pmf is
+\[
+p_{X,Y}(x,y)=\mathbb{P}(X=x,Y=y),
+\]
+for all $x\in\mathbb{R}ange(X)$ and $y\in\mathbb{R}ange(Y)$.  It must satisfy
+\[
+p_{X,Y}(x,y)\ge 0,
+\qquad
+\sum_{x}\sum_{y}p_{X,Y}(x,y)=1.
+\]
+
+If $X$ and $Y$ are absolutely continuous, then their joint pdf $f_{X,Y}(x,y)$ satisfies
+\[
+f_{X,Y}(x,y)\ge 0,
+\qquad
+\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}f_{X,Y}(x,y)\,d x\,d y=1.
+\]
+When the joint CDF is differentiable,
+\[
+f_{X,Y}(x,y)=\frac{\partial^2}{\partial x\partial y}F_{X,Y}(x,y).
+\]
+For a region $R$ in the $xy$-plane,
+\[
+\mathbb{P}((X,Y)\in R)=\iint_R f_{X,Y}(x,y)\,d x\,d y.
+\]
+
+### Marginal distributions
+
+This subsection explains how to recover the distribution of one variable from the joint distribution.
+
+The marginal distribution of $X$ is obtained by summing or integrating out $Y$.  Similarly, the marginal distribution of $Y$ is obtained by summing or integrating out $X$.
+
+For discrete random variables,
+\[
+p_X(x)=\sum_y p_{X,Y}(x,y),
+\qquad
+p_Y(y)=\sum_x p_{X,Y}(x,y).
+\]
+For continuous random variables,
+\[
+f_X(x)=\int_{-\infty}^{\infty} f_{X,Y}(x,y)\,d y,
+\qquad
+f_Y(y)=\int_{-\infty}^{\infty} f_{X,Y}(x,y)\,d x.
+\]
+
+
+::: {.callout-warning title="Common mistake"}
+
+When finding $f_X(x)$, integrate with respect to $y$.  When finding $f_Y(y)$, integrate with respect to $x$.
+
+:::
+
+
+### Discrete joint distribution example: two dice
+
+This subsection works out a full discrete joint distribution using two dice.
+
+
+::: {.example}
+**Example (Difference and maximum of two dice).**
+
+Roll two fair dice.  Let
+\[
+X=\text{absolute difference of the two values},
+\qquad
+Y=\text{maximum of the two values}.
+\]
+Find the ranges, marginal pmfs, and joint pmf table of $(X,Y)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+The sample space has $36$ equally likely outcomes $(i,j)$ with $i,j\in\{1,2,3,4,5,6\}$.  The range of $X$ is
+\[
+\mathbb{R}ange(X)=\{0,1,2,3,4,5\},
+\]
+and the range of $Y$ is
+\[
+\mathbb{R}ange(Y)=\{1,2,3,4,5,6\}.
+\]
+
+For $X=0$, the two dice match.  There are $6$ outcomes.  For $X=d\ge 1$, the two dice differ by $d$; there are $2(6-d)$ ordered outcomes.  Hence
+\[
+\begin{array}{c|cccccc}
+x&0&1&2&3&4&5\\ \hline
+p_X(x)&6/36&10/36&8/36&6/36&4/36&2/36
+\end{array}
+\]
+
+For $Y=y$, at least one die equals $y$ and both dice are at most $y$.  There are
+\[
+y^2-(y-1)^2=2y-1
+\]
+outcomes.  Thus
+\[
+\begin{array}{c|cccccc}
+y&1&2&3&4&5&6\\ \hline
+p_Y(y)&1/36&3/36&5/36&7/36&9/36&11/36
+\end{array}
+\]
+
+The joint pmf table is
+\[
+\begin{array}{c|cccccc|c}
+& X=0&X=1&X=2&X=3&X=4&X=5&p_Y(y)\\ \hline
+Y=1&1/36&0&0&0&0&0&1/36\\
+Y=2&1/36&2/36&0&0&0&0&3/36\\
+Y=3&1/36&2/36&2/36&0&0&0&5/36\\
+Y=4&1/36&2/36&2/36&2/36&0&0&7/36\\
+Y=5&1/36&2/36&2/36&2/36&2/36&0&9/36\\
+Y=6&1/36&2/36&2/36&2/36&2/36&2/36&11/36\\ \hline
+p_X(x)&6/36&10/36&8/36&6/36&4/36&2/36&1
+\end{array}
+\]
+The entries sum to $1$, and the row and column sums agree with the marginals.
+
+:::
+
+
+::: {.example}
+**Example (Same marginals, different joint pmf).**
+
+Show that marginal distributions alone do not determine the joint distribution.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+Let $X,Y\in\{0,1\}$, and suppose both marginals satisfy
+\[
+\mathbb{P}(X=0)=\mathbb{P}(X=1)=\frac12,
+\qquad
+\mathbb{P}(Y=0)=\mathbb{P}(Y=1)=\frac12.
+\]
+Consider the two joint pmf tables
+\[
+\begin{array}{c|cc}
+ &Y=0&Y=1\\ \hline
+X=0&1/2&0\\
+X=1&0&1/2
+\end{array}
+\qquad\text{and}\qquad
+\begin{array}{c|cc}
+ &Y=0&Y=1\\ \hline
+X=0&1/4&1/4\\
+X=1&1/4&1/4
+\end{array}.
+\]
+Both tables have the same marginal distributions for $X$ and $Y$.  However, the dependence structure is different.  In the first table, $Y=X$ always.  In the second table, $X$ and $Y$ are independent.  Therefore marginals alone do not determine the joint distribution.
+
+:::
+
+
+### Continuous joint distribution example
+
+This subsection gives a full continuous example with normalization, a region probability, a marginal density, and a one-dimensional probability.
+
+
+::: {.example}
+**Example (A joint pdf on the unit square).**
+
+A joint pdf is defined by
+\[
+f(x,y)=6xy^2,
+\qquad 0<x<1,\quad 0<y<1,
+\]
+and $f(x,y)=0$ otherwise.
+
+
+- Check that it is a valid joint pdf.
+- Calculate $\mathbb{P}(X+Y\ge 1)$.
+- Calculate the marginal pdf of $X$, $f_X(x)$.
+- Calculate $\mathbb{P}\left(\frac12<X<\frac34\right)$.
+
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+**(1) Validity.**  Clearly $f(x,y)\ge 0$ on its support.  Also,
+\[
+\int_0^1\int_0^1 6xy^2\,d x\,d y
+=\int_0^1 3y^2\,d y
+=\left.y^3\right|_0^1=1.
+\]
+Thus $f$ is a valid joint pdf.
+
+**(2) Region probability.**  The event $X+Y\ge 1$ corresponds to $0<x<1$ and $1-x\le y\le 1$.  Hence
+\[
+\mathbb{P}(X+Y\ge 1)
+=\int_0^1\int_{1-x}^{1}6xy^2\,d y\,d x.
+\]
+Compute the inner integral:
+\[
+\int_{1-x}^{1}6xy^2\,d y
+=2x\left(1-(1-x)^3\right).
+\]
+Therefore
+\[
+\mathbb{P}(X+Y\ge 1)=\int_0^1 2x\left(1-(1-x)^3\right)\,d x=\frac{9}{10}.
+\]
+
+**(3) Marginal of $X$.**
+\[
+f_X(x)=\int_0^1 6xy^2\,d y=6x\cdot \frac13=2x,
+\qquad 0<x<1.
+\]
+
+**(4) Probability for $X$.**
+\[
+\mathbb{P}\left(\frac12<X<\frac34\right)=\int_{1/2}^{3/4}2x\,d x
+=\left.x^2\right|_{1/2}^{3/4}
+=\frac{9}{16}-\frac{4}{16}=\frac{5}{16}.
+\]
+Thus
+\[
+\boxed{\mathbb{P}(X+Y\ge1)=\frac{9}{10},\qquad f_X(x)=2x,
+\qquad \mathbb{P}\left(\frac12<X<\frac34\right)=\frac{5}{16}.}
+\]
+
+:::
+
+
+::: {.exercise}
+**Practice Problem (Marginal density practice).**
+
+Suppose
+\[
+f(x,y)=c(x+y),\qquad 0<x<1,\quad 0<y<1,
+\]
+and $0$ otherwise.
+Find $c$, $f_X(x)$, and $\mathbb{P}(X\le 1/2)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+Normalize:
+\[
+1=\int_0^1\int_0^1 c(x+y)\,d y\,d x
+=c\int_0^1\left(x+\frac12\right)\,d x
+=c\left(\frac12+\frac12\right)=c.
+\]
+So $c=1$.  Then
+\[
+f_X(x)=\int_0^1(x+y)\,d y=x+\frac12,
+\qquad 0<x<1.
+\]
+Finally,
+\[
+\mathbb{P}(X\le 1/2)=\int_0^{1/2}\left(x+\frac12\right)\,d x
+=\left.\left(\frac{x^2}{2}+\frac{x}{2}\right)\right|_0^{1/2}
+=\frac18+\frac14=\frac38.
+\]
+
+:::
+
+
+## Multivariate Normal Distribution
+
+This section introduces the most important multivariate continuous distribution: the multivariate normal distribution.
+
+### Definition and geometry
+
+This subsection defines the multivariate normal density and explains the roles of the mean vector and covariance matrix.
+
+
+::: {.definition}
+**Definition (Multivariate normal distribution).**
+
+Let
+\[
+\vec X=\begin{pmatrix}X_1\\ \vdots\\ X_d\end{pmatrix}.
+\]
+We say
+\[
+\vec X\sim\mathbb{N}ormal(\vec\mu,\Sigma)
+\]
+if $\vec\mu\in\mathbb{R}^d$ and $\Sigma$ is a $d\times d$ symmetric positive definite matrix, and the joint pdf is
+\[
+f_{\vec X}(\vec x)
+=\frac{1}{\sqrt{(2\pi)^d|\Sigma|}}
+\exp\left[-\frac12(\vec x-\vec\mu)^T\Sigma^{-1}(\vec x-\vec\mu)\right].
+\]
+
+:::
+
+
+The mean vector is
+\[
+\mathbb{E}[\vec X]=\vec\mu,
+\]
+and the covariance matrix is
+\[
+\operatorname{Cov}(\vec X)=\Sigma.
+\]
+The matrix $\Sigma$ controls the spread and orientation of the density.  A nearly diagonal covariance matrix produces contours aligned with the coordinate axes; a covariance matrix with nonzero off-diagonal entries produces tilted elliptical contours.
+
+
+::: {.callout-note title="Visual idea"}
+Multivariate normal contours are ellipses. Diagonal covariance gives axis-aligned contours, while nonzero covariance tilts the contours.
+:::
+
+
+### Covariance and correlation
+
+This subsection defines covariance and correlation as second-order summaries of the relationship between two random variables.
+
+
+::: {.definition}
+**Definition (Covariance and correlation).**
+
+For two random variables $X$ and $Y$, the covariance is
+\[
+\operatorname{Cov}(X,Y)=\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])]
+=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y].
+\]
+The Pearson correlation coefficient is
+\[
+\operatorname{Corr}(X,Y)=\frac{\operatorname{Cov}(X,Y)}{\operatorname{STD}(X)\operatorname{STD}(Y)}.
+\]
+It satisfies
+\[
+-1\le \operatorname{Corr}(X,Y)\le 1.
+\]
+
+:::
+
+
+Covariance has units depending on $X$ and $Y$, while correlation is dimensionless.  Positive correlation means that large values of $X$ tend to occur with large values of $Y$; negative correlation means that large values of $X$ tend to occur with small values of $Y$.
+
+
+::: {.example}
+**Example (Covariance from a small joint table).**
+
+Let $X,Y\in\{0,1\}$ with joint pmf
+\[
+\begin{array}{c|cc}
+&Y=0&Y=1\\ \hline
+X=0&0.40&0.10\\
+X=1&0.10&0.40
+\end{array}.
+\]
+Find $\operatorname{Cov}(X,Y)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+The marginals are
+\[
+\mathbb{P}(X=1)=0.10+0.40=0.50,
+\qquad
+\mathbb{P}(Y=1)=0.10+0.40=0.50.
+\]
+Thus $\mathbb{E}[X]=\mathbb{E}[Y]=0.5$.  Also, since $XY=1$ only when $X=1,Y=1$,
+\[
+\mathbb{E}[XY]=\mathbb{P}(X=1,Y=1)=0.40.
+\]
+Therefore
+\[
+\operatorname{Cov}(X,Y)=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]=0.40-(0.50)(0.50)=0.15.
+\]
+The covariance is positive.
+
+:::
+
+
+## Conditional Probability and Conditional Distributions
+
+This section formalizes the idea of updating probabilities after some information has been observed.
+
+### Conditional probability for events
+
+This subsection recalls the event-level definition from Section 1.
+
+
+::: {.definition}
+**Definition (Conditional probability).**
+
+If $\mathbb{P}(B)>0$, then the probability of $A$ given $B$ is
+\[
+\mathbb{P}(A\mid B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}.
+\]
+When $B$ is fixed, $\mathbb{P}(\cdot\mid B)$ is another probability measure.
+
+:::
+
+
+### Conditional distributions
+
+This subsection extends conditional probability from events to random variables.
+
+For two random variables $X$ and $Y$, the conditional pmf/pdf of $Y$ given $X=x$ is
+\[
+p_{Y\mid X}(y\mid x)=\frac{p_{X,Y}(x,y)}{p_X(x)},
+\]
+provided $p_X(x)>0$.  In the continuous case the same formula is written using densities:
+\[
+f_{Y\mid X}(y\mid x)=\frac{f_{X,Y}(x,y)}{f_X(x)},
+\]
+provided $f_X(x)>0$.
+
+
+::: {.example}
+**Example (Triangle uniform distribution).**
+
+Let $(X,Y)$ be uniformly distributed on the triangular region
+\[
+D=\{(x,y):x\ge0,\ y\ge0,\ x+y\le1\}.
+\]
+The joint pdf is
+\[
+f(x,y)=\begin{cases}
+2, & (x,y)\in D,\\
+0, & \text{otherwise}.
+\end{cases}
+\]
+Find $f_X(x)$ and $f_{Y\mid X}(y\mid x)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+For a fixed $x\in[0,1]$, the variable $y$ ranges from $0$ to $1-x$.  Hence
+\[
+f_X(x)=\int_0^{1-x}2\,d y=2(1-x),
+\qquad 0\le x\le 1.
+\]
+Therefore
+\[
+f_{Y\mid X}(y\mid x)
+=\frac{f_{X,Y}(x,y)}{f_X(x)}
+=\frac{2}{2(1-x)}=\frac{1}{1-x},
+\]
+for $0\le y\le 1-x$.  Thus, conditional on $X=x$, $Y$ is uniform on $[0,1-x]$:
+\[
+\boxed{f_{Y\mid X}(y\mid x)=\frac{1}{1-x},\qquad 0\le y\le 1-x.}
+\]
+
+:::
+
+
+::: {.example}
+**Example (Beta-Bernoulli joint distribution).**
+
+The Beta-Bernoulli model is a basic Bayesian model.  Suppose
+\[
+Y\sim \operatorname{Beta}(\alpha,\beta)
+\]
+and, conditional on $Y=y$,
+\[
+X\mid Y=y\sim\operatorname{Bernoulli}(y).
+\]
+Find the joint distribution $p(x,y)$ and identify the posterior distribution of $Y$ given $X=x$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+The conditional pmf of $X$ given $Y=y$ is
+\[
+p(x\mid y)=y^x(1-y)^{1-x},
+\qquad x\in\{0,1\}.
+\]
+The density of $Y$ is
+\[
+f_Y(y)=\frac{1}{B(\alpha,\beta)}y^{\alpha-1}(1-y)^{\beta-1},
+\qquad 0<y<1.
+\]
+Thus the joint distribution is
+\[
+p(x,y)=p(x\mid y)f_Y(y)
+=\frac{1}{B(\alpha,\beta)}y^{\alpha+x-1}(1-y)^{\beta+1-x-1}.
+\]
+As a function of $y$ with $x$ fixed, this has the kernel of a beta density:
+\[
+y^{(\alpha+x)-1}(1-y)^{(\beta+1-x)-1}.
+\]
+Therefore
+\[
+\boxed{Y\mid X=x\sim \operatorname{Beta}(\alpha+x,\,\beta+1-x).}
+\]
+This is why the beta distribution is called a conjugate prior for the Bernoulli model.
+
+:::
+
+
+::: {.exercise}
+**Practice Problem (Conditional density practice).**
+
+Let
+\[
+f(x,y)=8xy,
+\qquad 0<y<x<1,
+\]
+and $0$ otherwise.
+Find $f_X(x)$ and $f_{Y\mid X}(y\mid x)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+For a fixed $x\in(0,1)$, $y$ ranges from $0$ to $x$.  Thus
+\[
+f_X(x)=\int_0^x 8xy\,d y=8x\cdot\frac{x^2}{2}=4x^3,
+\qquad 0<x<1.
+\]
+Then
+\[
+f_{Y\mid X}(y\mid x)=\frac{8xy}{4x^3}=\frac{2y}{x^2},
+\qquad 0<y<x.
+\]
+The conditional density integrates to one:
+\[
+\int_0^x \frac{2y}{x^2}\,d y=1.
+\]
+
+:::
+
+
+## Independence
+
+This section explains independence for events and for random variables, and shows how independence simplifies joint distributions and expectations.
+
+### Independence for events
+
+This subsection recalls the event-level definition of independence.
+
+
+::: {.definition}
+**Definition (Independent events).**
+
+Events $A$ and $B$ are independent if
+\[
+\mathbb{P}(A\cap B)=\mathbb{P}(A)\mathbb{P}(B).
+\]
+If $\mathbb{P}(A)>0$ and $\mathbb{P}(B)>0$, this is equivalent to
+\[
+\mathbb{P}(A\mid B)=\mathbb{P}(A)
+\qquad\text{and}\qquad
+\mathbb{P}(B\mid A)=\mathbb{P}(B).
+\]
+
+:::
+
+
+The interpretation is that knowing one event occurred does not change the probability of the other event.
+
+### Independent random variables
+
+This subsection defines independence using joint and marginal distributions.
+
+
+::: {.definition}
+**Definition (Independent random variables).**
+
+Discrete random variables $X$ and $Y$ are independent if
+\[
+p_{X,Y}(x,y)=p_X(x)p_Y(y)
+\]
+for all possible $x$ and $y$.
+Continuous random variables $X$ and $Y$ are independent if
+\[
+f_{X,Y}(x,y)=f_X(x)f_Y(y)
+\]
+for all $x,y$.
+
+:::
+
+
+Similarly, $X_1,\ldots,X_n$ are mutually independent if their joint pmf/pdf factors into the product of their marginal pmfs/pdfs.
+
+
+::: {.example}
+**Example (Independent coin tosses).**
+
+Toss a biased coin twice.  Let
+\[
+X=\begin{cases}1,&\text{first toss is Heads},\\0,&\text{first toss is Tails},\end{cases}
+\qquad
+Y=\begin{cases}1,&\text{second toss is Heads},\\0,&\text{second toss is Tails}.
+\end{cases}
+\]
+Suppose $\mathbb{P}(\text{Heads})=p$.  Show that $X$ and $Y$ are independent.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+Because the two tosses are independent, the probability of any pair of outcomes factors.  For example,
+\[
+\mathbb{P}(X=1,Y=0)=\mathbb{P}(\text{Heads then Tails})=p(1-p).
+\]
+Also,
+\[
+\mathbb{P}(X=1)=p,
+\qquad
+\mathbb{P}(Y=0)=1-p.
+\]
+Hence
+\[
+\mathbb{P}(X=1,Y=0)=\mathbb{P}(X=1)\mathbb{P}(Y=0).
+\]
+The same check holds for the other three pairs $(0,0),(0,1),(1,1)$.  Therefore $X$ and $Y$ are independent.
+
+:::
+
+
+::: {.example}
+**Example (Checking dependence in the two-dice example).**
+
+In the two-dice example, $X$ is the absolute difference and $Y$ is the maximum.  Are $X$ and $Y$ independent?
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+Use one entry of the joint table.  We have
+\[
+p_{X,Y}(0,1)=\frac{1}{36}.
+\]
+The marginals are
+\[
+p_X(0)=\frac{6}{36}=\frac16,
+\qquad
+p_Y(1)=\frac{1}{36}.
+\]
+If $X$ and $Y$ were independent, then
+\[
+p_{X,Y}(0,1)=p_X(0)p_Y(1)=\frac16\cdot\frac1{36}=\frac1{216}.
+\]
+But $1/36\ne 1/216$.  Therefore
+\[
+\boxed{X\text{ and }Y\text{ are not independent}.}
+\]
+
+:::
+
+
+### Checking independence by factorization
+
+This subsection gives a useful theorem for checking independence without explicitly computing both marginals first.
+
+
+::: {.callout-important title="Theorem: Factorization criterion"}
+
+Let $(X,Y)$ have joint pmf or pdf $f(x,y)$.  Then $X$ and $Y$ are independent if and only if there exist nonnegative functions $g(x)$ and $h(y)$ such that
+\[
+f(x,y)=g(x)h(y)
+\]
+for every $(x,y)$ in the support, and the support itself factors as a product of a set in $x$ and a set in $y$.
+
+:::
+
+
+::: {.example}
+**Example (Factorized joint density).**
+
+Suppose a joint density has the form
+\[
+f(x,y)=\frac{1}{384}x^2y^4 e^{-x/2}e^{-y},
+\qquad x>0,\\ y>0.
+\]
+Determine whether $X$ and $Y$ are independent.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+We can write
+\[
+f(x,y)=\left(x^2e^{-x/2}\right)\left(\frac{1}{384}y^4e^{-y}\right)
+=g(x)h(y),
+\]
+where
+\[
+g(x)=x^2e^{-x/2},\qquad h(y)=\frac{1}{384}y^4e^{-y}.
+\]
+The support is also a product region: $x>0$ and $y>0$.  Hence the joint density factors into a function of $x$ times a function of $y$, so $X$ and $Y$ are independent.
+
+:::
+
+
+::: {.callout-warning title="Support matters"}
+
+A formula may look factorized, but if the support couples $x$ and $y$, the variables may not be independent.  For example, $f(x,y)=2$ on $0<x<1$, $0<y<1-x$ does not have a product support.
+
+:::
+
+
+### Independence and information
+
+This subsection explains why independence is essential in likelihood-based statistical inference.
+
+Suppose we observe $X_1,\ldots,X_n\in\{0,1\}$, where the observations are independent and identically distributed as $\operatorname{Bernoulli}(\theta)$.  Then the joint pmf factors as
+\[
+p(x_1,\ldots,x_n;\theta)=p(x_1;\theta)p(x_2;\theta)\cdots p(x_n;\theta).
+\]
+Taking logarithms gives
+\[
+\log p(x_1,\ldots,x_n;\theta)=\log p(x_1;\theta)+\cdots+\log p(x_n;\theta).
+\]
+Thus the log-likelihood is a sum of individual log-likelihood contributions:
+\[
+\ell(\theta;x_1,\ldots,x_n)=\ell(\theta;x_1)+\cdots+\ell(\theta;x_n).
+\]
+This is the statistical meaning of the phrase: total information equals the sum of individual information.
+
+## Consequences of Independence
+
+This section collects important algebraic consequences of independence for expectation, variance, and moment generating functions.
+
+### Expectations of products
+
+This subsection gives the key expectation rule for independent variables.
+
+
+::: {.callout-important title="Theorem: Products of functions of independent random variables"}
+
+If $X$ and $Y$ are independent, then for suitable functions $g$ and $h$,
+\[
+\mathbb{E}[g(X)h(Y)]=\mathbb{E}[g(X)]\mathbb{E}[h(Y)].
+\]
+In particular,
+\[
+\mathbb{E}[XY]=\mathbb{E}[X]\mathbb{E}[Y].
+\]
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+For the continuous case,
+\[
+\mathbb{E}[g(X)h(Y)]
+=\int\int g(x)h(y)f_{X,Y}(x,y)\,d x\,d y.
+\]
+Independence gives $f_{X,Y}(x,y)=f_X(x)f_Y(y)$, so
+\[
+\mathbb{E}[g(X)h(Y)]
+=\int\int g(x)h(y)f_X(x)f_Y(y)\,d x\,d y
+=\left(\int g(x)f_X(x)\,d x\right)
+\left(\int h(y)f_Y(y)\,d y\right).
+\]
+Thus
+\[
+\mathbb{E}[g(X)h(Y)]=\mathbb{E}[g(X)]\mathbb{E}[h(Y)].
+\]
+The discrete proof is the same with sums replacing integrals.
+
+:::
+
+
+### Moment generating functions and sums
+
+This subsection explains why moment generating functions are especially useful for sums of independent random variables.
+
+
+::: {.callout-important title="Theorem: MGF of a sum of independent random variables"}
+
+If $X$ and $Y$ are independent and $Z=X+Y$, then
+\[
+M_Z(t)=M_X(t)M_Y(t),
+\]
+where $M_X(t)=\mathbb{E}[e^{tX}]$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+By definition,
+\[
+M_Z(t)=\mathbb{E}[e^{tZ}]=\mathbb{E}[e^{t(X+Y)}]=\mathbb{E}[e^{tX}e^{tY}].
+\]
+Since $X$ and $Y$ are independent, $e^{tX}$ and $e^{tY}$ are independent functions of them, so
+\[
+M_Z(t)=\mathbb{E}[e^{tX}]\mathbb{E}[e^{tY}]=M_X(t)M_Y(t).
+\]
+
+:::
+
+
+::: {.callout-important title="Theorem: Sum of independent normal random variables"}
+
+Suppose
+\[
+X\sim\mathbb{N}ormal(\mu_1,\sigma_1^2),
+\qquad
+Y\sim\mathbb{N}ormal(\mu_2,\sigma_2^2),
+\]
+and $X$ and $Y$ are independent.  Then
+\[
+X+Y\sim\mathbb{N}ormal(\mu_1+\mu_2,\sigma_1^2+\sigma_2^2).
+\]
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+The MGF of a normal random variable $X\sim\mathbb{N}ormal(\mu,\sigma^2)$ is
+\[
+M_X(t)=\exp\left(\mu t+\frac{\sigma^2t^2}{2}\right).
+\]
+Let $Z=X+Y$.  Since $X$ and $Y$ are independent,
+\[
+M_Z(t)=M_X(t)M_Y(t).
+\]
+Therefore
+\[
+M_Z(t)
+=\exp\left(\mu_1t+\frac{\sigma_1^2t^2}{2}\right)
+\exp\left(\mu_2t+\frac{\sigma_2^2t^2}{2}\right).
+\]
+Combining exponents,
+\[
+M_Z(t)=\exp\left((\mu_1+\mu_2)t+\frac{(\sigma_1^2+\sigma_2^2)t^2}{2}\right),
+\]
+which is the MGF of $\mathbb{N}ormal(\mu_1+\mu_2,\sigma_1^2+\sigma_2^2)$.
+
+:::
+
+
+### Linearity, covariance, and variance of sums
+
+This subsection separates what is always true from what requires independence.
+
+For any random variables $X$ and $Y$ on the same sample space,
+\[
+\mathbb{E}[aX+bY]=a\mathbb{E}[X]+b\mathbb{E}[Y].
+\]
+No independence is required for linearity of expectation.
+
+The variance of a linear combination is
+\[
+\operatorname{Var}(aX+bY)=a^2\operatorname{Var}(X)+b^2\operatorname{Var}(Y)+2ab\operatorname{Cov}(X,Y).
+\]
+If $X$ and $Y$ are independent, then
+\[
+\operatorname{Cov}(X,Y)=0,
+\]
+and therefore
+\[
+\operatorname{Var}(aX+bY)=a^2\operatorname{Var}(X)+b^2\operatorname{Var}(Y).
+\]
+
+
+::: {.callout-warning title="Zero covariance is not the same as independence"}
+
+Independence implies zero covariance, provided the variances exist.  The converse is not true: zero covariance does not necessarily imply independence.
+
+:::
+
+
+::: {.exercise}
+**Practice Problem (A zero covariance but not independent example).**
+
+Let $X$ take values $-1,0,1$ with probabilities $1/3,1/3,1/3$, and define $Y=X^2$.  Show that $\operatorname{Cov}(X,Y)=0$ but $X$ and $Y$ are not independent.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+We compute
+\[
+\mathbb{E}[X]=\frac{-1+0+1}{3}=0,
+\qquad
+Y=X^2,
+\qquad
+XY=X^3.
+\]
+Thus
+\[
+\mathbb{E}[XY]=\mathbb{E}[X^3]=\frac{(-1)^3+0^3+1^3}{3}=0.
+\]
+Hence
+\[
+\operatorname{Cov}(X,Y)=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y]=0-0\cdot \mathbb{E}[Y]=0.
+\]
+But $X$ and $Y$ are not independent.  For example,
+\[
+\mathbb{P}(Y=0\mid X=0)=1,
+\]
+while
+\[
+\mathbb{P}(Y=0)=\mathbb{P}(X=0)=\frac13.
+\]
+Knowing $X=0$ changes the probability of $Y=0$, so $X$ and $Y$ are dependent.
+
+:::
+
+
+## Law of Total Probability and Bayes Theorem for Random Variables
+
+This section extends total probability and Bayes theorem from events to random variables.
+
+### Law of total probability for random variables
+
+This subsection shows how a marginal distribution can be obtained by averaging conditional distributions.
+
+
+::: {.callout-important title="Theorem: Law of total probability for random variables"}
+
+If $X$ is discrete, then
+\[
+p_Y(y)=\sum_{x'} p_{Y\mid X}(y\mid x')p_X(x').
+\]
+If $X$ is continuous, then
+\[
+p_Y(y)=\int p_{Y\mid X}(y\mid x')p_X(x')\,d x'.
+\]
+
+:::
+
+
+::: {.example}
+**Example (Poisson-Binomial thinning).**
+
+Let
+\[
+X\sim\operatorname{Poisson}(\lambda),
+\qquad
+Y\mid X=x\sim\operatorname{Binomial}(x,p).
+\]
+Find the marginal distribution of $Y$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+By the law of total probability,
+\[
+\mathbb{P}(Y=y)=\sum_{x} \mathbb{P}(Y=y\mid X=x)\mathbb{P}(X=x).
+\]
+Since $Y\mid X=x\sim\operatorname{Binomial}(x,p)$, the sum starts at $x=y$:
+\[
+\mathbb{P}(Y=y)=\sum_{x\ge y}\binom{x}{y}p^y(1-p)^{x-y}\frac{\lambda^x e^{-\lambda}}{x!}.
+\]
+Using $\binom{x}{y}=x!/[y!(x-y)!]$, we get
+\[
+\mathbb{P}(Y=y)=\sum_{x\ge y}\frac{p^y(1-p)^{x-y}\lambda^x e^{-\lambda}}{y!(x-y)!}.
+\]
+Let $k=x-y$.  Then
+\[
+\mathbb{P}(Y=y)=\frac{(\lambda p)^y e^{-\lambda}}{y!}
+\sum_{k=0}^{\infty}\frac{\left(\lambda(1-p)\right)^k}{k!}.
+\]
+The sum is $e^{\lambda(1-p)}$, so
+\[
+\mathbb{P}(Y=y)=\frac{(\lambda p)^y e^{-\lambda}e^{\lambda(1-p)}}{y!}
+=\frac{(\lambda p)^y e^{-\lambda p}}{y!}.
+\]
+Therefore
+\[
+\boxed{Y\sim\operatorname{Poisson}(\lambda p).}
+\]
+
+:::
+
+
+### Bayes theorem for random variables
+
+This subsection gives Bayes theorem in pmf/pdf notation.
+
+
+::: {.callout-important title="Theorem: Bayes theorem for random variables"}
+
+For random variables $X$ and $Y$,
+\[
+p_{X\mid Y}(x\mid y)
+=\frac{p_{X,Y}(x,y)}{p_Y(y)}
+=\frac{p_{Y\mid X}(y\mid x)p_X(x)}{p_Y(y)}.
+\]
+If $X$ is discrete, then
+\[
+p_{X\mid Y}(x\mid y)
+=\frac{p_{Y\mid X}(y\mid x)p_X(x)}{\sum_{x'}p_{Y\mid X}(y\mid x')p_X(x')}.
+\]
+If $X$ is continuous, then
+\[
+p_{X\mid Y}(x\mid y)
+=\frac{p_{Y\mid X}(y\mid x)p_X(x)}{\int p_{Y\mid X}(y\mid x')p_X(x')\,d x'}.
+\]
+
+:::
+
+
+::: {.example}
+**Example (Bayesian update with a beta prior).**
+
+Suppose $Y\sim\operatorname{Beta}(\alpha,\beta)$ and $X\mid Y=y\sim\operatorname{Bernoulli}(y)$.  Use Bayes theorem to find $Y\mid X=1$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+By Bayes theorem,
+\[
+f_{Y\mid X}(y\mid 1)\propto \mathbb{P}(X=1\mid Y=y)f_Y(y).
+\]
+Now
+\[
+\mathbb{P}(X=1\mid Y=y)=y,
+\qquad
+f_Y(y)\propto y^{\alpha-1}(1-y)^{\beta-1}.
+\]
+Therefore
+\[
+f_{Y\mid X}(y\mid 1)\propto y^{\alpha}(1-y)^{\beta-1}.
+\]
+This is the kernel of $\operatorname{Beta}(\alpha+1,\beta)$, so
+\[
+\boxed{Y\mid X=1\sim\operatorname{Beta}(\alpha+1,\beta).}
+\]
+Similarly, if $X=0$, then $Y\mid X=0\sim\operatorname{Beta}(\alpha,\beta+1)$.
+
+:::
+
+
+::: {.exercise}
+**Practice Problem (Total probability practice).**
+
+Suppose $X\sim\operatorname{Bernoulli}(q)$ and
+\[
+Y\mid X=0\sim\operatorname{Bernoulli}(p_0),
+\qquad
+Y\mid X=1\sim\operatorname{Bernoulli}(p_1).
+\]
+Find $\mathbb{P}(Y=1)$.
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+Use total probability over the two possible values of $X$:
+\[
+\mathbb{P}(Y=1)=\mathbb{P}(Y=1\mid X=0)\mathbb{P}(X=0)
++\mathbb{P}(Y=1\mid X=1)\mathbb{P}(X=1).
+\]
+Since $\mathbb{P}(X=1)=q$ and $\mathbb{P}(X=0)=1-q$,
+\[
+\boxed{\mathbb{P}(Y=1)=p_0(1-q)+p_1q.}
+\]
+
+:::
+
+
+## Conditional Independence
+
+This section introduces conditional independence, a central concept in Bayesian statistics, causal inference, and graphical models.
+
+### Definition and equivalent forms
+
+This subsection defines conditional independence and lists several equivalent factorization properties.
+
+
+::: {.definition}
+**Definition (Conditional independence).**
+
+Random variables $X$ and $Y$ are conditionally independent given $Z$ if
+\[
+p_{X,Y\mid Z}(x,y\mid z)=p_{X\mid Z}(x\mid z)p_{Y\mid Z}(y\mid z)
+\]
+for all relevant $x,y,z$.
+
+:::
+
+
+::: {.callout-important title="Theorem: Equivalent forms"}
+
+If $X$ and $Y$ are conditionally independent given $Z$, then the following equivalent statements hold whenever the conditional densities are defined:
+
+
+- \[
+p_{X,Y\mid Z}(x,y\mid z)=p_{X\mid Z}(x\mid z)p_{Y\mid Z}(y\mid z).
+\]
+- \[
+p_{X\mid Y,Z}(x\mid y,z)=p_{X\mid Z}(x\mid z).
+\]
+- \[
+p_{X,Y,Z}(x,y,z)=\frac{p_{X,Z}(x,z)p_{Y,Z}(y,z)}{p_Z(z)}.
+\]
+- There exist functions $g$ and $h$ such that
+\[
+p_{X,Y,Z}(x,y,z)=g(x,z)h(y,z).
+\]
+
+
+:::
+
+
+The key interpretation is: after $Z$ is known, learning $Y$ gives no additional information about $X$.
+
+
+::: {.callout-warning title="Independence versus conditional independence"}
+
+Independence and conditional independence are different concepts.  Independence does not always imply conditional independence, and conditional independence does not always imply independence.
+
+:::
+
+
+### Unit disk example
+
+This subsection gives a full example involving a joint density on a non-rectangular support.
+
+
+::: {.example}
+**Example (Uniform distribution on the unit disk).**
+
+Let $(X,Y)$ be uniformly distributed over the unit disk
+\[
+D=\{(x,y):x^2+y^2\le1\}.
+\]
+The joint pdf is
+\[
+f_{X,Y}(x,y)=\begin{cases}
+c, & (x,y)\in D,\\
+0, & \text{otherwise}.
+\end{cases}
+\]
+
+
+- Find $c$.
+- Find the marginal pdfs $f_X(x)$ and $f_Y(y)$.
+- Find the conditional pdf $f_{X\mid Y}(x\mid y)$ for $-1\le y\le1$.
+- Are $X$ and $Y$ independent?
+
+
+:::
+
+
+::: {.callout-note title="Solution" collapse="true"}
+
+**(a) Find $c$.**  Since the area of the unit disk is $\pi$,
+\[
+1=\iint_D c\,d x\,d y=c\cdot \pi.
+\]
+Thus
+\[
+\boxed{c=\frac1\pi.}
+\]
+
+**(b) Find the marginals.**  For fixed $x\in[-1,1]$, $y$ ranges from $-\sqrt{1-x^2}$ to $\sqrt{1-x^2}$.  Hence
+\[
+f_X(x)=\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\frac1\pi\,d y
+=\frac{2\sqrt{1-x^2}}{\pi},
+\qquad -1\le x\le1.
+\]
+By symmetry,
+\[
+f_Y(y)=\frac{2\sqrt{1-y^2}}{\pi},
+\qquad -1\le y\le1.
+\]
+
+**(c) Find the conditional pdf.**  For fixed $y\in[-1,1]$, $x$ ranges from $-\sqrt{1-y^2}$ to $\sqrt{1-y^2}$.  Therefore
+\[
+f_{X\mid Y}(x\mid y)=\frac{f_{X,Y}(x,y)}{f_Y(y)}
+=\frac{1/\pi}{2\sqrt{1-y^2}/\pi}
+=\frac{1}{2\sqrt{1-y^2}},
+\]
+for
+\[
+-\sqrt{1-y^2}\le x\le \sqrt{1-y^2}.
+\]
+Thus
+\[
+\boxed{
+f_{X\mid Y}(x\mid y)=
+\begin{cases}
+\dfrac{1}{2\sqrt{1-y^2}}, & -\sqrt{1-y^2}\le x\le \sqrt{1-y^2},\\[6pt]
+0, & \text{otherwise}.
+\end{cases}}
+\]
+
+**(d) Independence.**  If $X$ and $Y$ were independent, we would have
+\[
+f_{X,Y}(x,y)=f_X(x)f_Y(y).
+\]
+But inside the disk,
+\[
+f_{X,Y}(x,y)=\frac1\pi,
+\]
+whereas
+\[
+f_X(x)f_Y(y)=\frac{4\sqrt{(1-x^2)(1-y^2)}}{\pi^2},
+\]
+which is not constant on the disk.  Also, $f_{X\mid Y}(x\mid y)$ depends on $y$.  Therefore
+\[
+\boxed{X\text{ and }Y\text{ are not independent}.}
+\]
+
+:::
+
+
+## Summary
+
+This section summarizes the main formulas and conceptual points from joint and conditional probability.
+
+
+::: {.callout-tip title="Core formulas"}
+
+\begin{align*}
+F_{X,Y}(x,y)&=\mathbb{P}(X\le x,Y\le y),\\
+p_X(x)&=\sum_y p_{X,Y}(x,y),\\
+f_X(x)&=\int f_{X,Y}(x,y)\,d y,\\
+p_{Y\mid X}(y\mid x)&=\frac{p_{X,Y}(x,y)}{p_X(x)},\\
+p_Y(y)&=\sum_x p_{Y\mid X}(y\mid x)p_X(x),\\
+p_{X\mid Y}(x\mid y)&=\frac{p_{Y\mid X}(y\mid x)p_X(x)}{p_Y(y)},\\
+\operatorname{Cov}(X,Y)&=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y].
+\end{align*}
+
+:::
+
+
+::: {.callout-tip title="Conceptual checklist"}
+
+
+- A joint distribution contains the full relationship between variables.
+- A marginal distribution describes one variable after summing or integrating out the others.
+- A conditional distribution describes one variable after another variable has been fixed or observed.
+- Independence means the joint distribution factors into marginals.
+- Conditional independence means the conditional joint distribution factors after conditioning on another variable.
+- Bayes theorem reverses conditioning: it turns $p_{Y\mid X}$ and $p_X$ into $p_{X\mid Y}$.
+
+
+:::
+
+
+## References
+
+
+- Casella, George and Berger, Roger L. *Statistical Inference*, 2nd edition.  Main reference, Sections 4.1 and 4.2.
+- Wasserman, Larry. *All of Statistics*.
+- Grinstead, C. M. and Snell, J. L. *Introduction to Probability*. American Mathematical Society, 2012.
+- Ross, Sheldon. *Introduction to Probability Models*, 12th edition. Academic Press.
