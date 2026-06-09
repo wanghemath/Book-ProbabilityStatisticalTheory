@@ -1,0 +1,15 @@
+/* MATH 5010 Quarto book starter styles */
+
+.callout-note,
+.callout-tip,
+.callout-important {
+  border-radius: 0.5rem;
+}
+
+.table {
+  font-size: 0.95rem;
+}
+
+code {
+  white-space: pre-wrap;
+}

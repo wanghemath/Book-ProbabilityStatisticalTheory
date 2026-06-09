@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (TeX Live 2022)  (format=lualatex 2023.1.8)  9 JUN 2026 09:48
+This is LuaHBTeX, Version 1.15.0 (TeX Live 2022)  (format=lualatex 2023.1.8)  9 JUN 2026 10:30
  restricted system commands enabled.
 **index.tex
 (./index.tex
@@ -1527,26 +1527,26 @@ chapter 3.
 
 ] [48] [49] [50] [51] [52] [53] [54] [55] [56] [57] [58] [59] [60] [61] [62] [6
 3] [64] [65] [66] [67] [68] [69] [70] [71] [72] [73] [74] [75] [76]
-Overfull \hbox (279.4618pt too wide) in alignment at lines 3658--3678
+Overfull \hbox (279.4618pt too wide) in alignment at lines 3628--3648
  [][] 
  []
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 3.0 on input line 3678.
+(longtable)                in table 3.0 on input line 3648.
 
 [77]
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 3.0 on input line 3714.
+(longtable)                in table 3.0 on input line 3684.
 
 
 Package longtable Warning: Column widths have changed
-(longtable)                in table 3.0 on input line 3742.
+(longtable)                in table 3.0 on input line 3712.
 
-[78] [79] [80] [81] [82] [83] [84] [85] [86] [87] [88] [89] [90] [91]
+[78] [79] [80] [81] [82] [83] [84] [85] [86] [87] [88] [89] [90]
 chapter 4.
-[92
+[91
 
 ]
 
@@ -1556,19 +1556,19 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.4282 \(p_X(k)\), then {[} \mathbb
+l.4221 \(p_X(k)\), then {[} \mathbb
                                  {E}{[}X{]}=\sum\emph{\{\text{all }k\} k
 
 Here is how much of LuaTeX's memory you used:
- 42828 strings out of 477785
+ 42814 strings out of 477785
  100000,1648299 words of node,token memory allocated
- 5995 words of node memory still in use:
+ 5985 words of node memory still in use:
    14 hlist, 1 vlist, 2 rule, 22 disc, 5 local_par, 1 dir, 6 math, 55 glue, 15 k
-ern, 8 penalty, 3 margin_kern, 237 glyph, 700 attribute, 68 glue_spec, 700 attri
-bute_list, 1 temp, 2 write, 1 pdf_dest, 23 pdf_action, 2 pdf_colorstack nodes
-   avail lists: 1:1,2:1420,3:1201,4:163,5:330,6:194,7:4888,8:89,9:1271,10:10,11:
+ern, 8 penalty, 3 margin_kern, 237 glyph, 699 attribute, 68 glue_spec, 699 attri
+bute_list, 1 temp, 2 write, 1 pdf_dest, 22 pdf_action, 2 pdf_colorstack nodes
+   avail lists: 1:1,2:1420,3:1201,4:163,5:328,6:195,7:4888,8:89,9:1271,10:10,11:
 487,12:1
- 61874 multiletter control sequences out of 65536+600000
- 100 fonts using 30853931 bytes
+ 61872 multiletter control sequences out of 65536+600000
+ 100 fonts using 30854179 bytes
  108i,12n,121p,10618b,1126s stack positions out of 10000i,1000n,20000p,200000b,200000s
 !  ==> Fatal error occurred, no output PDF file produced!
