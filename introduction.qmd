@@ -102,7 +102,7 @@ This book uses standard notation from probability and mathematical statistics. F
 - $E[X]$ denotes expectation;
 - $\operatorname{Var}(X)$ denotes variance;
 - $X_1, \ldots, X_n$ denotes a random sample;
-- $ar X$ denotes the sample mean;
+- $ar X$ denotes the sample mean;
 - $L(	heta)$ and $\ell(	heta)$ denote likelihood and log-likelihood;
 - $\hat	heta$ denotes an estimator;
 - $H_0$ and $H_1$ denote null and alternative hypotheses.
