@@ -1,19 +1,5 @@
----
-title: "Chapter 6 Extra: Multinomial and Multinormal Distributions"
-format:
-  html:
-    toc: true
-    toc-depth: 3
-    number-sections: true
-  pdf:
-    toc: true
-    number-sections: true
-execute:
-  warning: false
-  message: false
----
-
-# Multinomial and Multinormal Distributions
+# Chapter 6 Extra: Multinomial and Multinormal Distributions {.unnumbered}
+ 
 
 This extra chapter extends Section 6 in two directions. First, it develops the multinomial distribution and the Dirichlet prior for categorical data. Second, it introduces the multivariate Gaussian distribution and the linear-algebra formulas behind marginalization, conditioning, affine transformations, and linear Gaussian models.
 
