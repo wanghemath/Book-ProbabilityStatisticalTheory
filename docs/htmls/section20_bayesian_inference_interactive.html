@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MATH 5010 Section 20: Bayesian Inference</title>
+<style>
+  :root{--bg:#f8fafc;--card:#fff;--ink:#172033;--muted:#64748b;--brand:#2563eb;--brand2:#7c3aed;--line:#e5e7eb;--good:#0f766e;--warn:#b45309;--bad:#b91c1c;--soft:#eff6ff;--purple:#f3e8ff}
+  *{box-sizing:border-box} body{margin:0;background:linear-gradient(180deg,#f0f7ff 0%,var(--bg) 330px);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:var(--ink);line-height:1.55}
+  header{max-width:1180px;margin:auto;padding:36px 20px 28px} h1{font-size:clamp(2rem,4vw,3.35rem);line-height:1.05;margin:0 0 10px;font-weight:850;letter-spacing:-.04em} h2{font-size:1.5rem;margin:0 0 12px} h3{font-size:1.08rem;margin:18px 0 8px}.subtitle{font-size:1.08rem;color:var(--muted);max-width:920px}.pill{display:inline-flex;gap:8px;align-items:center;padding:6px 10px;border-radius:999px;background:#dbeafe;color:#1d4ed8;font-weight:800;font-size:.85rem;margin-bottom:14px}
+  nav{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:4} nav .inner{max-width:1180px;margin:auto;display:flex;gap:8px;overflow:auto;padding:10px 20px} nav a{white-space:nowrap;text-decoration:none;color:#334155;padding:8px 12px;border-radius:10px;font-weight:750;font-size:.92rem} nav a:hover{background:#eef2ff;color:#3730a3}
+  main{max-width:1180px;margin:auto;padding:20px}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}.card{grid-column:span 12;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 10px 25px rgba(15,23,42,.06)}.half{grid-column:span 6}.third{grid-column:span 4}.two{grid-column:span 8}.quarter{grid-column:span 3}@media(max-width:880px){.half,.third,.two,.quarter{grid-column:span 12}}
+  .formula{background:#0f172a;color:#e2e8f0;border-radius:14px;padding:14px 16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.94rem}.note{background:#f8fafc;border:1px dashed #cbd5e1;border-radius:14px;padding:13px;color:#475569}.controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.controls.three{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:700px){.controls,.controls.three{grid-template-columns:1fr}}
+  label{font-weight:750;font-size:.9rem;display:block;margin-bottom:5px;color:#334155} input[type="number"],input[type="text"],textarea,select{width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;background:#fff} textarea{min-height:110px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.92rem} input[type="range"]{width:100%}.val{font-weight:850;color:var(--brand)} button{border:0;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:white;font-weight:850;padding:10px 14px;cursor:pointer;box-shadow:0 8px 18px rgba(37,99,235,.22)} button.secondary{background:#e0e7ff;color:#3730a3;box-shadow:none}.buttonrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+  table{border-collapse:collapse;width:100%;font-size:.92rem;margin-top:8px} th,td{border:1px solid var(--line);padding:8px;text-align:right} th:first-child,td:first-child{text-align:left} th{background:#f1f5f9;color:#334155}.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}.kpi div{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px}.kpi b{display:block;font-size:1.18rem;color:#111827}.mini{font-size:.88rem;color:#64748b}.success{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)} canvas{width:100%;height:315px;border:1px solid var(--line);border-radius:14px;background:#fff}.eq{font-family:Georgia,serif;font-size:1.05rem}.quiz button{margin:5px}.feedback{font-weight:850;margin-top:8px} details{background:#fbfdff;border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:12px} summary{font-weight:850;cursor:pointer}.footer{color:#64748b;font-size:.9rem;padding:24px 0 52px}.small{font-size:.9rem;color:#64748b}.badge{display:inline-block;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:999px;padding:3px 9px;margin:2px;font-weight:750;color:#334155}.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:13px;font-weight:850;color:#1e40af}.arrow{font-size:1.6rem;color:#64748b}.ok{background:#ecfdf5;border-color:#a7f3d0;color:#047857}.purple{background:#faf5ff;border-color:#ddd6fe;color:#6d28d9}
+</style>
+</head>
+<body>
+<header>
+  <div class="pill">MATH 5010 · Section 20</div>
+  <h1>Bayesian Inference: Prior, Posterior, Prediction, and Decision</h1>
+  <p class="subtitle">An interactive teaching page connecting point estimation, interval estimation, and hypothesis testing through one Bayesian workflow. Use the sliders and calculators to see how data update prior beliefs.</p>
+</header>
+<nav><div class="inner">
+  <a href="#map">Bayesian map</a><a href="#beta">Beta–Binomial</a><a href="#gamma">Gamma–Poisson</a><a href="#exp">Exponential mean</a><a href="#normal">Normal mean</a><a href="#credible">Credible intervals</a><a href="#test">Bayesian tests</a><a href="#predict">Prediction</a><a href="#mcmc">MCMC</a><a href="#quiz">Checks</a>
+</div></nav>
+<main>
+<section id="map" class="grid">
+  <div class="card two">
+    <h2>1. The Bayesian update</h2>
+    <div class="flow">
+      <div class="box">Prior<br><span class="small">what we believe before data</span></div><div class="arrow">×</div>
+      <div class="box purple">Likelihood<br><span class="small">what the data say</span></div><div class="arrow">∝</div>
+      <div class="box ok">Posterior<br><span class="small">updated belief after data</span></div>
+    </div>
+    <br>
+    <div class="formula">π(θ | x) = L(θ; x)π(θ) / ∫ L(u; x)π(u)du</div>
+    <p>Classical inference often treats the parameter as fixed and the data as random. Bayesian inference treats the parameter as unknown and represents uncertainty about it by a probability distribution.</p>
+    <details><summary>Why conjugate priors?</summary><p>A conjugate prior produces a posterior in the same family as the prior. This makes the update easy to compute and excellent for teaching: prior parameters plus data summaries become posterior parameters.</p></details>
+  </div>
+  <div class="card third">
+    <h2>Learning goals</h2>
+    <ul>
+      <li>Translate prior + likelihood into posterior.</li>
+      <li>Compute Bayes estimators under squared error loss.</li>
+      <li>Interpret credible intervals.</li>
+      <li>Compare Bayesian tests with p-value tests.</li>
+      <li>Use posterior predictive simulation.</li>
+      <li>Understand why MCMC is needed when posteriors are not closed form.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h2>Conjugate-pair summary</h2>
+    <table>
+      <tr><th>Data model</th><th>Prior</th><th>Posterior</th><th>Useful statistic</th><th>Bayes estimate under squared error</th></tr>
+      <tr><td>Binomial(n, θ)</td><td>Beta(a,b)</td><td>Beta(a+x,b+n−x)</td><td>x successes</td><td>E[θ|x]</td></tr>
+      <tr><td>Poisson(λ)</td><td>Gamma(a,b rate)</td><td>Gamma(a+Σxᵢ,b+n)</td><td>Σxᵢ</td><td>E[λ|x]</td></tr>
+      <tr><td>Exponential(mean μ)</td><td>Inv-Gamma(a,b)</td><td>Inv-Gamma(a+n,b+Σxᵢ)</td><td>Σxᵢ</td><td>E[μ|x], if a+n&gt;1</td></tr>
+      <tr><td>Normal mean μ, known σ</td><td>Normal(m₀,s₀²)</td><td>Normal(mₙ,sₙ²)</td><td>x̄</td><td>posterior mean mₙ</td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="beta" class="grid">
+  <div class="card">
+    <h2>2. Beta–Binomial update</h2>
+    <p>Use this for conversion rates, coin bias, success probability, or any binary outcome.</p>
+    <div class="grid">
+      <div class="card half" style="box-shadow:none">
+        <div class="controls">
+          <div><label>Prior a: <span class="val" id="bbAVal"></span></label><input id="bbA" type="range" min="0.5" max="20" step="0.5" value="2" oninput="updateBetaBinomial()"></div>
+          <div><label>Prior b: <span class="val" id="bbBVal"></span></label><input id="bbB" type="range" min="0.5" max="20" step="0.5" value="2" oninput="updateBetaBinomial()"></div>
+          <div><label>Trials n</label><input id="bbN" type="number" value="40" min="1" max="500" oninput="updateBetaBinomial()"></div>
+          <div><label>Successes x</label><input id="bbX" type="number" value="26" min="0" max="500" oninput="updateBetaBinomial()"></div>
+        </div>
+        <div class="kpi">
+          <div><span class="mini">Posterior</span><b id="bbPost">–</b></div>
+          <div><span class="mini">Mean</span><b id="bbMean">–</b></div>
+          <div><span class="mini">MAP</span><b id="bbMap">–</b></div>
+          <div><span class="mini">Approx. 95%</span><b id="bbCI">–</b></div>
+        </div>
+        <div class="formula">θ | x ~ Beta(a+x, b+n−x)</div>
+      </div>
+      <div class="card half" style="box-shadow:none"><canvas id="bbCanvas" height="315"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section id="gamma" class="grid">
+  <div class="card">
+    <h2>3. Gamma–Poisson update</h2>
+    <p>This matches the Poisson Bayesian estimation and Bayesian test examples: if counts are Poisson with mean λ and λ has a Gamma prior, the posterior is Gamma.</p>
+    <div class="grid">
+      <div class="card half" style="box-shadow:none">
+        <div class="controls">
+          <div><label>Prior shape a</label><input id="gpA" type="number" value="2" min="0.1" step="0.1" oninput="updateGammaPoisson()"></div>
+          <div><label>Prior rate b</label><input id="gpB" type="number" value="1" min="0.1" step="0.1" oninput="updateGammaPoisson()"></div>
+          <div><label>Sample size n</label><input id="gpN" type="number" value="20" min="1" step="1" oninput="updateGammaPoisson()"></div>
+          <div><label>Total count S = Σxᵢ</label><input id="gpS" type="number" value="130" min="0" step="1" oninput="updateGammaPoisson()"></div>
+          <div><label>Test threshold λ₀</label><input id="gpL0" type="number" value="5" min="0.01" step="0.1" oninput="updateGammaPoisson()"></div>
+        </div>
+        <div class="kpi">
+          <div><span class="mini">Posterior</span><b id="gpPost">–</b></div>
+          <div><span class="mini">Posterior mean</span><b id="gpMean">–</b></div>
+          <div><span class="mini">P(λ ≤ λ₀ | x)</span><b id="gpProb">–</b></div>
+          <div><span class="mini">Decision</span><b id="gpDecision">–</b></div>
+        </div>
+        <div class="formula">λ | x ~ Gamma(a+S, b+n), rate parameterization</div>
+      </div>
+      <div class="card half" style="box-shadow:none"><canvas id="gpCanvas" height="315"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section id="exp" class="grid">
+  <div class="card">
+    <h2>4. Inverse-Gamma prior for an Exponential mean</h2>
+    <p>If Xᵢ ~ Exp(μ) with density f(x|μ)=μ⁻¹e^{-x/μ}, then an inverse-gamma prior for μ is conjugate.</p>
+    <div class="grid">
+      <div class="card half" style="box-shadow:none">
+        <div class="controls">
+          <div><label>Prior shape a</label><input id="igA" type="number" value="3" min="0.1" step="0.1" oninput="updateInvGamma()"></div>
+          <div><label>Prior scale b</label><input id="igB" type="number" value="10" min="0.1" step="0.1" oninput="updateInvGamma()"></div>
+          <div><label>Sample size n</label><input id="igN" type="number" value="15" min="1" step="1" oninput="updateInvGamma()"></div>
+          <div><label>Total S = Σxᵢ</label><input id="igS" type="number" value="160" min="0" step="1" oninput="updateInvGamma()"></div>
+          <div><label>Test threshold μ₀</label><input id="igM0" type="number" value="8" min="0.01" step="0.1" oninput="updateInvGamma()"></div>
+        </div>
+        <div class="kpi">
+          <div><span class="mini">Posterior</span><b id="igPost">–</b></div>
+          <div><span class="mini">Posterior mean</span><b id="igMean">–</b></div>
+          <div><span class="mini">P(μ ≤ μ₀ | x)</span><b id="igProb">–</b></div>
+          <div><span class="mini">Decision</span><b id="igDecision">–</b></div>
+        </div>
+        <div class="formula">μ | x ~ Inv-Gamma(a+n, b+S)</div>
+      </div>
+      <div class="card half" style="box-shadow:none"><canvas id="igCanvas" height="315"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section id="normal" class="grid">
+  <div class="card">
+    <h2>5. Normal–Normal update for a mean</h2>
+    <p>Known sampling standard deviation σ. The posterior mean is a precision-weighted average of the prior mean and the sample mean.</p>
+    <div class="grid">
+      <div class="card half" style="box-shadow:none">
+        <div class="controls">
+          <div><label>Prior mean m₀</label><input id="nnM0" type="number" value="0" step="0.1" oninput="updateNormalNormal()"></div>
+          <div><label>Prior sd s₀</label><input id="nnS0" type="number" value="2" min="0.05" step="0.1" oninput="updateNormalNormal()"></div>
+          <div><label>Known σ</label><input id="nnSig" type="number" value="3" min="0.05" step="0.1" oninput="updateNormalNormal()"></div>
+          <div><label>Sample size n</label><input id="nnN" type="number" value="25" min="1" step="1" oninput="updateNormalNormal()"></div>
+          <div><label>Sample mean x̄</label><input id="nnXbar" type="number" value="1.4" step="0.1" oninput="updateNormalNormal()"></div>
+        </div>
+        <div class="kpi">
+          <div><span class="mini">Posterior mean</span><b id="nnMean">–</b></div>
+          <div><span class="mini">Posterior sd</span><b id="nnSd">–</b></div>
+          <div><span class="mini">Data weight</span><b id="nnW">–</b></div>
+          <div><span class="mini">Approx. 95%</span><b id="nnCI">–</b></div>
+        </div>
+        <div class="formula">sₙ² = 1 / (1/s₀² + n/σ²),  mₙ = sₙ²(m₀/s₀² + nx̄/σ²)</div>
+      </div>
+      <div class="card half" style="box-shadow:none"><canvas id="nnCanvas" height="315"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section id="credible" class="grid">
+  <div class="card half">
+    <h2>6. Credible interval interpretation</h2>
+    <p>A 95% Bayesian credible interval means: after observing the data and using the prior, the posterior probability that θ lies in the interval is 0.95.</p>
+    <div class="note"><b>Classical confidence interval:</b> the random procedure has long-run 95% coverage. <br><b>Bayesian credible interval:</b> the posterior distribution assigns 95% probability to this interval.</div>
+    <h3>Normal posterior interval calculator</h3>
+    <div class="controls">
+      <div><label>Posterior mean</label><input id="ciMean" type="number" value="6.29" step="0.01" oninput="updateCredible()"></div>
+      <div><label>Posterior sd</label><input id="ciSd" type="number" value="0.55" min="0.01" step="0.01" oninput="updateCredible()"></div>
+      <div><label>Credibility level</label><select id="ciLevel" onchange="updateCredible()"><option value="0.8">80%</option><option value="0.9">90%</option><option value="0.95" selected>95%</option><option value="0.99">99%</option></select></div>
+    </div>
+    <div class="kpi">
+      <div><span class="mini">Lower</span><b id="ciLow">–</b></div>
+      <div><span class="mini">Upper</span><b id="ciHigh">–</b></div>
+      <div><span class="mini">Width</span><b id="ciWidth">–</b></div>
+      <div><span class="mini">Meaning</span><b>posterior prob.</b></div>
+    </div>
+  </div>
+  <div class="card half">
+    <h2>Loss functions and Bayes estimators</h2>
+    <table>
+      <tr><th>Loss</th><th>Bayes estimator</th><th>Intuition</th></tr>
+      <tr><td>Squared error</td><td>posterior mean</td><td>balances squared distance</td></tr>
+      <tr><td>Absolute error</td><td>posterior median</td><td>balances posterior probability</td></tr>
+      <tr><td>0–1 loss</td><td>posterior mode/MAP</td><td>most likely parameter value</td></tr>
+    </table>
+    <details><summary>Teaching connection</summary><p>Earlier in the course, the mean minimized expected squared error and the median minimized expected absolute error. Bayesian point estimation applies the same principle, but expectation is taken with respect to the posterior distribution.</p></details>
+  </div>
+</section>
+
+<section id="test" class="grid">
+  <div class="card">
+    <h2>7. Bayesian hypothesis testing</h2>
+    <p>For one-sided tests such as H₀: θ ≤ θ₀ versus H₁: θ &gt; θ₀, a direct Bayesian rule is based on posterior probability.</p>
+    <div class="formula">Reject H₀ if P(θ ≤ θ₀ | data) &lt; α_B</div>
+    <div class="grid">
+      <div class="card half" style="box-shadow:none">
+        <h3>Poisson mean example</h3>
+        <p>Using the Gamma–Poisson calculator above with n=20, a=2, b=1, S=130, λ₀=5 gives the posterior Gamma(132,21). The decision rule compares P(λ≤5|data) to 0.05.</p>
+        <button onclick="document.getElementById('gpA').value=2;document.getElementById('gpB').value=1;document.getElementById('gpN').value=20;document.getElementById('gpS').value=130;document.getElementById('gpL0').value=5;updateGammaPoisson();location.hash='gamma';">Load Poisson test</button>
+      </div>
+      <div class="card half" style="box-shadow:none">
+        <h3>Exponential mean example</h3>
+        <p>Using the inverse-gamma calculator above with n=15, a=3, b=10, S=160, μ₀=8 gives the posterior Inv-Gamma(18,170). The decision rule compares P(μ≤8|data) to 0.05.</p>
+        <button onclick="document.getElementById('igA').value=3;document.getElementById('igB').value=10;document.getElementById('igN').value=15;document.getElementById('igS').value=160;document.getElementById('igM0').value=8;updateInvGamma();location.hash='exp';">Load Exponential test</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="predict" class="grid">
+  <div class="card">
+    <h2>8. Posterior predictive distribution</h2>
+    <p>After learning about θ, Bayesian inference can predict a future observation by averaging over posterior uncertainty.</p>
+    <div class="formula">p(x_new | data) = ∫ p(x_new | θ)π(θ | data)dθ</div>
+    <div class="grid">
+      <div class="card half" style="box-shadow:none">
+        <h3>Beta–Binomial predictive probability</h3>
+        <p>For future m binary trials after posterior Beta(A,B), the predictive mean number of successes is mA/(A+B).</p>
+        <div class="controls">
+          <div><label>Future trials m</label><input id="predM" type="number" value="10" min="1" max="200" oninput="updatePredictive()"></div>
+          <div><label>Target successes r</label><input id="predR" type="number" value="7" min="0" max="200" oninput="updatePredictive()"></div>
+        </div>
+        <div class="kpi">
+          <div><span class="mini">Predictive mean</span><b id="predMean">–</b></div>
+          <div><span class="mini">Approx P(X≥r)</span><b id="predTail">–</b></div>
+          <div><span class="mini">Posterior A</span><b id="predA">–</b></div>
+          <div><span class="mini">Posterior B</span><b id="predB">–</b></div>
+        </div>
+      </div>
+      <div class="card half" style="box-shadow:none"><canvas id="predCanvas" height="315"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<section id="mcmc" class="grid">
+  <div class="card two">
+    <h2>9. Why MCMC?</h2>
+    <p>When the posterior cannot be written in a convenient closed form, we often approximate it by simulation. Markov chain Monte Carlo builds a dependent sequence whose long-run distribution is the posterior.</p>
+    <div class="formula">θ⁽¹⁾, θ⁽²⁾, … approximately sampled from π(θ | data)</div>
+    <h3>Random-walk Metropolis toy sampler</h3>
+    <p>Target density: a two-component posterior-like mixture. Move the proposal scale to see acceptance and mixing.</p>
+    <div class="controls">
+      <div><label>Proposal scale: <span class="val" id="rwScaleVal"></span></label><input id="rwScale" type="range" min="0.05" max="4" step="0.05" value="1" oninput="runMCMC()"></div>
+      <div><label>Iterations</label><input id="rwN" type="number" value="1200" min="200" max="5000" step="100" oninput="runMCMC()"></div>
+    </div>
+    <div class="kpi">
+      <div><span class="mini">Acceptance</span><b id="rwAcc">–</b></div>
+      <div><span class="mini">Sample mean</span><b id="rwMean">–</b></div>
+      <div><span class="mini">Target idea</span><b>posterior sample</b></div>
+      <div><span class="mini">Warning</span><b>check mixing</b></div>
+    </div>
+  </div>
+  <div class="card third"><canvas id="rwCanvas" height="315"></canvas></div>
+</section>
+
+<section id="quiz" class="grid">
+  <div class="card quiz">
+    <h2>10. Quick self-checks</h2>
+    <div class="grid">
+      <div class="card third" style="box-shadow:none"><h3>Q1</h3><p>For Poisson data with Gamma(a,b) prior, what statistic is sufficient for updating λ?</p><button onclick="fb('q1','Not quite. The sample size matters too, but the data enter through the total count.')">x̄ only</button><button onclick="fb('q1','Correct. The posterior uses S=Σxᵢ and n.')">S = Σxᵢ</button><button onclick="fb('q1','Not quite. The maximum alone is not enough for Poisson conjugate updating.')">max xᵢ</button><div id="q1" class="feedback"></div></div>
+      <div class="card third" style="box-shadow:none"><h3>Q2</h3><p>Under squared error loss, the Bayes estimator is the posterior...</p><button onclick="fb('q2','Correct. Posterior mean minimizes posterior expected squared error.')">mean</button><button onclick="fb('q2','Median minimizes posterior expected absolute error, not squared error.')">median</button><button onclick="fb('q2','MAP corresponds to 0–1 style loss.')">mode</button><div id="q2" class="feedback"></div></div>
+      <div class="card third" style="box-shadow:none"><h3>Q3</h3><p>A 95% credible interval means...</p><button onclick="fb('q3','Correct. This is a posterior probability statement.')">posterior probability 0.95</button><button onclick="fb('q3','That describes a frequentist coverage interpretation.')">long-run coverage only</button><button onclick="fb('q3','Not generally. It is not about prior probability after data are observed.')">prior probability 0.95</button><div id="q3" class="feedback"></div></div>
+    </div>
+  </div>
+</section>
+<div class="footer">MATH 5010 · Section 20 interactive HTML · Bayesian inference from sections 12–17: point estimation, interval estimation, hypothesis testing, and simulation.</div>
+</main>
+
+<script>
+function $(id){return document.getElementById(id)}
+function fmt(x,d=3){if(!isFinite(x))return '–'; if(Math.abs(x)<0.0001 && x!==0)return x.toExponential(2); return Number(x).toFixed(d)}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+function logGamma(z){let x=[0.99999999999980993,676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7]; if(z<0.5)return Math.log(Math.PI)-Math.log(Math.sin(Math.PI*z))-logGamma(1-z); z-=1; let a=x[0]; for(let i=1;i<x.length;i++)a+=x[i]/(z+i); let t=z+7.5; return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(a)}
+function betaPdf(x,a,b){if(x<=0||x>=1)return 0; return Math.exp((a-1)*Math.log(x)+(b-1)*Math.log(1-x)+logGamma(a+b)-logGamma(a)-logGamma(b))}
+function gammaPdf(x,a,b){if(x<=0)return 0; return Math.exp(a*Math.log(b)-logGamma(a)+(a-1)*Math.log(x)-b*x)}
+function invGammaPdf(x,a,b){if(x<=0)return 0; return Math.exp(a*Math.log(b)-logGamma(a)-(a+1)*Math.log(x)-b/x)}
+function normPdf(x,m,s){return Math.exp(-0.5*((x-m)/s)**2)/(s*Math.sqrt(2*Math.PI))}
+function erf(x){let sign=x>=0?1:-1; x=Math.abs(x); let a1=0.254829592,a2=-0.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429,p=0.3275911; let t=1/(1+p*x); let y=1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x); return sign*y}
+function normCdf(x,m=0,s=1){return 0.5*(1+erf((x-m)/(s*Math.sqrt(2))))}
+function invNorm(p){let lo=-8,hi=8; for(let i=0;i<80;i++){let mid=(lo+hi)/2; if(normCdf(mid)<p)lo=mid; else hi=mid;} return (lo+hi)/2}
+function integrate(f,a,b,N=1200){let h=(b-a)/N, s=0; for(let i=0;i<=N;i++){let x=a+i*h; let w=(i==0||i==N)?0.5:1; s+=w*f(x)} return s*h}
+function cdfNumerical(f,x,lo,hi){if(x<=lo)return 0; if(x>=hi)return 1; let total=integrate(f,lo,hi,1800); return integrate(f,lo,x,1200)/total}
+function qNumerical(f,p,lo,hi){let total=integrate(f,lo,hi,1800); let a=lo,b=hi; for(let i=0;i<60;i++){let m=(a+b)/2; let cm=integrate(f,lo,m,900)/total; if(cm<p)a=m; else b=m;} return (a+b)/2}
+function choose(n,k){if(k<0||k>n)return 0; k=Math.min(k,n-k); let r=1; for(let i=1;i<=k;i++)r=r*(n-k+i)/i; return r}
+function betaBinomPmf(k,m,A,B){return Math.exp(Math.log(choose(m,k))+logGamma(k+A)+logGamma(m-k+B)-logGamma(m+A+B)+logGamma(A+B)-logGamma(A)-logGamma(B))}
+function drawAxes(ctx,w,h,xmin,xmax,ymax,title){ctx.clearRect(0,0,w,h); ctx.fillStyle='#fff'; ctx.fillRect(0,0,w,h); ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1; for(let i=0;i<6;i++){let y=25+i*(h-55)/5; ctx.beginPath();ctx.moveTo(45,y);ctx.lineTo(w-15,y);ctx.stroke()} ctx.strokeStyle='#94a3b8'; ctx.beginPath();ctx.moveTo(45,15);ctx.lineTo(45,h-35);ctx.lineTo(w-15,h-35);ctx.stroke(); ctx.fillStyle='#334155';ctx.font='12px system-ui';ctx.fillText(title,48,18);ctx.fillText(fmt(xmin,1),45,h-14);ctx.fillText(fmt(xmax,1),w-55,h-14); return {px:x=>45+(x-xmin)/(xmax-xmin)*(w-60), py:y=>h-35-y/ymax*(h-55)}}
+function drawLine(canvasId, series, xmin, xmax, title){let c=$(canvasId),ctx=c.getContext('2d'),w=c.width=c.clientWidth*devicePixelRatio,h=c.height=c.clientHeight*devicePixelRatio;ctx.scale(devicePixelRatio,devicePixelRatio);w=c.clientWidth;h=c.clientHeight;let ymax=0;series.forEach(s=>s.ys.forEach(y=>{if(isFinite(y))ymax=Math.max(ymax,y)})); ymax=ymax*1.1||1; let ax=drawAxes(ctx,w,h,xmin,xmax,ymax,title); let colors=['#2563eb','#7c3aed','#0f766e','#b45309']; series.forEach((s,idx)=>{ctx.strokeStyle=colors[idx%colors.length];ctx.lineWidth=2;ctx.beginPath();s.xs.forEach((x,i)=>{let X=ax.px(x),Y=ax.py(s.ys[i]); if(i==0)ctx.moveTo(X,Y); else ctx.lineTo(X,Y)});ctx.stroke();ctx.fillStyle=colors[idx%colors.length];ctx.fillText(s.name, w-150, 35+idx*18)})}
+function drawBars(canvasId, labels, values, title){let c=$(canvasId),ctx=c.getContext('2d'),w=c.width=c.clientWidth*devicePixelRatio,h=c.height=c.clientHeight*devicePixelRatio;ctx.scale(devicePixelRatio,devicePixelRatio);w=c.clientWidth;h=c.clientHeight;ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);let max=Math.max(...values,1);ctx.strokeStyle='#94a3b8';ctx.beginPath();ctx.moveTo(45,15);ctx.lineTo(45,h-35);ctx.lineTo(w-15,h-35);ctx.stroke();ctx.fillStyle='#334155';ctx.font='12px system-ui';ctx.fillText(title,48,18);let bw=(w-70)/values.length;values.forEach((v,i)=>{let x=45+i*bw+2,y=h-35-v/max*(h-60);ctx.fillStyle='#2563eb';ctx.fillRect(x,y,Math.max(2,bw-4),h-35-y); if(values.length<=22){ctx.fillStyle='#334155';ctx.fillText(labels[i],x,h-14)}})}
+function updateBetaBinomial(){let a=+$('bbA').value,b=+$('bbB').value,n=Math.max(1,+$('bbN').value),x=clamp(+$('bbX').value,0,n);$('bbX').value=x;$('bbAVal').textContent=a;$('bbBVal').textContent=b;let A=a+x,B=b+n-x;let mean=A/(A+B);let map=(A>1&&B>1)?(A-1)/(A+B-2):NaN;let sd=Math.sqrt(A*B/((A+B)**2*(A+B+1)));let lo=clamp(mean-1.96*sd,0,1),hi=clamp(mean+1.96*sd,0,1);$('bbPost').textContent=`Beta(${fmt(A,1)}, ${fmt(B,1)})`;$('bbMean').textContent=fmt(mean,3);$('bbMap').textContent=isFinite(map)?fmt(map,3):'boundary';$('bbCI').textContent=`[${fmt(lo,3)}, ${fmt(hi,3)}]`;let xs=[],prior=[],post=[];for(let i=1;i<300;i++){let t=i/300;xs.push(t);prior.push(betaPdf(t,a,b));post.push(betaPdf(t,A,B))}drawLine('bbCanvas',[{name:'prior',xs,ys:prior},{name:'posterior',xs,ys:post}],0,1,'Beta prior and posterior');updatePredictive()}
+function updateGammaPoisson(){let a=+$('gpA').value,b=+$('gpB').value,n=+$('gpN').value,S=+$('gpS').value,l0=+$('gpL0').value;let A=a+S,B=b+n,mean=A/B,sd=Math.sqrt(A/(B*B));let xmax=Math.max(l0*1.8,mean+4*sd,2);let f=x=>gammaPdf(x,A,B);let p=cdfNumerical(f,l0,0,xmax*1.8);$('gpPost').textContent=`Gamma(${fmt(A,1)}, ${fmt(B,1)})`;$('gpMean').textContent=fmt(mean,3);$('gpProb').textContent=fmt(p,4);$('gpDecision').innerHTML=p<0.05?'<span class="success">Reject H₀</span>':'Do not reject';let xs=[],prior=[],post=[];for(let i=1;i<320;i++){let t=xmax*i/320;xs.push(t);prior.push(gammaPdf(t,a,b));post.push(f(t))}drawLine('gpCanvas',[{name:'prior',xs,ys:prior},{name:'posterior',xs,ys:post}],0,xmax,'Gamma-Poisson update')}
+function updateInvGamma(){let a=+$('igA').value,b=+$('igB').value,n=+$('igN').value,S=+$('igS').value,m0=+$('igM0').value;let A=a+n,B=b+S,mean=A>1?B/(A-1):NaN;let mode=B/(A+1);let xmax=Math.max(m0*2.2,(isFinite(mean)?mean:mode)*2.8,mode*4,5);let f=x=>invGammaPdf(x,A,B);let p=cdfNumerical(f,m0,0.0001,xmax*3);$('igPost').textContent=`Inv-Gamma(${fmt(A,1)}, ${fmt(B,1)})`;$('igMean').textContent=isFinite(mean)?fmt(mean,3):'does not exist';$('igProb').textContent=fmt(p,4);$('igDecision').innerHTML=p<0.05?'<span class="success">Reject H₀</span>':'Do not reject';let xs=[],prior=[],post=[];for(let i=1;i<320;i++){let t=xmax*i/320;xs.push(t);prior.push(invGammaPdf(t,a,b));post.push(f(t))}drawLine('igCanvas',[{name:'prior',xs,ys:prior},{name:'posterior',xs,ys:post}],0,xmax,'Inverse-Gamma update')}
+function updateNormalNormal(){let m0=+$('nnM0').value,s0=+$('nnS0').value,sig=+$('nnSig').value,n=+$('nnN').value,xb=+$('nnXbar').value;let prec0=1/(s0*s0),precd=n/(sig*sig);let sn=Math.sqrt(1/(prec0+precd));let mn=sn*sn*(m0*prec0+xb*precd);let w=precd/(prec0+precd);$('nnMean').textContent=fmt(mn,3);$('nnSd').textContent=fmt(sn,3);$('nnW').textContent=fmt(w,3);$('nnCI').textContent=`[${fmt(mn-1.96*sn,2)}, ${fmt(mn+1.96*sn,2)}]`;let xmin=Math.min(m0-4*s0,xb-4*sig/Math.sqrt(n),mn-4*sn),xmax=Math.max(m0+4*s0,xb+4*sig/Math.sqrt(n),mn+4*sn);let xs=[],prior=[],like=[],post=[];for(let i=0;i<320;i++){let t=xmin+(xmax-xmin)*i/319;xs.push(t);prior.push(normPdf(t,m0,s0));like.push(normPdf(t,xb,sig/Math.sqrt(n)));post.push(normPdf(t,mn,sn))}drawLine('nnCanvas',[{name:'prior',xs,ys:prior},{name:'data likelihood',xs,ys:like},{name:'posterior',xs,ys:post}],xmin,xmax,'Normal-Normal update')}
+function updateCredible(){let m=+$('ciMean').value,s=+$('ciSd').value,L=+$('ciLevel').value;let z=invNorm((1+L)/2);let lo=m-z*s,hi=m+z*s;$('ciLow').textContent=fmt(lo,3);$('ciHigh').textContent=fmt(hi,3);$('ciWidth').textContent=fmt(hi-lo,3)}
+function updatePredictive(){let a=+$('bbA').value,b=+$('bbB').value,n=+$('bbN').value,x=+$('bbX').value;let A=a+x,B=b+n-x;let m=+$('predM').value,r=clamp(+$('predR').value,0,m);$('predR').value=r;let vals=[],labs=[],tail=0;for(let k=0;k<=m;k++){let p=betaBinomPmf(k,m,A,B);vals.push(p);labs.push(k.toString());if(k>=r)tail+=p}$('predMean').textContent=fmt(m*A/(A+B),3);$('predTail').textContent=fmt(tail,4);$('predA').textContent=fmt(A,1);$('predB').textContent=fmt(B,1);drawBars('predCanvas',labs,vals,'Beta-Binomial posterior predictive')}
+function target(x){return 0.55*normPdf(x,-2,0.7)+0.45*normPdf(x,2,0.9)}
+function runMCMC(){let scale=+$('rwScale').value,N=+$('rwN').value;$('rwScaleVal').textContent=fmt(scale,2);let x=0,arr=[],acc=0;for(let i=0;i<N;i++){let prop=x+scale*randn();let a=Math.min(1,target(prop)/target(x));if(Math.random()<a){x=prop;acc++}arr.push(x)}let mean=arr.reduce((s,v)=>s+v,0)/arr.length;$('rwAcc').textContent=fmt(acc/N,3);$('rwMean').textContent=fmt(mean,3);let bins=40,lo=-5,hi=5,counts=Array(bins).fill(0);arr.slice(Math.floor(N/5)).forEach(v=>{let j=Math.floor((v-lo)/(hi-lo)*bins);if(j>=0&&j<bins)counts[j]++});let c=$('rwCanvas'),ctx=c.getContext('2d'),w=c.width=c.clientWidth*devicePixelRatio,h=c.height=c.clientHeight*devicePixelRatio;ctx.scale(devicePixelRatio,devicePixelRatio);w=c.clientWidth;h=c.clientHeight;ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';ctx.fillRect(0,0,w,h);let max=Math.max(...counts,1);ctx.strokeStyle='#94a3b8';ctx.beginPath();ctx.moveTo(45,15);ctx.lineTo(45,h-35);ctx.lineTo(w-15,h-35);ctx.stroke();ctx.fillStyle='#334155';ctx.font='12px system-ui';ctx.fillText('MCMC histogram vs target shape',48,18);let bw=(w-60)/bins;counts.forEach((v,i)=>{let y=h-35-v/max*(h-60);ctx.fillStyle='#2563eb';ctx.fillRect(45+i*bw+1,y,bw-2,h-35-y)});ctx.strokeStyle='#b45309';ctx.lineWidth=2;ctx.beginPath();let ymax=0;for(let i=0;i<300;i++){let xx=lo+(hi-lo)*i/299;ymax=Math.max(ymax,target(xx))}for(let i=0;i<300;i++){let xx=lo+(hi-lo)*i/299;let X=45+(xx-lo)/(hi-lo)*(w-60),Y=h-35-target(xx)/ymax*(h-60);if(i==0)ctx.moveTo(X,Y);else ctx.lineTo(X,Y)}ctx.stroke()}
+function randn(){let u=0,v=0;while(u===0)u=Math.random();while(v===0)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function fb(id,msg){$(id).textContent=msg;$(id).className='feedback '+(msg.startsWith('Correct')?'success':'warn')}
+function init(){updateBetaBinomial();updateGammaPoisson();updateInvGamma();updateNormalNormal();updateCredible();runMCMC()}window.addEventListener('resize',init);init();
+</script>
+</body>
+</html>
