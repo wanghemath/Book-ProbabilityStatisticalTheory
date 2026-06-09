@@ -582,7 +582,4 @@ Section summary
   Model updating        Prior and likelihood               Posterior distribution
   Decision theory       Posterior expected loss            Bayes action
 :::
-
-## References and Further Reading  
-
-These notes are based on the Bayesian components of Sections 12--17 of the MATH 5010 lecture notes: point estimation, evaluating estimators, hypothesis tests, evaluating tests, interval estimation, and evaluating interval estimators. Standard references include Casella and Berger, *Statistical Inference*; Larry Wasserman, *All of Statistics*; and the online probability and statistical inference resources used throughout the course.
+ 

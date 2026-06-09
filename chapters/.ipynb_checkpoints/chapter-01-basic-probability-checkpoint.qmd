@@ -848,14 +848,4 @@ The goal of this section is to collect the main takeaways before moving to rando
 
 -   Many probability mistakes come from ignoring conditioning, selection bias, or hidden variables.
 
-## References and Further Reading 
-
-1. George Casella and Roger L. Berger, *Statistical Inference*, 2nd edition.
-2. Larry Wasserman, *All of Statistics*.
-3. C. M. Grinstead and J. L. Snell, *Introduction to Probability*. American Mathematical Society, 2012.
-4. Sheldon Ross, *Introduction to Probability Models*, 12th edition.
-5. ProbabilityCourse.com: <https://www.probabilitycourse.com/>
-6. Penn State STAT 415: <https://online.stat.psu.edu/stat415/>
-7. Harvard STAT 110: <https://stat110.hsites.harvard.edu/>
-8. E. García-Portugués, *Notes for Predictive Modeling*: <https://bookdown.org/egarpor/inference/>
-9. Baby measure theory notes: <https://www.stat.umn.edu/geyer/8501/measure.pdf>
+ 

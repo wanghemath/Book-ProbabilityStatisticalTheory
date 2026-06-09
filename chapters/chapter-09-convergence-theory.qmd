@@ -837,17 +837,4 @@ identify the most relevant theorem.
 4.  Use the continuous mapping theorem.
 :::
 
-# References and Further Reading
-
-This section lists references aligned with the course lecture note.
-
--   Casella and Berger, *Statistical Inference*, 2nd edition, Chapter 3.
-
--   Larry Wasserman, *All of Statistics*.
-
--   C. M. Grinstead and J. L. Snell, *Introduction to Probability*,
-    American Mathematical Society, 2012.
-
--   S. Ross, *Introduction to Probability Models*, 12th edition.
-
--   ProbabilityCourse.com, Chapter 7.
+ 

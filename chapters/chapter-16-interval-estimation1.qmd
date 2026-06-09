@@ -506,17 +506,4 @@ Key takeaways
   Beta-binomial Bayes               Beta posterior                    Posterior quantiles
   Gamma-Poisson Bayes               Gamma posterior                   Posterior quantiles
 :::
-
-# References  
-
--   Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition.
-
--   Wasserman, L. *All of Statistics*.
-
--   ProbabilityCourse.com.
-
--   Penn State STAT 415 Online Notes.
-
--   Harvard Stat 110 resources.
-
--   García-Portugués, E. *Notes for Statistical Inference*.
+ 

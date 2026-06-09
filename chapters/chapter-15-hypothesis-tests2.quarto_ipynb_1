@@ -128,7 +128,7 @@
         "=\\frac{10+5+1}{32}=\\frac12.$$ Thus Test 2 has much larger power but also much larger size. This illustrates the Type I--Type II error trade-off.\n",
         ":::\n"
       ],
-      "id": "c51afb8c"
+      "id": "eee47590"
     },
     {
       "cell_type": "code",
@@ -618,7 +618,7 @@
         "Key message A hypothesis test is not evaluated by whether it is correct on one dataset. It is evaluated by its long-run error probabilities, its power function, and, when costs matter, its risk function.\n",
         ":::"
       ],
-      "id": "35a55223"
+      "id": "ffaf93a3"
     }
   ],
   "metadata": {

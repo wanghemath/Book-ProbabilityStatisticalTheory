@@ -639,14 +639,4 @@ This section summarizes the main transformation tools and when to use each one.
     \qquad s\geq0.$$ Thus $$S\sim \operatorname{Gamma}(2,1)$$ under the rate-$1$ parameterization.
 :::
 
-## References  
-
--   Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition.
-
--   Wasserman, L. *All of Statistics*.
-
--   Grinstead, C. M. and Snell, J. L. *Introduction to Probability*. American Mathematical Society, 2012.
-
--   Ross, S. *Introduction to Probability Models*, 12th edition.
-
-These notes are based on the instructor’s Section 5 lecture notes for MATH 5010 and the listed recommended references.
+ 

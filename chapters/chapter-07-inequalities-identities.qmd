@@ -695,15 +695,4 @@ This final section summarizes the main inequalities and indicates when each one 
 How to choose a bound Use Boole/Bonferroni for unions of events. Use Markov if only a first moment is available. Use Chebyshev if a variance is available. Use Chernoff or Hoeffding for exponential concentration, especially for sums or averages of independent random variables. Use Cauchy-Schwarz/Holder/Minkowski/Jensen when the problem involves expectations of functions, products, or convexity.
 
 :::
-
-## References
-
--   Casella, George and Berger, Roger L. *Statistical Inference*, 2nd edition, Sections 3.6 and 4.7.
-
--   Larry Wasserman. *All of Statistics*.
-
--   C. M. Grinstead and J. L. Snell. *Introduction to Probability*. American Mathematical Society, 2012.
-
--   Sheldon Ross. *Introduction to Probability Models*, 12th edition.
-
--   Online resources: <https://www.probabilitycourse.com/>.
+ 

@@ -530,7 +530,4 @@ This section developed the first set of tools for finding point estimators.
 
 8.  Conjugate priors make Bayesian updating algebraically simple, as in the beta-binomial model.
 :::
-
-# References
-
-These notes follow the course lecture slides for MATH 5010 and standard references including Casella and Berger, *Statistical Inference*; Wasserman, *All of Statistics*; ProbabilityCourse.com; Penn State STAT 415; Harvard Stat 110; and online notes on mathematical statistics.
+ 

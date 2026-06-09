@@ -766,15 +766,4 @@ Since $X\sim\operatorname{Exp}(2)$,
 $$\mathbb{P}(X>4)=e^{-2\cdot 4}=e^{-8}.$$ Thus
 $$\boxed{\mathbb{P}(X>7\mid X>3)=e^{-8}.}$$
 :::
-
-## References
-
--   Casella, George and Berger, Roger L. *Statistical Inference*, 2nd
-    edition.
-
--   Wasserman, Larry. *All of Statistics*.
-
--   Grinstead, C. M. and Snell, J. L. *Introduction to Probability*.
-    American Mathematical Society, 2012.
-
--   Ross, Sheldon. *Introduction to Probability Models*, 12th edition.
+ 

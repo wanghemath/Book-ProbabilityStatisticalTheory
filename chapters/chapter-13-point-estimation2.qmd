@@ -658,13 +658,4 @@ By the law of total expectation, $$\mathbb{E}[\phi(T)]=\mathbb{E}[\mathbb{E}(W\m
 ::: {.callout-tip title="Solution"}
 For fixed $x$, minimize $$Q(a)=\int (a-\theta)^2\pi(\theta\mid x)\,d\theta.$$ Expanding, $$Q(a)=a^2-2a\mathbb{E}(\theta\mid x)+\mathbb{E}(\theta^2\mid x).$$ Differentiate: $$Q'(a)=2a-2\mathbb{E}(\theta\mid x).$$ Thus the minimizer is $$a=\mathbb{E}(\theta\mid x).$$
 :::
-
-# References
-
-These notes follow the course lecture slides and standard references on statistical inference.
-
--   Casella, George, and Berger, Roger L. *Statistical Inference*, 2nd edition.
-
--   Wasserman, Larry. *All of Statistics*.
-
--   Online reference: <https://www.probabilitycourse.com/>
+ 

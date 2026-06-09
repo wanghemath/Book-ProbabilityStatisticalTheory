@@ -181,7 +181,7 @@
         "$X_n\\xrightarrow{D}N(0,1)$.\n",
         ":::\n"
       ],
-      "id": "4bd4d6e2"
+      "id": "336514b6"
     },
     {
       "cell_type": "code",
@@ -868,7 +868,7 @@
         "\n",
         "-   ProbabilityCourse.com, Chapter 7."
       ],
-      "id": "cdd02dce"
+      "id": "834d33e7"
     }
   ],
   "metadata": {

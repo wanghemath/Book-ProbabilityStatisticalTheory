@@ -621,14 +621,4 @@ This section introduced the foundations of one-way ANOVA.
 
 -   Under the null, $F\sim F_{k-1,N-k}$.
 :::
-
-# References
-
-- Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition.
-- Wasserman, L. *All of Statistics*.
-- ProbabilityCourse.com: <https://www.probabilitycourse.com/>
-- Penn State STAT 415: <https://online.stat.psu.edu/stat415/>
-- Harvard Stat 110: <https://stat110.hsites.harvard.edu/>
-- E. García-Portugués, *Notes for Nonparametric Statistics and Statistical Inference*: <https://bookdown.org/egarpor/inference/>
-- ANOVA reference: <https://bookdown.org/mcbroom_j/Book/week-7-anova.html>
-
+ 

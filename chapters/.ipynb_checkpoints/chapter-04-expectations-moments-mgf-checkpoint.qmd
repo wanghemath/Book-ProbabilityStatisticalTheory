@@ -787,14 +787,4 @@ X\sim\operatorname{Normal}(\mu,\sigma^2):\quad &M_X(t)=\exp\left(\mu t+\frac{\si
 
 :::
 
-## References
-
-These notes are based on the instructor’s Section 4 lecture slides for MATH 5010 and the following recommended references.
-
-- Casella, G. and Berger, R. L., *Statistical Inference*, 2nd edition.
-
-- Wasserman, L., *All of Statistics*.
-
-- Grinstead, C. M. and Snell, J. L., *Introduction to Probability*.
-
-- Ross, S., *Introduction to Probability Models*, 12th edition.
+ 

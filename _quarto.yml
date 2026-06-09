@@ -9,10 +9,13 @@ book:
   title: "Foundations of Probability and Statistical Theory"
   subtitle: "A Modern Introduction with Computation, Simulation, and Inference"
   author: "He Wang"
-  date: "June, 2026"
+  date: "2026"
   site-url: "https://wanghemath.github.io/Book-ProbabilityStatisticalTheory/"
   repo-url: "https://github.com/wanghemath/Book-ProbabilityStatisticalTheory"
-  repo-actions: [edit, issue]
+  repo-actions:
+    - edit
+    - issue
+
   chapters:
     - index.qmd
     - introduction.qmd
@@ -38,9 +41,12 @@ book:
     - chapters/chapter-18-anova1.qmd
     - chapters/chapter-19-anova2-applications.qmd
     - chapters/chapter-20-bayesian-inference.qmd
+    - references.qmd
+
   sidebar:
     style: docked
     background: light
+
   page-footer:
     left: "Foundations of Probability and Statistical Theory"
     right: "Built with Quarto"
@@ -59,7 +65,9 @@ format:
     link-external-newwindow: true
     smooth-scroll: true
     css: assets/styles.css
+
   pdf:
+    pdf-engine: lualatex
     documentclass: scrreprt
     toc: true
     number-sections: true

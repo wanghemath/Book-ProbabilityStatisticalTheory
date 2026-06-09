@@ -400,19 +400,4 @@ This final section summarizes the main ways to evaluate interval estimators.
 
 5.  Loss functions provide a decision-theoretic way to balance coverage and interval length.
 :::
-
-# References  
-
-These notes are based on the course lecture material for MATH 5010 and standard references in statistical inference.
-
--   Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition, Chapter 9.3.
-
--   Wasserman, L. *All of Statistics*.
-
--   ProbabilityCourse.com.
-
--   Penn State STAT 415 online notes.
-
--   Harvard Stat 110 materials.
-
--   García-Portugués, E. *Notes for Statistical Inference*.
+ 

@@ -1146,24 +1146,4 @@ For the Poisson exponential family, $$A(\eta)=e^\eta.$$ Therefore $$A'(\eta)=e^\
 \qquad \operatorname{Var}(Y)=\lambda.$$
 :::
 
-## References and Further Reading
-
-This section lists references that support the probability and statistical theory used in the course.
-
--   George Casella and Roger L. Berger, *Statistical Inference*, 2nd edition.
-
--   Larry Wasserman, *All of Statistics*.
-
--   C. M. Grinstead and J. L. Snell, *Introduction to Probability*, American Mathematical Society, 2012.
-
--   Sheldon Ross, *Introduction to Probability Models*, 12th edition, Academic Press.
-
--   Online reference: <https://www.probabilitycourse.com/>
-
--   Online reference: <https://online.stat.psu.edu/stat415/>
-
--   Online reference: <https://stat110.hsites.harvard.edu/>
-
--   Online reference: <https://bookdown.org/egarpor/inference/>
-
--   Extra reading on measure theory: <https://www.stat.umn.edu/geyer/8501/measure.pdf>
+ 

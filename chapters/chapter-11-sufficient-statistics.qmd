@@ -398,11 +398,4 @@ This section is about reducing data without losing information about parameters.
 
 7.  The likelihood principle says proportional likelihoods provide the same evidence about the parameter.
 :::
-
-# References  
-
--   Casella, G. and Berger, R. L. *Statistical Inference*, 2nd edition.
-
--   Wasserman, L. *All of Statistics*.
-
--   ProbabilityCourse.com, online probability text.
+ 

@@ -568,19 +568,4 @@ Key takeaways
 
 -   UITs reject when any component test rejects; IUTs reject only when all component tests reject.
 :::
-
-# References
-
-These notes are based on the Section 14 lecture slides and standard references:
-
--   Casella, George and Berger, Roger L. *Statistical Inference*, 2nd edition.
-
--   Wasserman, Larry. *All of Statistics*.
-
--   <https://www.probabilitycourse.com/>
-
--   <https://online.stat.psu.edu/stat415/>
-
--   <https://stat110.hsites.harvard.edu/>
-
--   <https://bookdown.org/egarpor/inference/>
+ 

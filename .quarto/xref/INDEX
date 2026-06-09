@@ -70,5 +70,8 @@
   },
   "chapters/chapter-20-bayesian-inference.qmd": {
     "chapter-20-bayesian-inference.html": "5428d505"
+  },
+  "references.qmd": {
+    "references.html": "990ba518"
   }
 }

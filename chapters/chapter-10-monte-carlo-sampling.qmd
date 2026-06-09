@@ -1101,35 +1101,4 @@ about $1000$ accepted samples, we need approximately
 $$\frac{1000}{0.2}=5000$$ proposal samples.
 :::
 
-# References  
-
--   Christopher M. Bishop, *Pattern Recognition and Machine Learning*,
-    Springer, 2006.
-
--   Casella, George, and Roger L. Berger, *Statistical Inference*, 2nd
-    edition.
-
--   Larry Wasserman, *All of Statistics*.
-
--   C. M. Grinstead and J. L. Snell, *Introduction to Probability*,
-    American Mathematical Society, 2012.
-
--   Sheldon Ross, *Introduction to Probability Models*, 12th edition.
-
--   Art Owen, *Monte Carlo Theory, Methods and Examples*, available
-    online.
-
--   Dirk Kroese and collaborators, Monte Carlo resources and lecture
-    notes.
-
--   Chi Feng's MCMC interactive visualization:
-    <https://github.com/chi-feng/mcmc-demo>
-
--   Andrieu, de Freitas, Doucet, and Jordan, *An Introduction to MCMC
-    for Machine Learning*.
-
--   Neal, R. (1995), *Suppressing Random Walks in Markov Chain Monte
-    Carlo Using Overrelaxation*.
-
--   Tang, Y. (2022), *A Note on Monte Carlo Integration in
-    High-Dimensions*.
+ 

@@ -219,7 +219,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same}
 \hypersetup{
-  pdftitle={MATH 5010: Foundations of Statistical Theory \& Probability},
+  pdftitle={Foundations of Probability and Statistical Theory},
   pdfauthor={He Wang},
   colorlinks=true,
   linkcolor={blue},
@@ -229,16 +229,17 @@
   pdfcreator={LaTeX via pandoc}}
 
 
-\title{MATH 5010: Foundations of Statistical Theory \& Probability}
+\title{Foundations of Probability and Statistical Theory}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
-\subtitle{Lecture Notes, Interactive Modules, and Computer Labs}
+\subtitle{A Modern Introduction with Computation, Simulation, and
+Inference}
 \author{He Wang}
-\date{2026-01-01}
+\date{2025-12-31}
 \begin{document}
 \maketitle
 
@@ -250,16 +251,19 @@
 
 \bookmarksetup{startatroot}
 
-\chapter{MATH 5010}\label{math-5010}
+\chapter{Foundations of Probability and Statistical
+Theory}\label{foundations-of-probability-and-statistical-theory}
 
-Foundations of Statistical Theory \& Probability
+A Modern Introduction with Computation, Simulation, and Inference
 
 \hfill\break
 
 \bookmarksetup{startatroot}
 
-\chapter{MATH 5010: Foundations of Statistical Theory \&
-Probability}\label{math-5010-foundations-of-statistical-theory-probability}
+\chapter*{Welcome}\label{welcome}
+\addcontentsline{toc}{chapter}{Welcome}
+
+\markboth{Welcome}{Welcome}
 
 Welcome to the online book for \textbf{MATH 5010: Foundations of
 Statistical Theory \& Probability}.
@@ -286,52 +290,6 @@ The book begins with probability theory and random variables, then
 builds toward convergence theory, sampling distributions, sufficient
 statistics, point estimation, hypothesis testing, interval estimation,
 ANOVA, and Bayesian inference.
-
-\section{Quick links}\label{quick-links}
-
-\begin{itemize}
-\tightlist
-\item
-  \href{introduction.qmd}{Introduction}
-\item
-  \href{labs-summary.qmd}{Labs and interactive modules}
-\item
-  \href{https://github.com/wanghemath/Book-ProbabilityStatisticalTheory}{GitHub
-  repository}
-\item
-  \href{https://wanghemath.github.io/Book-ProbabilityStatisticalTheory/}{Published
-  book site}
-\end{itemize}
-
-\section{Folder structure}\label{folder-structure}
-
-The source files are organized as follows:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{Book{-}ProbabilityStatisticalTheory/}
-\NormalTok{├── \_quarto.yml}
-\NormalTok{├── index.qmd}
-\NormalTok{├── introduction.qmd}
-\NormalTok{├── labs{-}summary.qmd}
-\NormalTok{├── chapters/}
-\NormalTok{│   ├── chapter{-}01{-}basic{-}probability.qmd}
-\NormalTok{│   ├── chapter{-}02{-}random{-}variables{-}distributions.qmd}
-\NormalTok{│   └── ...}
-\NormalTok{├── htmls/}
-\NormalTok{│   └── interactive HTML modules}
-\NormalTok{├── labs/}
-\NormalTok{│   └── Jupyter notebook labs}
-\NormalTok{├── assets/}
-\NormalTok{│   └── styles.css}
-\NormalTok{└── docs/}
-\NormalTok{    └── rendered GitHub Pages site}
-\end{Highlighting}
-\end{Shaded}
-
-All main chapter pages are stored in the \texttt{chapters/} folder. The
-book navigation in \texttt{\_quarto.yml} points to these chapter files
-using paths such as \texttt{chapters/chapter-01-basic-probability.qmd}.
 
 \section{How to use this book}\label{how-to-use-this-book}
 
@@ -506,35 +464,12 @@ directly in Google Colab from the GitHub repository. The interactive
 pages are stored in the \texttt{htmls/} folder and are intended for
 visual exploration before, during, or after lecture.
 
-\section{Local preview and rendering}\label{local-preview-and-rendering}
-
-From the book folder, run:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{quarto}\NormalTok{ preview}
-\end{Highlighting}
-\end{Shaded}
-
-To render the complete website into the \texttt{docs/} folder for GitHub
-Pages, run:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\ExtensionTok{quarto}\NormalTok{ render}
-\end{Highlighting}
-\end{Shaded}
-
-Then commit both the source files and rendered \texttt{docs/} folder to
-the GitHub repository.
-
 \bookmarksetup{startatroot}
 
-\chapter{Introduction}\label{introduction}
+\chapter*{Introduction}\label{introduction}
+\addcontentsline{toc}{chapter}{Introduction}
 
-\bookmarksetup{startatroot}
-
-\chapter{Introduction}\label{introduction-1}
+\markboth{Introduction}{Introduction}
 
 This book supports \textbf{MATH 5010: Foundations of Statistical Theory
 \& Probability}. It is written as a complete course companion: lecture
@@ -548,10 +483,6 @@ random samples, order statistics, convergence, and simulation. The
 second part develops statistical inference: sufficient statistics, point
 estimation, estimator evaluation, hypothesis testing, confidence
 intervals, ANOVA, and Bayesian inference.
-
-The chapter source files are stored in the \texttt{chapters/} folder.
-This keeps the root directory clean while allowing the Quarto book
-navigation to list the chapters in their teaching order.
 
 The guiding idea is that statistical theory should be learned in three
 languages at once:
@@ -569,7 +500,10 @@ languages at once:
   modeling, and interpretation.
 \end{itemize}
 
-\section{Course philosophy}\label{course-philosophy}
+\section*{Course philosophy}\label{course-philosophy}
+\addcontentsline{toc}{section}{Course philosophy}
+
+\markright{Course philosophy}
 
 Probability and statistics are not only collections of formulas. They
 are ways of thinking about uncertainty.
@@ -599,7 +533,10 @@ This book repeatedly moves through the same cycle:
   test, or interval means in plain language.
 \end{enumerate}
 
-\section{Learning outcomes}\label{learning-outcomes}
+\section*{Learning outcomes}\label{learning-outcomes}
+\addcontentsline{toc}{section}{Learning outcomes}
+
+\markright{Learning outcomes}
 
 After working through this book, students should be able to:
 
@@ -656,12 +593,16 @@ After working through this book, students should be able to:
   statistical results.
 \end{itemize}
 
-\section{Organization of the book}\label{organization-of-the-book}
+\section*{Organization of the book}\label{organization-of-the-book}
+\addcontentsline{toc}{section}{Organization of the book}
+
+\markright{Organization of the book}
 
 The chapters are arranged to follow the logical development of
 statistical theory.
 
-\subsection{Probability theory}\label{probability-theory}
+\subsection*{Probability theory}\label{probability-theory}
+\addcontentsline{toc}{subsection}{Probability theory}
 
 Chapters 1--10 build the probability foundation. These chapters begin
 with basic probability and move through random variables, multivariate
@@ -674,7 +615,8 @@ students should be comfortable moving between exact probability
 formulas, asymptotic approximations, and simulation-based
 approximations.
 
-\subsection{Statistical inference}\label{statistical-inference}
+\subsection*{Statistical inference}\label{statistical-inference}
+\addcontentsline{toc}{subsection}{Statistical inference}
 
 Chapters 11--20 build inference from the probability foundation. The
 sequence begins with sufficient statistics and likelihood, then develops
@@ -686,27 +628,11 @@ unknown quantities from data. Students learn classical and Bayesian
 methods side by side so that they can compare estimators, tests,
 confidence intervals, credible intervals, and decision rules.
 
-\section{Source organization}\label{source-organization}
-
-The book source is organized around four teaching asset folders:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{chapters/   lecture{-}note chapter pages}
-\NormalTok{htmls/      interactive standalone HTML modules}
-\NormalTok{labs/       Jupyter notebook labs for Python and simulation}
-\NormalTok{assets/     CSS and other supporting files}
-\end{Highlighting}
-\end{Shaded}
-
-Because chapter files are inside \texttt{chapters/}, links from chapters
-to labs and HTML modules use relative paths such as \texttt{../labs/...}
-and \texttt{../htmls/...}. The top-level pages, including this
-introduction and the labs summary page, use \texttt{labs/...} and
-\texttt{htmls/...}.
-
-\section{How each chapter is
+\section*{How each chapter is
 structured}\label{how-each-chapter-is-structured}
+\addcontentsline{toc}{section}{How each chapter is structured}
+
+\markright{How each chapter is structured}
 
 Most chapters follow a common structure:
 
@@ -733,7 +659,10 @@ Most chapters follow a common structure:
 This structure is intended to support both classroom teaching and
 self-study.
 
-\section{Computational labs}\label{computational-labs}
+\section*{Computational labs}\label{computational-labs}
+\addcontentsline{toc}{section}{Computational labs}
+
+\markright{Computational labs}
 
 The labs are Jupyter notebooks in the \texttt{labs/} folder. They use
 Python to simulate probability models, estimate parameters, visualize
@@ -748,7 +677,10 @@ See the full list here:
 
 \href{labs-summary.qmd}{Open the labs and interactive modules summary}
 
-\section{Interactive HTML modules}\label{interactive-html-modules}
+\section*{Interactive HTML modules}\label{interactive-html-modules}
+\addcontentsline{toc}{section}{Interactive HTML modules}
+
+\markright{Interactive HTML modules}
 
 The interactive modules are standalone HTML files in the \texttt{htmls/}
 folder. They are designed for visual and conceptual learning. Examples
@@ -759,7 +691,10 @@ comparing classical and Bayesian procedures.
 These pages can be used in lecture, recitation, homework review, or
 independent study.
 
-\section{Mathematical notation}\label{mathematical-notation}
+\section*{Mathematical notation}\label{mathematical-notation}
+\addcontentsline{toc}{section}{Mathematical notation}
+
+\markright{Mathematical notation}
 
 This book uses standard notation from probability and mathematical
 statistics. For example:
@@ -779,7 +714,7 @@ statistics. For example:
 \item
   \(X_1, \ldots, X_n\) denotes a random sample;
 \item
-  \(ar X\) denotes the sample mean;
+  \(ar X\) denotes the sample mean;
 \item
   \(L(   heta)\) and \(\ell(   heta)\) denote likelihood and
   log-likelihood;
@@ -789,7 +724,10 @@ statistics. For example:
   \(H_0\) and \(H_1\) denote null and alternative hypotheses.
 \end{itemize}
 
-\section{Suggested study strategy}\label{suggested-study-strategy}
+\section*{Suggested study strategy}\label{suggested-study-strategy}
+\addcontentsline{toc}{section}{Suggested study strategy}
+
+\markright{Suggested study strategy}
 
 For each chapter, students should first identify the main statistical
 question. For example: Are we computing a probability? Finding a
@@ -817,7 +755,10 @@ This process is more important than memorizing individual formulas. The
 goal is to become fluent in the logic of probability and statistical
 inference.
 
-\section{Repository and book site}\label{repository-and-book-site}
+\section*{Repository and book site}\label{repository-and-book-site}
+\addcontentsline{toc}{section}{Repository and book site}
+
+\markright{Repository and book site}
 
 The GitHub repository for this book is:
 
@@ -829,36 +770,21 @@ The published Quarto book site is:
 
 \bookmarksetup{startatroot}
 
-\chapter{Computer Labs and Interactive
+\chapter*{Computer Labs and Interactive
 Pages}\label{computer-labs-and-interactive-pages}
+\addcontentsline{toc}{chapter}{Computer Labs and Interactive Pages}
 
-MATH 5010 resource index
-
-\hfill\break
-
-\bookmarksetup{startatroot}
-
-\chapter{Computer Labs and Interactive
-Pages}\label{computer-labs-and-interactive-pages-1}
+\markboth{Computer Labs and Interactive Pages}{Computer Labs and
+Interactive Pages}
 
 This page collects all interactive HTML pages and Jupyter notebook labs
 for \textbf{MATH 5010: Foundations of Statistical Theory and
 Probability}.
 
-The GitHub repository for this book is:
+\section*{Quick Start for Students}\label{quick-start-for-students}
+\addcontentsline{toc}{section}{Quick Start for Students}
 
-\url{https://github.com/wanghemath/Book-ProbabilityStatisticalTheory}
-
-For notebooks, use the \textbf{Open in Google Colab} links. The Colab
-links follow this pattern:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{https://colab.research.google.com/github/wanghemath/Book{-}ProbabilityStatisticalTheory/blob/main/labs/NOTEBOOK\_NAME.ipynb}
-\end{Highlighting}
-\end{Shaded}
-
-\section{Quick Start for Students}\label{quick-start-for-students}
+\markright{Quick Start for Students}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -875,7 +801,84 @@ links follow this pattern:
   local Python environment.
 \end{enumerate}
 
-\section{Interactive HTML Pages}\label{interactive-html-pages}
+\section*{Interactive HTML Pages}\label{interactive-html-pages}
+\addcontentsline{toc}{section}{Interactive HTML Pages}
+
+\markright{Interactive HTML Pages}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Section
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Topic
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interactive HTML
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Section 1 & Basic Probability &
+\href{htmls/section1_probability_interactive.html}{Open interactive
+page} \\
+Section 2 & Random Variables and Distributions &
+\href{htmls/section2_random_variables_intertributions_interactive.html}{Open
+interactive page} \\
+Section 3 & Joint and Conditional Distributions &
+\href{htmls/section3_joint_conditional_interactive.html}{Open
+interactive page} \\
+Section 4 & Expectation, Moments, and MGF &
+\href{htmls/section4_expectation_mgf_interactive.html}{Open interactive
+page} \\
+Section 5 & Transformations &
+\href{htmls/section5_transformations_interactive.html}{Open interactive
+page} \\
+Section 6 & Conditional Distribution and Expectation &
+\href{htmls/section6_conditional_distribution_interactive.html}{Open
+interactive page} \\
+Section 7 & Inequalities and Identities &
+\href{htmls/section7_inequalities_interactive.html}{Open interactive
+page} \\
+Section 8 & Random Samples and Order Statistics &
+\href{htmls/section8_random_samples_interactive.html}{Open interactive
+page} \\
+Section 9 & Convergence Theory &
+\href{htmls/section9_convergence_interactive.html}{Open interactive
+page} \\
+Section 10 & Monte Carlo Sampling &
+\href{htmls/section10_monte_carlo_interactive.html}{Open interactive
+page} \\
+Section 11 & Sufficient Statistics &
+\href{htmls/section11_sufficient_statistics_interactive.html}{Open
+interactive page} \\
+Sections 12--13 & Point Estimation &
+\href{htmls/sections12_13_point_estimation_interactive.html}{Open
+interactive page} \\
+Sections 14--15 & Hypothesis Tests &
+\href{htmls/sections14_15_hypothesis_tests_interactive.html}{Open
+interactive page} \\
+Sections 16--17 & Interval Estimation &
+\href{htmls/sections16_17_interval_estimations_interactive.html}{Open
+interactive page} \\
+Sections 18--19 & ANOVA &
+\href{htmls/sections18_19_anova_interactive.html}{Open interactive
+page} \\
+Section 20 & Bayesian Inference &
+\href{htmls/section20_bayesian_inference_interactive.html}{Open
+interactive page} \\
+\end{longtable}
+}
+
+\section*{Computer Labs in Google
+Colab}\label{computer-labs-in-google-colab}
+\addcontentsline{toc}{section}{Computer Labs in Google Colab}
+
+\markright{Computer Labs in Google Colab}
 
 {\def\LTcaptype{none} % do not increment counter
 \begin{longtable}[]{@{}
@@ -889,93 +892,9 @@ Section
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Topic
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Interactive HTML
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-File name
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Section 1 & Basic Probability &
-\href{htmls/section1_probability_interactive.html}{Open interactive
-page} & \texttt{section1\_probability\_interactive.html} \\
-Section 2 & Random Variables and Distributions &
-\href{htmls/section2_random_variables_interactive.html}{Open interactive
-page} & \texttt{section2\_random\_variables\_interactive.html} \\
-Section 3 & Joint and Conditional Distributions &
-\href{htmls/section3_joint_conditional_interactive.html}{Open
-interactive page} &
-\texttt{section3\_joint\_conditional\_interactive.html} \\
-Section 4 & Expectation, Moments, and MGF &
-\href{htmls/section4_expectation_mgf_interactive.html}{Open interactive
-page} & \texttt{section4\_expectation\_mgf\_interactive.html} \\
-Section 5 & Transformations &
-\href{htmls/section5_transformations_interactive.html}{Open interactive
-page} & \texttt{section5\_transformations\_interactive.html} \\
-Section 6 & Conditional Distribution and Expectation &
-\href{htmls/section6_conditional_distribution_interactive.html}{Open
-interactive page} &
-\texttt{section6\_conditional\_distribution\_interactive.html} \\
-Section 7 & Inequalities and Identities &
-\href{htmls/section7_inequalities_interactive.html}{Open interactive
-page} & \texttt{section7\_inequalities\_interactive.html} \\
-Section 8 & Random Samples and Order Statistics &
-\href{htmls/section8_random_samples_interactive.html}{Open interactive
-page} & \texttt{section8\_random\_samples\_interactive.html} \\
-Section 9 & Convergence Theory &
-\href{htmls/section9_convergence_interactive.html}{Open interactive
-page} & \texttt{section9\_convergence\_interactive.html} \\
-Section 10 & Monte Carlo Sampling &
-\href{htmls/section10_monte_carlo_interactive.html}{Open interactive
-page} & \texttt{section10\_monte\_carlo\_interactive.html} \\
-Section 11 & Sufficient Statistics &
-\href{htmls/section11_sufficient_statistics_interactive.html}{Open
-interactive page} &
-\texttt{section11\_sufficient\_statistics\_interactive.html} \\
-Sections 12--13 & Point Estimation &
-\href{htmls/sections12_13_point_estimation_interactive.html}{Open
-interactive page} &
-\texttt{sections12\_13\_point\_estimation\_interactive.html} \\
-Sections 14--15 & Hypothesis Tests &
-\href{htmls/sections14_15_hypothesis_tests_interactive.html}{Open
-interactive page} &
-\texttt{sections14\_15\_hypothesis\_tests\_interactive.html} \\
-Sections 16--17 & Interval Estimation &
-\href{htmls/sections16_17_interval_estimations_interactive.html}{Open
-interactive page} &
-\texttt{sections16\_17\_interval\_estimations\_interactive.html} \\
-Sections 18--19 & ANOVA &
-\href{htmls/sections18_19_anova_interactive.html}{Open interactive page}
-& \texttt{sections18\_19\_anova\_interactive.html} \\
-Section 20 & Bayesian Inference &
-\href{htmls/section20_bayesian_inference_interactive.html}{Open
-interactive page} &
-\texttt{section20\_bayesian\_inference\_interactive.html} \\
-\end{longtable}
-}
-
-\section{Computer Labs in Google
-Colab}\label{computer-labs-in-google-colab}
-
-{\def\LTcaptype{none} % do not increment counter
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Section
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Topic
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Open in Colab
 \end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
 Local notebook
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-File name
 \end{minipage} \\
 \midrule\noalign{}
 \endhead
@@ -985,102 +904,89 @@ Section 1 & Basic Probability &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section1_basic_probability_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section1_basic_probability_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section1\_basic\_probability\_full\_solutions.ipynb} \\
+notebook} \\
 Section 2 & Random Variables and Distributions &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section2_random_variables_distributions_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section2_random_variables_distributions_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section2\_random\_variables\_distributions\_full\_solutions.ipynb} \\
+notebook} \\
 Section 3 & Joint and Conditional Probability &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section3_joint_conditional_probability_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section3_joint_conditional_probability_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section3\_joint\_conditional\_probability\_full\_solutions.ipynb} \\
+notebook} \\
 Section 4 & Expectations, Moments, and MGF &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section4_expectations_moments_mgf_full_solutions_executed.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section4_expectations_moments_mgf_full_solutions_executed.ipynb}{Download
-notebook} &
-\texttt{lab\_section4\_expectations\_moments\_mgf\_full\_solutions\_executed.ipynb} \\
+notebook} \\
 Section 5 & Transformations &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section5_transformations_full_solutions_executed.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section5_transformations_full_solutions_executed.ipynb}{Download
-notebook} &
-\texttt{lab\_section5\_transformations\_full\_solutions\_executed.ipynb} \\
+notebook} \\
 Section 6 & Conditional Expectations &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section6_conditional_expectations_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section6_conditional_expectations_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section6\_conditional\_expectations\_full\_solutions.ipynb} \\
+notebook} \\
 Section 7 & Inequalities and Identities &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section7_inequalities_identities_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section7_inequalities_identities_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section7\_inequalities\_identities\_full\_solutions.ipynb} \\
+notebook} \\
 Section 8 & Sampling and Order Statistics &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section8_sampling_order_statistics_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section8_sampling_order_statistics_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section8\_sampling\_order\_statistics\_full\_solutions.ipynb} \\
+notebook} \\
 Section 9 & Convergence Theory &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section9_convergence_theory_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section9_convergence_theory_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section9\_convergence\_theory\_full\_solutions.ipynb} \\
+notebook} \\
 Section 10 & Monte Carlo Sampling &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/lab_section10_monte_carlo_sampling_full_solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/lab_section10_monte_carlo_sampling_full_solutions.ipynb}{Download
-notebook} &
-\texttt{lab\_section10\_monte\_carlo\_sampling\_full\_solutions.ipynb} \\
+notebook} \\
 Section 11 & Sufficient Statistics &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab11_Sufficient_Statistics_Full_Solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/MATH5010_Lab11_Sufficient_Statistics_Full_Solutions.ipynb}{Download
-notebook} &
-\texttt{MATH5010\_Lab11\_Sufficient\_Statistics\_Full\_Solutions.ipynb} \\
+notebook} \\
 Sections 12--13 & Point Estimation &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab12_13_Point_Estimation_Full_Solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/MATH5010_Lab12_13_Point_Estimation_Full_Solutions.ipynb}{Download
-notebook} &
-\texttt{MATH5010\_Lab12\_13\_Point\_Estimation\_Full\_Solutions.ipynb} \\
+notebook} \\
 Sections 14--15 & Hypothesis Tests and Interval Estimation &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab14_15_Hypothesis_Tests_and_Interval_Estimation_Full_Solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/MATH5010_Lab14_15_Hypothesis_Tests_and_Interval_Estimation_Full_Solutions.ipynb}{Download
-notebook} &
-\texttt{MATH5010\_Lab14\_15\_Hypothesis\_Tests\_and\_Interval\_Estimation\_Full\_Solutions.ipynb} \\
+notebook} \\
 Sections 16--17 & ANOVA and Bayesian Statistics &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab16_17_ANOVA_and_Bayesian_Statistics_Full_Solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/MATH5010_Lab16_17_ANOVA_and_Bayesian_Statistics_Full_Solutions.ipynb}{Download
-notebook} &
-\texttt{MATH5010\_Lab16\_17\_ANOVA\_and\_Bayesian\_Statistics\_Full\_Solutions.ipynb} \\
+notebook} \\
 Sections 18--19 & Bayesian Inference II and ANOVA II &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab18_19_Bayesian_Inference_II_and_ANOVA_II_Full_Solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/MATH5010_Lab18_19_Bayesian_Inference_II_and_ANOVA_II_Full_Solutions.ipynb}{Download
-notebook} &
-\texttt{MATH5010\_Lab18\_19\_Bayesian\_Inference\_II\_and\_ANOVA\_II\_Full\_Solutions.ipynb} \\
+notebook} \\
 Section 20 & Bayesian Inference &
 \href{https://colab.research.google.com/github/wanghemath/Book-ProbabilityStatisticalTheory/blob/main/labs/MATH5010_Lab20_Bayesian_Inference_Full_Solutions.ipynb}{Open
 in Google Colab} &
 \href{labs/MATH5010_Lab20_Bayesian_Inference_Full_Solutions.ipynb}{Download
-notebook} &
-\texttt{MATH5010\_Lab20\_Bayesian\_Inference\_Full\_Solutions.ipynb} \\
+notebook} \\
 \end{longtable}
 }
 
-\section{Suggested Weekly Workflow}\label{suggested-weekly-workflow}
+\section*{Suggested Weekly Workflow}\label{suggested-weekly-workflow}
+\addcontentsline{toc}{section}{Suggested Weekly Workflow}
+
+\markright{Suggested Weekly Workflow}
 
 For each section, a good learning sequence is:
 
@@ -1102,54 +1008,10 @@ For each section, a good learning sequence is:
   Write a short interpretation of the output in statistical language.
 \end{enumerate}
 
-\section{Repository Folder Structure}\label{repository-folder-structure}
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{Book{-}ProbabilityStatisticalTheory/}
-\NormalTok{├── \_quarto.yml}
-\NormalTok{├── index.qmd}
-\NormalTok{├── introduction.qmd}
-\NormalTok{├── labs{-}summary.qmd}
-\NormalTok{├── chapters/}
-\NormalTok{│   ├── chapter{-}01{-}basic{-}probability.qmd}
-\NormalTok{├── ...}
-\NormalTok{│   └── chapter{-}20{-}bayesian{-}inference.qmd}
-\NormalTok{├── htmls/}
-\NormalTok{│   ├── section1\_probability\_interactive.html}
-\NormalTok{│   ├── ...}
-\NormalTok{│   └── section20\_bayesian\_inference\_interactive.html}
-\NormalTok{└── labs/}
-\NormalTok{    ├── lab\_section1\_basic\_probability\_full\_solutions.ipynb}
-\NormalTok{    ├── ...}
-\NormalTok{    └── MATH5010\_Lab20\_Bayesian\_Inference\_Full\_Solutions.ipynb}
-\end{Highlighting}
-\end{Shaded}
-
-\section{Instructor Notes}\label{instructor-notes}
-
-When adding a new interactive page or lab:
-
-\begin{itemize}
-\tightlist
-\item
-  Put HTML files in the \texttt{htmls/} folder.
-\item
-  Put notebook files in the \texttt{labs/} folder.
-\item
-  Add the file to the corresponding table on this page.
-\item
-  Use the Colab URL format above for notebooks stored on GitHub.
-\end{itemize}
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 1: Basic
 Probability}\label{chapter-1-basic-probability}
-
-\bookmarksetup{startatroot}
-
-\chapter{Basic Probability}\label{basic-probability}
 
 This chapter introduces the language of probability used throughout MATH
 5010. Events are sets, probability is a function on events, and
@@ -2515,45 +2377,10 @@ to random variables.
   bias, or hidden variables.
 \end{itemize}
 
-\section{References and Further
-Reading}\label{references-and-further-reading}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  George Casella and Roger L. Berger, \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Larry Wasserman, \emph{All of Statistics}.
-\item
-  C. M. Grinstead and J. L. Snell, \emph{Introduction to Probability}.
-  American Mathematical Society, 2012.
-\item
-  Sheldon Ross, \emph{Introduction to Probability Models}, 12th edition.
-\item
-  ProbabilityCourse.com: \url{https://www.probabilitycourse.com/}
-\item
-  Penn State STAT 415: \url{https://online.stat.psu.edu/stat415/}
-\item
-  Harvard STAT 110: \url{https://stat110.hsites.harvard.edu/}
-\item
-  E. García-Portugués, \emph{Notes for Predictive Modeling}:
-  \url{https://bookdown.org/egarpor/inference/}
-\item
-  Baby measure theory notes:
-  \url{https://www.stat.umn.edu/geyer/8501/measure.pdf}
-\end{enumerate}
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 2: Random Variables and
 Distributions}\label{chapter-2-random-variables-and-distributions}
-
-\bookmarksetup{startatroot}
-
-\chapter{Random Variables and
-Distributions}\label{random-variables-and-distributions}
 
 This chapter turns probability spaces into numerical models. A random
 variable is a function from outcomes to numbers, and its distribution
@@ -4340,46 +4167,10 @@ For the Poisson exponential family, \[A(\eta)=e^\eta.\] Therefore
 
 \end{tcolorbox}
 
-\section{References and Further
-Reading}\label{references-and-further-reading-1}
-
-This section lists references that support the probability and
-statistical theory used in the course.
-
-\begin{itemize}
-\item
-  George Casella and Roger L. Berger, \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Larry Wasserman, \emph{All of Statistics}.
-\item
-  C. M. Grinstead and J. L. Snell, \emph{Introduction to Probability},
-  American Mathematical Society, 2012.
-\item
-  Sheldon Ross, \emph{Introduction to Probability Models}, 12th edition,
-  Academic Press.
-\item
-  Online reference: \url{https://www.probabilitycourse.com/}
-\item
-  Online reference: \url{https://online.stat.psu.edu/stat415/}
-\item
-  Online reference: \url{https://stat110.hsites.harvard.edu/}
-\item
-  Online reference: \url{https://bookdown.org/egarpor/inference/}
-\item
-  Extra reading on measure theory:
-  \url{https://www.stat.umn.edu/geyer/8501/measure.pdf}
-\end{itemize}
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 3: Joint and Conditional
 Probability}\label{chapter-3-joint-and-conditional-probability}
-
-\bookmarksetup{startatroot}
-
-\chapter{Joint and Conditional
-Probability}\label{joint-and-conditional-probability}
 
 This chapter moves from one random variable to several random variables
 studied together. The main objects are joint distributions, marginal
@@ -5451,32 +5242,10 @@ p_{X\mid Y}(x\mid y)&=\frac{p_{Y\mid X}(y\mid x)p_X(x)}{p_Y(y)},\\
 
 \end{tcolorbox}
 
-\section{References}\label{references}
-
-\begin{itemize}
-\tightlist
-\item
-  Casella, George and Berger, Roger L. \emph{Statistical Inference}, 2nd
-  edition. Main reference, Sections 4.1 and 4.2.
-\item
-  Wasserman, Larry. \emph{All of Statistics}.
-\item
-  Grinstead, C. M. and Snell, J. L. \emph{Introduction to Probability}.
-  American Mathematical Society, 2012.
-\item
-  Ross, Sheldon. \emph{Introduction to Probability Models}, 12th
-  edition. Academic Press.
-\end{itemize}
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 4: Expectations, Moments, and Moment Generating
 Functions}\label{chapter-4-expectations-moments-and-moment-generating-functions}
-
-\bookmarksetup{startatroot}
-
-\chapter{Expectations, Moments, and Moment Generating
-Functions}\label{expectations-moments-and-moment-generating-functions}
 
 This chapter develops numerical summaries of random variables and
 introduces moment generating functions as a compact way to encode
@@ -6407,30 +6176,9 @@ X\sim\operatorname{Normal}(\mu,\sigma^2):\quad &M_X(t)=\exp\left(\mu t+\frac{\si
 
 \end{tcolorbox}
 
-\section{References}\label{references-1}
-
-These notes are based on the instructor's Section 4 lecture slides for
-MATH 5010 and the following recommended references.
-
-\begin{itemize}
-\item
-  Casella, G. and Berger, R. L., \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Wasserman, L., \emph{All of Statistics}.
-\item
-  Grinstead, C. M. and Snell, J. L., \emph{Introduction to Probability}.
-\item
-  Ross, S., \emph{Introduction to Probability Models}, 12th edition.
-\end{itemize}
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 5: Transformations}\label{chapter-5-transformations}
-
-\bookmarksetup{startatroot}
-
-\chapter{Transformations}\label{transformations}
 
 This chapter explains how probability distributions change when random
 variables are transformed by functions, sums, products, quotients,
@@ -7419,32 +7167,10 @@ Minimum of iid variables & \(f_{\min}(y)=n[1-F_Y(y)]^{n-1}f_Y(y)\) \\
 
 \end{tcolorbox}
 
-\section{References}\label{references-2}
-
-\begin{itemize}
-\item
-  Casella, G. and Berger, R. L. \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Wasserman, L. \emph{All of Statistics}.
-\item
-  Grinstead, C. M. and Snell, J. L. \emph{Introduction to Probability}.
-  American Mathematical Society, 2012.
-\item
-  Ross, S. \emph{Introduction to Probability Models}, 12th edition.
-\end{itemize}
-
-These notes are based on the instructor's Section 5 lecture notes for
-MATH 5010 and the listed recommended references.
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 6: Conditional
 Expectations}\label{chapter-6-conditional-expectations}
-
-\bookmarksetup{startatroot}
-
-\chapter{Conditional Expectations}\label{conditional-expectations}
 
 This chapter explains how conditional distributions and conditional
 expectations turn difficult probability, expectation, and variance
@@ -7738,7 +7464,7 @@ second parameter is the rate.
 
 \end{tcolorbox}
 
-\section{Conditional Expectations}\label{conditional-expectations-1}
+\section{Conditional Expectations}\label{conditional-expectations}
 
 This section introduces conditional expectation as the expected value
 computed under a conditional distribution.
@@ -8245,31 +7971,16 @@ Since \(X\sim\operatorname{Exp}(2)\),
 
 \end{tcolorbox}
 
-\section{References}\label{references-3}
-
-\begin{itemize}
-\item
-  Casella, George and Berger, Roger L. \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Wasserman, Larry. \emph{All of Statistics}.
-\item
-  Grinstead, C. M. and Snell, J. L. \emph{Introduction to Probability}.
-  American Mathematical Society, 2012.
-\item
-  Ross, Sheldon. \emph{Introduction to Probability Models}, 12th
-  edition.
-\end{itemize}
-
 \bookmarksetup{startatroot}
 
-\chapter{Chapter 6 Extra: Multinomial and Multinormal
+\chapter*{Chapter 6 Extra: Multinomial and Multinormal
 Distributions}\label{chapter-6-extra-multinomial-and-multinormal-distributions}
+\addcontentsline{toc}{chapter}{Chapter 6 Extra: Multinomial and
+Multinormal Distributions}
 
-\bookmarksetup{startatroot}
-
-\chapter{Multinomial and Multinormal
-Distributions}\label{multinomial-and-multinormal-distributions}
+\markboth{Chapter 6 Extra: Multinomial and Multinormal
+Distributions}{Chapter 6 Extra: Multinomial and Multinormal
+Distributions}
 
 This extra chapter extends Section 6 in two directions. First, it
 develops the multinomial distribution and the Dirichlet prior for
@@ -8283,13 +7994,18 @@ distribution; Mahalanobis distance; spectral geometry; marginal and
 conditional Gaussian distributions; affine transformations; products and
 convolutions of Gaussians; linear Gaussian models.
 
-\section{Multinomial Distribution}\label{multinomial-distribution-1}
+\section*{Multinomial Distribution}\label{multinomial-distribution-1}
+\addcontentsline{toc}{section}{Multinomial Distribution}
+
+\markright{Multinomial Distribution}
 
 This section extends the categorical and binomial distributions to
 experiments with more than two possible outcomes.
 
-\subsection{From categorical trials to multinomial
+\subsection*{From categorical trials to multinomial
 counts}\label{from-categorical-trials-to-multinomial-counts}
+\addcontentsline{toc}{subsection}{From categorical trials to multinomial
+counts}
 
 A categorical random variable records one outcome from several
 categories, while a multinomial random vector records the counts of each
@@ -8354,8 +8070,9 @@ Then \[\mathbb{P}(X_1=2,X_2=3,X_3=5)
 
 \end{tcolorbox}
 
-\subsection{Mean, variance, and
+\subsection*{Mean, variance, and
 covariance}\label{mean-variance-and-covariance}
+\addcontentsline{toc}{subsection}{Mean, variance, and covariance}
 
 The components of a multinomial vector are individually binomial, but
 they are dependent because the total count is fixed at \(n\).
@@ -8405,14 +8122,18 @@ Let \(X=(X_1,X_2)\sim \operatorname{Multinomial}(n,p,1-p)\). Because
 
 \end{tcolorbox}
 
-\section{Dirichlet Distribution}\label{dirichlet-distribution}
+\section*{Dirichlet Distribution}\label{dirichlet-distribution}
+\addcontentsline{toc}{section}{Dirichlet Distribution}
+
+\markright{Dirichlet Distribution}
 
 This section introduces the Dirichlet distribution, the continuous
 distribution on probability vectors that generalizes the Beta
 distribution.
 
-\subsection{The simplex and the Dirichlet
+\subsection*{The simplex and the Dirichlet
 density}\label{the-simplex-and-the-dirichlet-density}
+\addcontentsline{toc}{subsection}{The simplex and the Dirichlet density}
 
 The Dirichlet distribution is used when the unknown quantity is itself a
 vector of probabilities.
@@ -8467,8 +8188,9 @@ When \(K=2\), the simplex condition says \(\mu_1+\mu_2=1\), so
 
 \end{tcolorbox}
 
-\subsection{Dirichlet-multinomial Bayesian
+\subsection*{Dirichlet-multinomial Bayesian
 model}\label{dirichlet-multinomial-bayesian-model}
+\addcontentsline{toc}{subsection}{Dirichlet-multinomial Bayesian model}
 
 The Dirichlet distribution is the natural conjugate prior for
 categorical and multinomial probability vectors.
@@ -8542,14 +8264,19 @@ observed counts.
 
 \end{tcolorbox}
 
-\section{Single Variable Gaussian
+\section*{Single Variable Gaussian
 Distribution}\label{single-variable-gaussian-distribution}
+\addcontentsline{toc}{section}{Single Variable Gaussian Distribution}
+
+\markright{Single Variable Gaussian Distribution}
 
 This section reviews the ordinary one-dimensional Gaussian distribution
 before moving to the multivariate Gaussian distribution.
 
-\subsection{Density, mean, variance, and
+\subsection*{Density, mean, variance, and
 probability}\label{density-mean-variance-and-probability}
+\addcontentsline{toc}{subsection}{Density, mean, variance, and
+probability}
 
 The one-dimensional Gaussian distribution is the prototype for the
 multivariate Gaussian distribution.
@@ -8580,14 +8307,18 @@ change-of-variables formula gives
 
 \end{tcolorbox}
 
-\section{Multivariate Gaussian
+\section*{Multivariate Gaussian
 Distribution}\label{multivariate-gaussian-distribution}
+\addcontentsline{toc}{section}{Multivariate Gaussian Distribution}
+
+\markright{Multivariate Gaussian Distribution}
 
 This section introduces the Gaussian distribution for random vectors and
 explains how the covariance matrix controls its geometry.
 
-\subsection{Definition and covariance
+\subsection*{Definition and covariance
 matrix}\label{definition-and-covariance-matrix}
+\addcontentsline{toc}{subsection}{Definition and covariance matrix}
 
 A multivariate Gaussian distribution is completely determined by its
 mean vector and covariance matrix.
@@ -8611,8 +8342,9 @@ normal density.
 
 \end{tcolorbox}
 
-\subsection{Mahalanobis distance and
+\subsection*{Mahalanobis distance and
 geometry}\label{mahalanobis-distance-and-geometry}
+\addcontentsline{toc}{subsection}{Mahalanobis distance and geometry}
 
 The shape of a multivariate Gaussian is controlled by a quadratic form
 that generalizes the one-dimensional \(z\)-score.
@@ -8657,8 +8389,10 @@ more concentrated around a narrow tilted ridge than in the case
 
 \end{tcolorbox}
 
-\subsection{Spectral decomposition and precision
+\subsection*{Spectral decomposition and precision
 matrix}\label{spectral-decomposition-and-precision-matrix}
+\addcontentsline{toc}{subsection}{Spectral decomposition and precision
+matrix}
 
 The eigenvalues and eigenvectors of the covariance matrix reveal the
 principal axes of a Gaussian distribution.
@@ -8691,8 +8425,10 @@ density.
 
 \end{tcolorbox}
 
-\subsection{Why Gaussian distributions are
+\subsection*{Why Gaussian distributions are
 central}\label{why-gaussian-distributions-are-central}
+\addcontentsline{toc}{subsection}{Why Gaussian distributions are
+central}
 
 Gaussian distributions appear frequently because of the central limit
 theorem and because Gaussianity is preserved by many important
@@ -8716,14 +8452,19 @@ finite mean and variance, then the arithmetic mean
 Gaussian distributions occur often in real data.
 \end{remark}
 
-\section{Marginal and Conditional Gaussian
+\section*{Marginal and Conditional Gaussian
 Distributions}\label{marginal-and-conditional-gaussian-distributions}
+\addcontentsline{toc}{section}{Marginal and Conditional Gaussian
+Distributions}
+
+\markright{Marginal and Conditional Gaussian Distributions}
 
 This section gives the most important computational formulas for
 partitioned multivariate Gaussian distributions.
 
-\subsection{Partitioned Gaussian
+\subsection*{Partitioned Gaussian
 vectors}\label{partitioned-gaussian-vectors}
+\addcontentsline{toc}{subsection}{Partitioned Gaussian vectors}
 
 Partitioning a Gaussian vector allows us to study subsets of variables
 and conditional distributions.
@@ -8739,7 +8480,8 @@ Suppose \[X=\begin{pmatrix}X_1\\X_2\end{pmatrix}
 \right).\] Here \(X_1\) and \(X_2\) may themselves be vectors, and the
 blocks of \(\Sigma\) have compatible dimensions.
 
-\subsection{Marginalization}\label{marginalization}
+\subsection*{Marginalization}\label{marginalization}
+\addcontentsline{toc}{subsection}{Marginalization}
 
 The marginal distribution of a subvector of a Gaussian vector is
 Gaussian with the corresponding mean block and covariance block.
@@ -8775,8 +8517,9 @@ change the marginal variances.
 
 \end{tcolorbox}
 
-\subsection{Conditional Gaussian
+\subsection*{Conditional Gaussian
 distributions}\label{conditional-gaussian-distributions}
+\addcontentsline{toc}{subsection}{Conditional Gaussian distributions}
 
 Conditioning on one part of a Gaussian vector gives another Gaussian
 distribution.
@@ -8846,8 +8589,10 @@ distribution, reflecting independence.
 
 \end{tcolorbox}
 
-\subsection{Linear algebra review: Schur complements and block
+\subsection*{Linear algebra review: Schur complements and block
 inverses}\label{linear-algebra-review-schur-complements-and-block-inverses}
+\addcontentsline{toc}{subsection}{Linear algebra review: Schur
+complements and block inverses}
 
 The Schur complement is the matrix identity behind the conditional
 covariance formula.
@@ -8885,13 +8630,17 @@ Here \(A=4\), \(B=2\), \(C=2\), and \(D=3\). Therefore
 
 \end{tcolorbox}
 
-\section{Operations on Gaussian Random
+\section*{Operations on Gaussian Random
 Variables}\label{operations-on-gaussian-random-variables}
+\addcontentsline{toc}{section}{Operations on Gaussian Random Variables}
+
+\markright{Operations on Gaussian Random Variables}
 
 This section summarizes several operations that preserve Gaussian
 structure.
 
-\subsection{Affine transformations}\label{affine-transformations}
+\subsection*{Affine transformations}\label{affine-transformations}
+\addcontentsline{toc}{subsection}{Affine transformations}
 
 A linear transformation plus a shift maps a Gaussian vector to another
 Gaussian vector.
@@ -8922,8 +8671,10 @@ This is the affine transformation with \(A=a^T\) and \(b=0\). Hence
 
 \end{tcolorbox}
 
-\subsection{Products and convolutions of Gaussian
+\subsection*{Products and convolutions of Gaussian
 densities}\label{products-and-convolutions-of-gaussian-densities}
+\addcontentsline{toc}{subsection}{Products and convolutions of Gaussian
+densities}
 
 Products and convolutions of Gaussian densities are central in Bayesian
 updating, filtering, and linear models.
@@ -8985,13 +8736,18 @@ value.
 
 \end{tcolorbox}
 
-\section{Linear Gaussian Models}\label{linear-gaussian-models}
+\section*{Linear Gaussian Models}\label{linear-gaussian-models}
+\addcontentsline{toc}{section}{Linear Gaussian Models}
+
+\markright{Linear Gaussian Models}
 
 This section combines marginal and conditional Gaussian formulas in a
 common model used in Bayesian statistics and machine learning.
 
-\subsection{Marginal and conditional distributions in a linear Gaussian
+\subsection*{Marginal and conditional distributions in a linear Gaussian
 model}\label{marginal-and-conditional-distributions-in-a-linear-gaussian-model}
+\addcontentsline{toc}{subsection}{Marginal and conditional distributions
+in a linear Gaussian model}
 
 A linear Gaussian model assumes a Gaussian prior on an input vector and
 a Gaussian conditional distribution for an output vector.
@@ -9061,12 +8817,16 @@ Therefore \[X\mid Y=y\sim \operatorname{Normal}(m,s^2).\]
 
 \end{tcolorbox}
 
-\section{Summary and Practice}\label{summary-and-practice}
+\section*{Summary and Practice}\label{summary-and-practice}
+\addcontentsline{toc}{section}{Summary and Practice}
+
+\markright{Summary and Practice}
 
 This final section summarizes the main formulas and provides practice
 problems that reinforce the section.
 
-\subsection{Core formulas}\label{core-formulas}
+\subsection*{Core formulas}\label{core-formulas}
+\addcontentsline{toc}{subsection}{Core formulas}
 
 The main ideas of this section are that multinomial counts live on a
 constrained simplex of counts, Dirichlet distributions live on a simplex
@@ -9175,10 +8935,6 @@ Society, 2012. Sheldon Ross, \emph{Introduction to Probability Models},
 
 \chapter{Chapter 7: Inequalities and
 Identities}\label{chapter-7-inequalities-and-identities}
-
-\bookmarksetup{startatroot}
-
-\chapter{Inequalities and Identities}\label{inequalities-and-identities}
 
 This chapter introduces the main probability inequalities used to
 control tail probabilities, prove convergence results, and analyze
@@ -10382,32 +10138,10 @@ expectations of functions, products, or convexity.
 
 \end{tcolorbox}
 
-\section{References}\label{references-4}
-
-\begin{itemize}
-\item
-  Casella, George and Berger, Roger L. \emph{Statistical Inference}, 2nd
-  edition, Sections 3.6 and 4.7.
-\item
-  Larry Wasserman. \emph{All of Statistics}.
-\item
-  C. M. Grinstead and J. L. Snell. \emph{Introduction to Probability}.
-  American Mathematical Society, 2012.
-\item
-  Sheldon Ross. \emph{Introduction to Probability Models}, 12th edition.
-\item
-  Online resources: \url{https://www.probabilitycourse.com/}.
-\end{itemize}
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 8: Sampling and Order
 Statistics}\label{chapter-8-sampling-and-order-statistics}
-
-\bookmarksetup{startatroot}
-
-\chapter{Sampling and Order
-Statistics}\label{sampling-and-order-statistics}
 
 This chapter moves from individual random variables to random samples.
 The central idea is that statistics such as the sample mean, sample
@@ -11454,7 +11188,7 @@ statistics, \[f_{X_{(j)}}(x)
 
 \end{tcolorbox}
 
-\section{References}\label{references-5}
+\section{References}\label{references}
 
 These notes follow the course lecture material and the standard
 references:
@@ -11477,11 +11211,6 @@ references:
 
 \chapter{Chapter 9: Convergence Theory and Limit
 Theorems}\label{chapter-9-convergence-theory-and-limit-theorems}
-
-\bookmarksetup{startatroot}
-
-\chapter{Convergence Theory and Limit
-Theorems}\label{convergence-theory-and-limit-theorems}
 
 This chapter develops the mathematical language for describing the
 limiting behavior of random variables, sample averages, and estimators.
@@ -12543,34 +12272,8 @@ goal, identify the most relevant theorem.
 
 \bookmarksetup{startatroot}
 
-\chapter{References and Further
-Reading}\label{references-and-further-reading-2}
-
-This section lists references aligned with the course lecture note.
-
-\begin{itemize}
-\item
-  Casella and Berger, \emph{Statistical Inference}, 2nd edition, Chapter
-  3.
-\item
-  Larry Wasserman, \emph{All of Statistics}.
-\item
-  C. M. Grinstead and J. L. Snell, \emph{Introduction to Probability},
-  American Mathematical Society, 2012.
-\item
-  S. Ross, \emph{Introduction to Probability Models}, 12th edition.
-\item
-  ProbabilityCourse.com, Chapter 7.
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 10: Monte Carlo
 Sampling}\label{chapter-10-monte-carlo-sampling}
-
-\bookmarksetup{startatroot}
-
-\chapter{Monte Carlo Sampling}\label{monte-carlo-sampling}
 
 This chapter introduces Monte Carlo methods as a practical bridge
 between probability theory, statistical inference, numerical
@@ -13902,51 +13605,8 @@ about \(1000\) accepted samples, we need approximately
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-6}
-
-\begin{itemize}
-\item
-  Christopher M. Bishop, \emph{Pattern Recognition and Machine
-  Learning}, Springer, 2006.
-\item
-  Casella, George, and Roger L. Berger, \emph{Statistical Inference},
-  2nd edition.
-\item
-  Larry Wasserman, \emph{All of Statistics}.
-\item
-  C. M. Grinstead and J. L. Snell, \emph{Introduction to Probability},
-  American Mathematical Society, 2012.
-\item
-  Sheldon Ross, \emph{Introduction to Probability Models}, 12th edition.
-\item
-  Art Owen, \emph{Monte Carlo Theory, Methods and Examples}, available
-  online.
-\item
-  Dirk Kroese and collaborators, Monte Carlo resources and lecture
-  notes.
-\item
-  Chi Feng's MCMC interactive visualization:
-  \url{https://github.com/chi-feng/mcmc-demo}
-\item
-  Andrieu, de Freitas, Doucet, and Jordan, \emph{An Introduction to MCMC
-  for Machine Learning}.
-\item
-  Neal, R. (1995), \emph{Suppressing Random Walks in Markov Chain Monte
-  Carlo Using Overrelaxation}.
-\item
-  Tang, Y. (2022), \emph{A Note on Monte Carlo Integration in
-  High-Dimensions}.
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 11: Sufficient Statistics and the Likelihood
 Principle}\label{chapter-11-sufficient-statistics-and-the-likelihood-principle}
-
-\bookmarksetup{startatroot}
-
-\chapter{Sufficient Statistics and the Likelihood
-Principle}\label{sufficient-statistics-and-the-likelihood-principle}
 
 This chapter introduces sufficient statistics as a formal data-reduction
 principle for statistical inference. The main goal is to identify when a
@@ -14724,27 +14384,8 @@ parameters.
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-7}
-
-\begin{itemize}
-\item
-  Casella, G. and Berger, R. L. \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Wasserman, L. \emph{All of Statistics}.
-\item
-  ProbabilityCourse.com, online probability text.
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 12: Point Estimation I --- Finding
 Estimators}\label{chapter-12-point-estimation-i-finding-estimators}
-
-\bookmarksetup{startatroot}
-
-\chapter{Point Estimation I: Finding
-Estimators}\label{point-estimation-i-finding-estimators}
 
 This chapter begins the statistical inference part of the course. The
 main goal is to construct point estimators for unknown parameters using
@@ -15770,22 +15411,8 @@ estimators.
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-8}
-
-These notes follow the course lecture slides for MATH 5010 and standard
-references including Casella and Berger, \emph{Statistical Inference};
-Wasserman, \emph{All of Statistics}; ProbabilityCourse.com; Penn State
-STAT 415; Harvard Stat 110; and online notes on mathematical statistics.
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 13: Point Estimation II --- Evaluating
 Estimators}\label{chapter-13-point-estimation-ii-evaluating-estimators}
-
-\bookmarksetup{startatroot}
-
-\chapter{Point Estimation II: Evaluating
-Estimators}\label{point-estimation-ii-evaluating-estimators}
 
 This chapter continues point estimation. Chapter 12 focused on how to
 construct estimators. This chapter focuses on how to evaluate and
@@ -16977,30 +16604,8 @@ minimizer is \[a=\mathbb{E}(\theta\mid x).\]
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-9}
-
-These notes follow the course lecture slides and standard references on
-statistical inference.
-
-\begin{itemize}
-\item
-  Casella, George, and Berger, Roger L. \emph{Statistical Inference},
-  2nd edition.
-\item
-  Wasserman, Larry. \emph{All of Statistics}.
-\item
-  Online reference: \url{https://www.probabilitycourse.com/}
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 14: Hypothesis Tests I --- Methods of Finding
 Tests}\label{chapter-14-hypothesis-tests-i-methods-of-finding-tests}
-
-\bookmarksetup{startatroot}
-
-\chapter{Hypothesis Tests I: Methods of Finding
-Tests}\label{hypothesis-tests-i-methods-of-finding-tests}
 
 This chapter introduces the foundations of hypothesis testing and
 several general methods for constructing tests. The central ideas are
@@ -18099,36 +17704,8 @@ Key takeaways
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-10}
-
-These notes are based on the Section 14 lecture slides and standard
-references:
-
-\begin{itemize}
-\item
-  Casella, George and Berger, Roger L. \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Wasserman, Larry. \emph{All of Statistics}.
-\item
-  \url{https://www.probabilitycourse.com/}
-\item
-  \url{https://online.stat.psu.edu/stat415/}
-\item
-  \url{https://stat110.hsites.harvard.edu/}
-\item
-  \url{https://bookdown.org/egarpor/inference/}
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 15: Hypothesis Tests II --- Evaluating
 Tests}\label{chapter-15-hypothesis-tests-ii-evaluating-tests}
-
-\bookmarksetup{startatroot}
-
-\chapter{Hypothesis Tests II: Evaluating
-Tests}\label{hypothesis-tests-ii-evaluating-tests}
 
 This chapter explains how to evaluate and compare hypothesis tests after
 constructing them. The main ideas are Type I and Type II errors, power
@@ -19188,11 +18765,6 @@ power function, and, when costs matter, its risk function.
 \chapter{Chapter 16: Interval Estimation I --- Finding Interval
 Estimators}\label{chapter-16-interval-estimation-i-finding-interval-estimators}
 
-\bookmarksetup{startatroot}
-
-\chapter{Interval Estimation I: Finding Interval
-Estimators}\label{interval-estimation-i-finding-interval-estimators}
-
 This chapter begins interval estimation. The main goal is to move from a
 single point estimate to a random interval procedure with a controlled
 coverage probability. We study confidence intervals built from
@@ -20234,33 +19806,8 @@ Gamma-Poisson Bayes & Gamma posterior & Posterior quantiles \\
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-11}
-
-\begin{itemize}
-\item
-  Casella, G. and Berger, R. L. \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Wasserman, L. \emph{All of Statistics}.
-\item
-  ProbabilityCourse.com.
-\item
-  Penn State STAT 415 Online Notes.
-\item
-  Harvard Stat 110 resources.
-\item
-  García-Portugués, E. \emph{Notes for Statistical Inference}.
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 17: Interval Estimation II --- Evaluating Interval
 Estimators}\label{chapter-17-interval-estimation-ii-evaluating-interval-estimators}
-
-\bookmarksetup{startatroot}
-
-\chapter{Interval Estimation II: Evaluating Interval
-Estimators}\label{interval-estimation-ii-evaluating-interval-estimators}
 
 This chapter continues interval estimation. After constructing
 confidence intervals and credible intervals, we now ask how to compare
@@ -21066,36 +20613,8 @@ Choose interval minimizing expected loss \\
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-12}
-
-These notes are based on the course lecture material for MATH 5010 and
-standard references in statistical inference.
-
-\begin{itemize}
-\item
-  Casella, G. and Berger, R. L. \emph{Statistical Inference}, 2nd
-  edition, Chapter 9.3.
-\item
-  Wasserman, L. \emph{All of Statistics}.
-\item
-  ProbabilityCourse.com.
-\item
-  Penn State STAT 415 online notes.
-\item
-  Harvard Stat 110 materials.
-\item
-  García-Portugués, E. \emph{Notes for Statistical Inference}.
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 18: Analysis of Variance I --- One-Way
 ANOVA}\label{chapter-18-analysis-of-variance-i-one-way-anova}
-
-\bookmarksetup{startatroot}
-
-\chapter{Analysis of Variance I: One-Way
-ANOVA}\label{analysis-of-variance-i-one-way-anova}
 
 This chapter introduces \textbf{one-way analysis of variance (ANOVA)}.
 The goal is to compare more than two normal population means while
@@ -22168,39 +21687,9 @@ This section introduced the foundations of one-way ANOVA.
 
 \bookmarksetup{startatroot}
 
-\chapter{References}\label{references-13}
-
-\begin{itemize}
-\tightlist
-\item
-  Casella, G. and Berger, R. L. \emph{Statistical Inference}, 2nd
-  edition.
-\item
-  Wasserman, L. \emph{All of Statistics}.
-\item
-  ProbabilityCourse.com: \url{https://www.probabilitycourse.com/}
-\item
-  Penn State STAT 415: \url{https://online.stat.psu.edu/stat415/}
-\item
-  Harvard Stat 110: \url{https://stat110.hsites.harvard.edu/}
-\item
-  E. García-Portugués, \emph{Notes for Nonparametric Statistics and
-  Statistical Inference}: \url{https://bookdown.org/egarpor/inference/}
-\item
-  ANOVA reference:
-  \url{https://bookdown.org/mcbroom_j/Book/week-7-anova.html}
-\end{itemize}
-
-\bookmarksetup{startatroot}
-
 \chapter{Chapter 19: Analysis of Variance II --- Applications and
 Randomized Block
 Designs}\label{chapter-19-analysis-of-variance-ii-applications-and-randomized-block-designs}
-
-\bookmarksetup{startatroot}
-
-\chapter{Analysis of Variance II: Applications and Randomized Block
-Designs}\label{analysis-of-variance-ii-applications-and-randomized-block-designs}
 
 This chapter continues ANOVA by emphasizing \textbf{applications,
 interpretation, experimental design, and randomized block designs}. We
@@ -23117,25 +22606,10 @@ randomized block designs.
   block variation, and error variation.
 \end{itemize}
 
-\section{References and Further
-Reading}\label{references-and-further-reading-3}
-
-9 George Casella and Roger L. Berger, \emph{Statistical Inference}, 2nd
-edition. Larry Wasserman, \emph{All of Statistics}.
-ProbabilityCourse.com, online probability and statistics resources. Penn
-State STAT 415 online notes. Harvard Stat 110 online resources. E.
-Garcia-Portugues, \emph{Notes for Predictive Modeling and Statistical
-Inference}.
-
 \bookmarksetup{startatroot}
 
 \chapter{Chapter 20: Bayesian
 Inference}\label{chapter-20-bayesian-inference}
-
-\bookmarksetup{startatroot}
-
-\chapter{Bayesian Inference: A Unified View of Estimation, Testing, and
-Intervals}\label{bayesian-inference-a-unified-view-of-estimation-testing-and-intervals}
 
 This chapter collects and organizes the Bayesian ideas used throughout
 point estimation, hypothesis testing, interval estimation, and decision
@@ -24318,16 +23792,171 @@ Decision theory & Posterior expected loss & Bayes action \\
 \end{longtable}
 }
 
-\section{References and Further
-Reading}\label{references-and-further-reading-4}
+\bookmarksetup{startatroot}
 
-These notes are based on the Bayesian components of Sections 12--17 of
-the MATH 5010 lecture notes: point estimation, evaluating estimators,
-hypothesis tests, evaluating tests, interval estimation, and evaluating
-interval estimators. Standard references include Casella and Berger,
-\emph{Statistical Inference}; Larry Wasserman, \emph{All of Statistics};
-and the online probability and statistical inference resources used
-throughout the course.
+\chapter{References and Further
+Reading}\label{references-and-further-reading}
+
+This page collects the main references, open resources, software
+documentation, and chapter-by-chapter reading suggestions for
+\textbf{Foundations of Probability and Statistical Theory}.
+
+The book is designed to be self-contained for MATH 5010, but students
+are encouraged to consult the references below for additional examples,
+exercises, and alternative explanations.
+
+\section{Main References}\label{main-references}
+
+\subsection{Primary statistical theory
+references}\label{primary-statistical-theory-references}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Casella, G., \& Berger, R. L. (2002). \emph{Statistical Inference}
+  (2nd ed.). Duxbury.
+\item
+  DeGroot, M. H., \& Schervish, M. J. (2012). \emph{Probability and
+  Statistics} (4th ed.). Pearson.
+\item
+  Hogg, R. V., McKean, J. W., \& Craig, A. T. (2019). \emph{Introduction
+  to Mathematical Statistics} (8th ed.). Pearson.
+\end{enumerate}
+
+\subsection{Probability references}\label{probability-references}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\item
+  Grinstead, C. M., \& Snell, J. L. (2012). \emph{Introduction to
+  Probability}. American Mathematical Society.
+\item
+  Ross, S. M. (2019). \emph{A First Course in Probability} (10th ed.).
+  Pearson.
+\item
+  Durrett, R. (2019). \emph{Probability: Theory and Examples} (5th ed.).
+  Cambridge University Press.
+\end{enumerate}
+
+\subsection{Open educational
+resources}\label{open-educational-resources}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\item
+  LibreTexts Statistics. \emph{Statistics Library}.\\
+  \url{https://stats.libretexts.org/Bookshelves}
+\item
+  Blitzstein, J. K., \& Hwang, J. (2019). \emph{Introduction to
+  Probability} (2nd ed.). CRC Press.
+\item
+  Wasserman, L. (2004). \emph{All of Statistics: A Concise Course in
+  Statistical Inference}. Springer.
+\end{enumerate}
+
+\section{Computational References}\label{computational-references}
+
+\subsection{Python and scientific
+computing}\label{python-and-scientific-computing}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  NumPy Documentation.\\
+  \url{https://numpy.org/doc/}
+\item
+  SciPy Documentation.\\
+  \url{https://docs.scipy.org/doc/scipy/}
+\item
+  pandas Documentation.\\
+  \url{https://pandas.pydata.org/docs/}
+\item
+  Matplotlib Documentation.\\
+  \url{https://matplotlib.org/stable/contents.html}
+\item
+  statsmodels Documentation.\\
+  \url{https://www.statsmodels.org/stable/index.html}
+\item
+  scikit-learn Documentation.\\
+  \url{https://scikit-learn.org/stable/}
+\end{enumerate}
+
+\subsection{Bayesian computation}\label{bayesian-computation}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{6}
+\item
+  PyMC Documentation.\\
+  \url{https://www.pymc.io/projects/docs/en/stable/}
+\item
+  Stan Documentation.\\
+  \url{https://mc-stan.org/users/documentation/}
+\end{enumerate}
+
+These Bayesian computation tools are not required for the core theory,
+but they are useful for students who want to extend Chapter 20 into
+modern Bayesian modeling and posterior simulation.
+
+\section{Quarto, Jupyter, and Google
+Colab}\label{quarto-jupyter-and-google-colab}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Quarto Documentation.\\
+  \url{https://quarto.org/docs/books/}
+\item
+  Jupyter Notebook Documentation.\\
+  \url{https://docs.jupyter.org/}
+\item
+  Google Colab.\\
+  \url{https://colab.research.google.com/}
+\end{enumerate}
+
+The computer labs in this book are written as Jupyter notebooks. They
+can be run locally or opened in Google Colab through the links on the
+\hyperref[computer-labs-and-interactive-pages]{Labs and Interactive HTML
+Pages} page.
+
+\section{Additional Advanced
+References}\label{additional-advanced-references}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Lehmann, E. L., \& Casella, G. (1998). \emph{Theory of Point
+  Estimation} (2nd ed.). Springer.
+\item
+  Lehmann, E. L., \& Romano, J. P. (2005). \emph{Testing Statistical
+  Hypotheses} (3rd ed.). Springer.
+\item
+  Robert, C. P., \& Casella, G. (2004). \emph{Monte Carlo Statistical
+  Methods} (2nd ed.). Springer.
+\item
+  Liu, J. S. (2001). \emph{Monte Carlo Strategies in Scientific
+  Computing}. Springer.
+\item
+  Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A.,
+  \& Rubin, D. B. (2013). \emph{Bayesian Data Analysis} (3rd ed.). CRC
+  Press.
+\item
+  Bernardo, J. M., \& Smith, A. F. M. (1994). \emph{Bayesian Theory}.
+  Wiley.
+\item
+  Montgomery, D. C. (2017). \emph{Design and Analysis of Experiments}
+  (9th ed.). Wiley.
+\end{enumerate}
+
+\section{Notes on Attribution}\label{notes-on-attribution}
+
+These lecture notes, labs, and interactive pages are prepared for MATH
+5010. The structure follows the course sequence from probability
+foundations to modern statistical inference, computation, and Bayesian
+methods. External references are listed to support further study and are
+not required unless assigned by the instructor.
 
 
 

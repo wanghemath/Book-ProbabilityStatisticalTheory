@@ -558,7 +558,4 @@ This final section summarizes the key ideas from ANOVA applications and randomiz
 -   Randomized block designs reduce nuisance variation by comparing treatments within homogeneous blocks.
 
 -   In an RBD, total variation is decomposed into treatment variation, block variation, and error variation.
-
-## References and Further Reading
-
-9 George Casella and Roger L. Berger, *Statistical Inference*, 2nd edition. Larry Wasserman, *All of Statistics*. ProbabilityCourse.com, online probability and statistics resources. Penn State STAT 415 online notes. Harvard Stat 110 online resources. E. Garcia-Portugues, *Notes for Predictive Modeling and Statistical Inference*.
+ 

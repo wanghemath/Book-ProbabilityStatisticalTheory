@@ -1,0 +1,112 @@
+# References and Further Reading
+
+This page collects the main references, open resources, software documentation, and chapter-by-chapter reading suggestions for **Foundations of Probability and Statistical Theory**.
+
+The book is designed to be self-contained for MATH 5010, but students are encouraged to consult the references below for additional examples, exercises, and alternative explanations.
+
+## Main References
+
+### Primary statistical theory references
+
+1. Casella, G., & Berger, R. L. (2002). *Statistical Inference* (2nd ed.). Duxbury.
+ 
+
+2. DeGroot, M. H., & Schervish, M. J. (2012). *Probability and Statistics* (4th ed.). Pearson.
+ 
+
+3. Hogg, R. V., McKean, J. W., & Craig, A. T. (2019). *Introduction to Mathematical Statistics* (8th ed.). Pearson.
+ 
+
+### Probability references
+
+4. Grinstead, C. M., & Snell, J. L. (2012). *Introduction to Probability*. American Mathematical Society.
+ 
+
+5. Ross, S. M. (2019). *A First Course in Probability* (10th ed.). Pearson.
+
+  
+6. Durrett, R. (2019). *Probability: Theory and Examples* (5th ed.). Cambridge University Press.
+
+ 
+
+### Open educational resources
+
+7. LibreTexts Statistics. *Statistics Library*.  
+   <https://stats.libretexts.org/Bookshelves>
+
+   
+
+8. Blitzstein, J. K., & Hwang, J. (2019). *Introduction to Probability* (2nd ed.). CRC Press.
+
+   
+
+9. Wasserman, L. (2004). *All of Statistics: A Concise Course in Statistical Inference*. Springer.
+
+ 
+
+## Computational References
+
+### Python and scientific computing
+
+1. NumPy Documentation.  
+   <https://numpy.org/doc/>
+
+2. SciPy Documentation.  
+   <https://docs.scipy.org/doc/scipy/>
+
+3. pandas Documentation.  
+   <https://pandas.pydata.org/docs/>
+
+4. Matplotlib Documentation.  
+   <https://matplotlib.org/stable/contents.html>
+
+5. statsmodels Documentation.  
+   <https://www.statsmodels.org/stable/index.html>
+
+6. scikit-learn Documentation.  
+   <https://scikit-learn.org/stable/>
+
+### Bayesian computation
+
+7. PyMC Documentation.  
+   <https://www.pymc.io/projects/docs/en/stable/>
+
+8. Stan Documentation.  
+   <https://mc-stan.org/users/documentation/>
+
+These Bayesian computation tools are not required for the core theory, but they are useful for students who want to extend Chapter 20 into modern Bayesian modeling and posterior simulation.
+
+## Quarto, Jupyter, and Google Colab
+
+1. Quarto Documentation.  
+   <https://quarto.org/docs/books/>
+
+2. Jupyter Notebook Documentation.  
+   <https://docs.jupyter.org/>
+
+3. Google Colab.  
+   <https://colab.research.google.com/>
+
+The computer labs in this book are written as Jupyter notebooks. They can be run locally or opened in Google Colab through the links on the [Labs and Interactive HTML Pages](labs-summary.qmd) page.
+
+ 
+
+## Additional Advanced References
+
+1. Lehmann, E. L., & Casella, G. (1998). *Theory of Point Estimation* (2nd ed.). Springer.
+
+2. Lehmann, E. L., & Romano, J. P. (2005). *Testing Statistical Hypotheses* (3rd ed.). Springer.
+
+3. Robert, C. P., & Casella, G. (2004). *Monte Carlo Statistical Methods* (2nd ed.). Springer.
+
+4. Liu, J. S. (2001). *Monte Carlo Strategies in Scientific Computing*. Springer.
+
+5. Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., & Rubin, D. B. (2013). *Bayesian Data Analysis* (3rd ed.). CRC Press.
+
+6. Bernardo, J. M., & Smith, A. F. M. (1994). *Bayesian Theory*. Wiley.
+
+7. Montgomery, D. C. (2017). *Design and Analysis of Experiments* (9th ed.). Wiley.
+
+## Notes on Attribution
+
+These lecture notes, labs, and interactive pages are prepared for MATH 5010. The structure follows the course sequence from probability foundations to modern statistical inference, computation, and Bayesian methods. External references are listed to support further study and are not required unless assigned by the instructor.
