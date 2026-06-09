@@ -1,10 +1,9 @@
-# {.unnumbered}
-
 ---
 title: "Foundations of Probability and Statistical Theory"
 subtitle: "A Modern Introduction with Computation, Simulation, and Inference"
 ---
- 
+
+# Welcome {.unnumbered}
 
 Welcome to the online book for **MATH 5010: Foundations of Statistical Theory & Probability**.
 
